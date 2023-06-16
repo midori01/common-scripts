@@ -1,14 +1,14 @@
 # Install
 ```bash
-bash <(curl -sSLf "https://github.com/midori01/common-scripts/snell/raw/main/install.sh")
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/snell/install.sh")
 ```
 
 # Update
 ```bash
-bash <(curl -sSLf "https://github.com/midori01/common-scripts/snell/raw/main/install.sh") update
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/snell/install.sh") update
 ```
 
 # Uninstall
 ```bash
-bash <(curl -sSLf "https://github.com/midori01/common-scripts/snell/raw/main/install.sh") uninstall
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/snell/install.sh") uninstall
 ```
