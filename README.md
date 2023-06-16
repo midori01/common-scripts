@@ -1,2 +1,1 @@
-# common-scripts
-some common scripts
+# Common Scripts
