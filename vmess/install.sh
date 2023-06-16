@@ -36,7 +36,7 @@ if [[ -z "$vmess_uuid" ]]; then
 fi
 
 read -r -p "请输入 WebSocket 路径 (留空默认 /): " ws_path
-ws_path =${ws_path:-/}
+ws_path=${ws_path:-/}
 
 cat <<EOF
 请确认以下配置信息：
