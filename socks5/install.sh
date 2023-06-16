@@ -27,9 +27,9 @@ if [[ $1 == "uninstall" ]]; then
 fi
 
 if [[ "$(uname -m)" == "x86_64" ]]; then
-  snell_type="amd64"
+  type="amd64"
 elif [[ "$(uname -m)" == "aarch64" ]]; then
-  snell_type="armv8"
+  type="armv8"
 else
   echo "$(uname -m) 架构不支持"
   exit 1
