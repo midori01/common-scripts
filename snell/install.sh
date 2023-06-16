@@ -64,10 +64,14 @@ if [[ -z "$snell_password" ]]; then
   snell_password=$(openssl rand -base64 32)
 fi
 
+read -r -p "请输入 Snell 混淆方式 (可选值: http、tls) 不使用请留空: " snell_obfs
+snell_obfs=${snell_obfs:-off}
+
 cat <<EOF
 请确认以下配置信息：
-Snell 端口：${snell_port}
-Snell 密码：${snell_password}
+端口：${snell_port}
+密码：${snell_password}
+混淆：${snell_obfs}
 EOF
 read -r -p "确认无误？(Y/N)" confirm
 case "$confirm" in
@@ -105,7 +109,7 @@ cat > /etc/snell-server.conf <<EOF
 listen = ::0:${snell_port}
 psk = ${snell_password}
 ipv6 = true
-obfs = off
+obfs = ${snell_obfs}
 EOF
 
 systemctl daemon-reload
@@ -114,7 +118,7 @@ systemctl enable snell.service
 
 echo "Snell 安装成功"
 echo "客户端连接信息: "
-echo "连接端口: ${shadowtls_port}"
-echo "Snell 密码: ${snell_password}"
-echo "Snell 混淆: Disabled"
-echo "Snell 版本: v4"
+echo "端口: ${shadowtls_port}"
+echo "密码: ${snell_password}"
+echo "混淆: ${snell_obfs}"
+echo "版本: v4"
