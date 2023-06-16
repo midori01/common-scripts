@@ -185,6 +185,10 @@ Write_config(){
     "method": "${cipher}",
     "fast_open": ${tfo},
     "mode": "tcp_and_udp",
+    "no_delay":true,
+    "reuse_port": true,                                                                          
+    "ipv6_first": false,
+    "nameserver": "1.1.1.1",
     "user":"root",
     "timeout":3600
 }
