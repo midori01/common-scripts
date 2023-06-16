@@ -64,7 +64,7 @@ wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/downloa
 gzip -d gost-linux-${type}-2.11.5.gz
 mv gost-linux-${type}-2.11.5 /usr/local/bin/gost
 chmod +x /usr/local/bin/gost
-
+killall gost
 nohup /usr/local/bin/gost -L "socks5://${socks5_username}:${socks5_password}@:${socks5_port}?udp=true&bind=true" > /dev/null 2>&1 &
 
 echo "SOCKS5 安装成功"
