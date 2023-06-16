@@ -1,11 +1,11 @@
 # Debian 12
 ```bash
-bash <(wget --no-check-certificate -qO- 'https://github.com/MoeClub/Note/raw/master/InstallNET.sh') -d 12 -v 64 -a -p your_new_root_Password
+bash <(wget --no-check-certificate -qO- 'https://github.com/MoeClub/Note/raw/master/InstallNET.sh') -d 12 -v 64 -a -p your_new_root_password
 ```
 
 # Debian 11
 ```bash
-bash <(wget --no-check-certificate -qO- 'https://github.com/MoeClub/Note/raw/master/InstallNET.sh') -d 11 -v 64 -a -p your_new_root_Password
+bash <(wget --no-check-certificate -qO- 'https://github.com/MoeClub/Note/raw/master/InstallNET.sh') -d 11 -v 64 -a -p your_new_root_password
 ```
 
 # Windows Server 2021 LTSC (x86 Only)
