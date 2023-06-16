@@ -101,7 +101,7 @@ cat > /etc/tuic-server.json <<EOF
 { 
   "server": "[::]:${listen_port}",
   "users": {
-    "$tuic_uuid": "${token}"
+    "${tuic_uuid}": "${token}"
   },
   "certificate": "${cer_path}",
   "private_key": "${key_path}",
