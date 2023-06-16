@@ -7,3 +7,5 @@ fi
 
 echo " * soft nofile 102400" >> /etc/security/limits.conf
 echo " * hard nofile 102400" >> /etc/security/limits.conf
+
+echo "ulimits 已调整"
