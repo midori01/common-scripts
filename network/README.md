@@ -8,12 +8,12 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/tfo.sh")
 ```
 
-# Enable IPv4 Forward
+# IPv4 Forward
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ipv4_forward.sh")
 ```
 
-# Enable IPv6 Forward
+# IPv6 Forward
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ipv6_forward.sh")
 ```
