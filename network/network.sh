@@ -21,8 +21,7 @@ sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
 sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
 sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.conf
 sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.conf
-sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+
 cat >> /etc/sysctl.conf << EOF
 net.ipv4.tcp_no_metrics_save=1
 net.ipv4.tcp_ecn=0
@@ -41,6 +40,7 @@ net.ipv4.tcp_wmem=4096 16384 33554432
 net.ipv4.udp_rmem_min=8192
 net.ipv4.udp_wmem_min=8192
 EOF
+
 sysctl -p && sysctl --system
 
 echo "内核参数已调整"
