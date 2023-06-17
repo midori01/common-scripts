@@ -10,7 +10,7 @@ if ! command -v wget &> /dev/null; then
   exit 1
 fi
 
-apt inatall -y uuid-runtime
+apt install -y uuid-runtime
 
 uninstall() {
   systemctl stop tuic.service
