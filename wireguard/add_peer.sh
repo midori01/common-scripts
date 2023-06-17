@@ -1,9 +1,12 @@
 #!/bin/bash
 
 read -r -p "请输入备注: " note
-read -r -p "请输入 Peer Public Key: " peer_public_key
-read -r -p "请输入 Peer Self IPv4: " peer_self_ipv4
-read -r -p "请输入 Peer Self IPv6: " peer_self_ipv6
+read -r -p "请输入 Peer 公钥: " peer_public_key
+read -r -p "请输入 Self IP: " peer_self_ipv4
+
+last_octet=$(echo "${peer_self_ipv4}" | awk -F. '{print $4}')
+peer_self_ipv6="fd10::${last_octet}"
+
 echo "" >> /etc/wireguard/wg0.conf
 echo "# ${note}" >> /etc/wireguard/wg0.conf
 echo "[Peer]" >> /etc/wireguard/wg0.conf
