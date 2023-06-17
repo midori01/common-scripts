@@ -23,11 +23,12 @@ if [[ $1 == "uninstall" ]]; then
   exit 0
 fi
 
-read -r -p "请输入 WireGuard 端口 (留空默认 8964): " snell_port
-snell_port=${snell_port:-8964}
+read -r -p "请输入 WireGuard 端口 (留空默认 8964): " wg_port
+wg_port=${wg_port:-8964}
 
 echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
 sysctl -p
+apt install -y wireguard wireguard-tools
 netdevice=$(ip route get 1.1.1.1 | awk -F"dev " '{print $2}' | awk '{print $1; exit}')
 i_privatekey=$(wg genkey | tee i_private.key)
 i_publickey=$(cat i_private.key | wg pubkey)
