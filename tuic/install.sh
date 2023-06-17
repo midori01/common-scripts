@@ -10,6 +10,8 @@ if ! command -v wget &> /dev/null; then
   exit 1
 fi
 
+apt inatall -y uuid-runtime
+
 uninstall() {
   systemctl stop tuic.service
   systemctl disable tuic.service
@@ -51,8 +53,10 @@ fi
 read -r -p "请输入 TUIC 端口 (留空默认 443): " listen_port
 listen_port=${listen_port:-443}
 
-read -r -p "请输入 TUIC UUID (留空将使用 00000000-0000-0000-0000-000000000000): " tuic_uuid
-tuic_uuid=${tuic_uuid:-00000000-0000-0000-0000-000000000000}
+read -r -p "请输入 TUIC UUID (留空随机生成): " tuic_uuid
+if [[ -z "$tuic_uuid" ]]; then
+  tuic_uuid=$(uuidgen)
+fi
 
 read -r -p "请输入 TUIC 密码 (留空随机生成): " token
 if [[ -z "$token" ]]; then
