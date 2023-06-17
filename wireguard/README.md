@@ -13,3 +13,11 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/wireguard/add_peer.sh")
 ```
+`Restart:`
+```bash
+wg-quick down wg0 && wg-quick up wg0
+```
+`Status:`
+```bash
+wg show wg0
+```
