@@ -23,7 +23,7 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 curl http://169.254.169.254/opc/v1/instance/definedTags
 ```
 
-# Keep Alive
+# Keep Alive (CPU)
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/keepalive.sh")
 ```
