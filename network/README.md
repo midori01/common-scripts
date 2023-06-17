@@ -18,12 +18,12 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ipv6_forward.sh")
 ```
 
-# Ulimit Optimization
+# Ulimit Opt.
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ulimit.sh")
 ```
 
-# Network Optimization
+# Network Opt.
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/network.sh")
 ```
