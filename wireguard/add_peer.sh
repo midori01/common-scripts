@@ -13,3 +13,4 @@ echo "[Peer]" >> /etc/wireguard/wg0.conf
 echo "PublicKey = ${peer_public_key}" >> /etc/wireguard/wg0.conf
 echo "AllowedIPs = ${peer_self_ipv4}/32, ${peer_self_ipv6}/128" >> /etc/wireguard/wg0.conf
 wg syncconf wg0 <(wg-quick strip wg0)
+wg show
