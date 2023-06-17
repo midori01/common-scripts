@@ -8,6 +8,11 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 snap remove oracle-cloud-agent
 ```
 
+# Enable Root Login
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/rootlogin.sh")
+```
+
 # Add IPv6 (Debian)
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/ipv6.sh")
