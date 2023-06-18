@@ -17,7 +17,7 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```
 `Ulimit Optimization:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ulimit.sh")
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/network.sh") ulimit
 ```
 `Network Optimization:`
 ```bash
