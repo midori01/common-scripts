@@ -7,11 +7,11 @@ bash <(wget --no-check-certificate -qO- 'https://github.com/MoeClub/Note/raw/mas
 ```bash
 bash <(wget --no-check-certificate -qO- 'https://github.com/MoeClub/Note/raw/master/InstallNET.sh') -d 11 -v 64 -a -p your_new_root_password
 ```
-`Windows Server 2021 LTSC (x86 Only):`
+`Win Server 2021 LTSC (x86):`
 ```bash
 wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && bash InstallNET.sh -dd 'https://oss.sunpma.com/Windows/Oracle_Win10_2021LTSC_64_Administrator_nat.ee.gz'
 ```
-`Windows Server 2012 R2 (x86 Only):`
+`Win Server 2012 R2 (x86):`
 ```bash
 wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && bash InstallNET.sh -dd 'https://oss.sunpma.com/Windows/Oracle_Win_Server2012R2_64_Administrator_nat.ee.gz'
 ```
