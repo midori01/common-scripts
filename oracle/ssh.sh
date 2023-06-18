@@ -42,7 +42,7 @@ port() {
     echo "已取消修改 SSH 端口"
     exit 1
   fi
-  sed -i 's/^#\?Port.*/Port ${ssh_port}/g' /etc/ssh/sshd_config
+  sed -i "s/^#\?Port.*/Port ${ssh_port}/g" /etc/ssh/sshd_config
   service sshd restart
   echo "SSH 端口已修改"
 }
