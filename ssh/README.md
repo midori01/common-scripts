@@ -1,3 +1,4 @@
+# SSH Common
 `Enable Root Login:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/ssh/ssh.sh") rootlogin
