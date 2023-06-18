@@ -8,16 +8,6 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 snap remove oracle-cloud-agent
 ```
 
-# Enable Root Login
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/rootlogin.sh")
-```
-
-# SSH Public Key (root)
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/publickey.sh")
-```
-
 # Add IPv6 (Debian)
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/ipv6.sh")
@@ -31,4 +21,22 @@ curl http://169.254.169.254/opc/v1/instance/definedTags
 # Keep Alive (CPU)
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/keepalive.sh")
+```
+
+# SSH
+`Enable Root Login:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/ssh.sh") rootlogin
+```
+`Enable Password Login:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/ssh.sh") enablepwd
+```
+`Disable Password Login:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/ssh.sh") disablepwd
+```
+`Add SSH Public Key:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/ssh.sh") sshkey
 ```
