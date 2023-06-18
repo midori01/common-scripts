@@ -35,6 +35,18 @@ rootlogin() {
   echo "root 登录已开启"
 }
 
+port() {
+  read -p "请输入新 SSH 端口：" ssh_port
+  read -p "您输入的新 SSH 端口为：${ssh_port}，是否确认修改？[Y/n]" confirm
+  if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+    echo "已取消修改 SSH 端口"
+    exit 1
+  fi
+  sed -i 's/^#\?Port.*/Port ${ssh_port}/g' /etc/ssh/sshd_config
+  service sshd restart
+  echo "SSH 端口已修改"
+}
+
 if [[ $1 == "sshkey" ]]; then
   sshkey
   exit 0
@@ -52,5 +64,10 @@ fi
 
 if [[ $1 == "rootlogin" ]]; then
   rootlogin
+  exit 0
+fi
+
+if [[ $1 == "port" ]]; then
+  port
   exit 0
 fi
