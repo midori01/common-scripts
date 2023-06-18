@@ -1,29 +1,24 @@
-# Enable BBR
+`Enable BBR:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/bbr.sh")
 ```
-
-# Enable TFO
+`Enable TFO:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/tfo.sh")
 ```
-
-# IPv4 Forward
+`Eneable IPv4 Forward:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ipv4_forward.sh")
 ```
-
-# IPv6 Forward
+`Enable IPv6 Forward:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ipv6_forward.sh")
 ```
-
-# Ulimit Opt.
+`Ulimit Optimization:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/ulimit.sh")
 ```
-
-# Network Opt.
+`Network Optimization:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/network.sh")
 ```
