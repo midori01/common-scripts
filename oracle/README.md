@@ -13,6 +13,11 @@ snap remove oracle-cloud-agent
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/rootlogin.sh")
 ```
 
+# SSH Public Key (root)
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/publickey.sh")
+```
+
 # Add IPv6 (Debian)
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/ipv6.sh")
