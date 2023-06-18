@@ -1,4 +1,4 @@
-# SOCKS5 Proxy Server
+# SOCKS5 Server
 `Install:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/socks5/install.sh")
