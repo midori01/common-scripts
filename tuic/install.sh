@@ -4,13 +4,32 @@ if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
 fi
-
 if ! command -v wget &> /dev/null; then
   echo "wget 未安装，请安装后再运行脚本"
   exit 1
 fi
 
+latest_version=$(curl -m 10 -sL "https://api.github.com/repos/EAimTY/tuic/releases" | awk -F'"' '/"tag_name": "tuic-server-/{print $4; exit}')
+if [[ "$(uname -m)" == "x86_64" ]]; then
+  type="x86_64"
+elif [[ "$(uname -m)" == "aarch64" ]]; then
+  type="aarch64"
+else
+  echo "$(uname -m) 架构不支持"
+  exit 1
+fi
+
 apt install -y uuid-runtime
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
+fi
 
 uninstall() {
   systemctl stop tuic.service
@@ -28,27 +47,6 @@ update() {
   systemctl restart tuic.service
   echo "TUIC 已更新"
 }
-
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
-latest_version=$(curl -m 10 -sL "https://api.github.com/repos/EAimTY/tuic/releases" | awk -F'"' '/"tag_name": "tuic-server-/{print $4; exit}')
-
-if [[ "$(uname -m)" == "x86_64" ]]; then
-  type="x86_64"
-elif [[ "$(uname -m)" == "aarch64" ]]; then
-  type="aarch64"
-else
-  echo "$(uname -m) 架构不支持"
-  exit 1
-fi
 
 read -r -p "请输入 TUIC 端口 (留空默认 443): " listen_port
 listen_port=${listen_port:-443}
