@@ -25,16 +25,6 @@ else
   exit 1
 fi
 
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
 uninstall() {
   systemctl stop realm.service
   systemctl disable realm.service
@@ -54,6 +44,15 @@ update() {
   systemctl restart realm.service
   echo "RealM 已更新"
 }
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
+fi
 
 read -p "请输入监听端口（支持多端口，以逗号分隔）：" listening_ports
 read -p "请输入目标地址（支持多目标，以逗号分隔）：" remote_addresses
