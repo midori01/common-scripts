@@ -26,15 +26,6 @@ else
   exit 1
 fi
 
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
 uninstall() {
   systemctl stop snell.service
   systemctl stop shadow-tls.service
@@ -63,6 +54,15 @@ update() {
   systemctl restart shadow-tls.service
   echo "Snell + Shadow-TLS 已更新"
 }
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
+fi
 
 read -r -p "请输入 Snell 监听端口 (留空默认 6800): " snell_port
 snell_port=${snell_port:-6800}
