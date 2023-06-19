@@ -4,10 +4,35 @@ if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
 fi
-
 if ! command -v wget &> /dev/null; then
   echo "wget 未安装，请安装后再运行脚本"
   exit 1
+fi
+
+latest_release=$(curl -s https://api.github.com/repos/zhboner/realm/releases/latest)
+if [[ "$(echo "$latest_release" | jq -r '.message')" == "Not Found" ]]; then
+  echo "获取最新版本失败"
+  exit 1
+fi
+realm_version=$(echo "$latest_release" | jq -r '.tag_name')
+arch=$(uname -m)
+if [[ "$arch" == "x86_64" ]]; then
+  realm_package="realm-x86_64-unknown-linux-gnu.tar.gz"
+elif [[ "$arch" == "aarch64" ]]; then
+  realm_package="realm-aarch64-unknown-linux-gnu.tar.gz"
+else
+  echo "$arch 架构不支持"
+  exit 1
+fi
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
 fi
 
 uninstall() {
@@ -29,34 +54,6 @@ update() {
   systemctl restart realm.service
   echo "RealM 已更新"
 }
-
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
-arch=$(uname -m)
-
-if [[ "$arch" == "x86_64" ]]; then
-  realm_package="realm-x86_64-unknown-linux-gnu.tar.gz"
-elif [[ "$arch" == "aarch64" ]]; then
-  realm_package="realm-aarch64-unknown-linux-gnu.tar.gz"
-else
-  echo "$arch 架构不支持"
-  exit 1
-fi
-
-latest_release=$(curl -s https://api.github.com/repos/zhboner/realm/releases/latest)
-if [[ "$(echo "$latest_release" | jq -r '.message')" == "Not Found" ]]; then
-  echo "获取最新版本失败"
-  exit 1
-fi
-realm_version=$(echo "$latest_release" | jq -r '.tag_name')
 
 read -p "请输入监听端口（支持多端口，以逗号分隔）：" listening_ports
 read -p "请输入目标地址（支持多目标，以逗号分隔）：" remote_addresses
