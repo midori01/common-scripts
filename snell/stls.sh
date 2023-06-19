@@ -4,15 +4,35 @@ if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
 fi
-
 if ! command -v wget &> /dev/null; then
   echo "wget 未安装，请安装后再运行脚本"
   exit 1
 fi
-
 if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
+fi
+
+snell_version=v4.0.1
+shadowtls_version=$(curl -m 10 -sL "https://api.github.com/repos/ihciah/shadow-tls/releases/latest" | awk -F'"' '/tag_name/{print $4}')
+if [[ "$(uname -m)" == "x86_64" ]]; then
+  snell_type="amd64"
+  shadowtls_type="x86_64"
+elif [[ "$(uname -m)" == "aarch64" ]]; then
+  snell_type="aarch64"
+  shadowtls_type="aarch64"
+else
+  echo "$(uname -m) 架构不支持"
+  exit 1
+fi
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
 fi
 
 uninstall() {
@@ -43,30 +63,6 @@ update() {
   systemctl restart shadow-tls.service
   echo "Snell + Shadow-TLS 已更新"
 }
-
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
-snell_version=v4.0.1
-shadowtls_version=$(curl -m 10 -sL "https://api.github.com/repos/ihciah/shadow-tls/releases/latest" | awk -F'"' '/tag_name/{print $4}')
-
-if [[ "$(uname -m)" == "x86_64" ]]; then
-  snell_type="amd64"
-  shadowtls_type="x86_64"
-elif [[ "$(uname -m)" == "aarch64" ]]; then
-  snell_type="aarch64"
-  shadowtls_type="aarch64"
-else
-  echo "$(uname -m) 架构不支持"
-  exit 1
-fi
 
 read -r -p "请输入 Snell 监听端口 (留空默认 6800): " snell_port
 snell_port=${snell_port:-6800}
