@@ -21,16 +21,6 @@ fi
 
 apt install -y uuid-runtime
 
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
 uninstall() {
   systemctl stop tuic.service
   systemctl disable tuic.service
@@ -47,6 +37,15 @@ update() {
   systemctl restart tuic.service
   echo "TUIC 已更新"
 }
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
+fi
 
 read -r -p "请输入 TUIC 端口 (留空默认 443): " listen_port
 listen_port=${listen_port:-443}
