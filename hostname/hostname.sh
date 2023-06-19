@@ -4,7 +4,6 @@ if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
 fi
-
 current_hostname=$(hostname)
 echo "当前主机名为：${current_hostname}"
 read -p "请输入新主机名：" new_hostname
