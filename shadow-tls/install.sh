@@ -20,15 +20,6 @@ else
   exit 1
 fi
 
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
 uninstall() {
   systemctl stop shadow-tls.service
   systemctl disable shadow-tls.service
@@ -45,6 +36,15 @@ update() {
   systemctl restart shadow-tls.service
   echo "Shadow-TLS 已更新"
 }
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
+fi
 
 read -r -p "请输入 Shadow-TLS 监听端口 (留空默认 443): " shadowtls_port
 shadowtls_port=${shadowtls_port:-443}
