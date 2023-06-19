@@ -8,7 +8,6 @@ if ! command -v wget &> /dev/null; then
   echo "wget 未安装，请安装后再运行脚本"
   exit 1
 fi
-
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/EAimTY/tuic/releases" | awk -F'"' '/"tag_name": "tuic-server-/{print $4; exit}')
 if [[ "$(uname -m)" == "x86_64" ]]; then
   type="x86_64"
@@ -18,9 +17,6 @@ else
   echo "$(uname -m) 架构不支持"
   exit 1
 fi
-
-apt install -y uuid-runtime
-
 uninstall() {
   systemctl stop tuic.service
   systemctl disable tuic.service
@@ -29,7 +25,6 @@ uninstall() {
   rm -f /usr/local/bin/tuic-server
   echo "TUIC 已卸载"
 }
-
 update() {
   rm -f /usr/local/bin/tuic-server
   wget -O /usr/local/bin/tuic-server https://github.com/EAimTY/tuic/releases/download/${latest_version}/${latest_version}-${type}-unknown-linux-musl
@@ -37,7 +32,6 @@ update() {
   systemctl restart tuic.service
   echo "TUIC 已更新"
 }
-
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
@@ -46,23 +40,19 @@ if [[ $1 == "update" ]]; then
   update
   exit 0
 fi
-
+apt install -y uuid-runtime
 read -r -p "请输入 TUIC 端口 (留空默认 443): " listen_port
 listen_port=${listen_port:-443}
-
 read -r -p "请输入 TUIC UUID (留空随机生成): " tuic_uuid
 if [[ -z "$tuic_uuid" ]]; then
   tuic_uuid=$(uuidgen)
 fi
-
 read -r -p "请输入 TUIC 密码 (留空随机生成): " token
 if [[ -z "$token" ]]; then
   token=$(openssl rand -base64 32)
 fi
-
 read -r -p "请输入证书文件路径: " cer_path
 read -r -p "请输入私钥文件路径: " key_path
-
 cat <<EOF
 请确认以下配置信息：
 监听端口：${listen_port}
@@ -76,10 +66,8 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-
 wget -O /usr/local/bin/tuic-server https://github.com/EAimTY/tuic/releases/download/${latest_version}/${latest_version}-${type}-unknown-linux-musl
 chmod +x /usr/local/bin/tuic-server
-
 cat > /etc/systemd/system/tuic.service <<EOF
 [Unit]
 Description=TUIC Server Service
@@ -122,11 +110,9 @@ cat > /etc/tuic-server.json <<EOF
   "log_level": "warn"
 }
 EOF
-
 systemctl daemon-reload
 systemctl enable tuic.service
 systemctl start tuic.service
-
 echo "TUIC 安装成功"
 echo "客户端连接信息: "
 echo "连接端口: ${listen_port}"
