@@ -4,33 +4,28 @@ if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
 fi
-
 bbr() {
   echo net.core.default_qdisc=fq >> /etc/sysctl.conf
   echo net.ipv4.tcp_congestion_control=bbr >> /etc/sysctl.conf
   sysctl -p
   echo "BBR 已开启"
 }
-
 tfo() {
   echo 3 > /proc/sys/net/ipv4/tcp_fastopen
   echo net.ipv4.tcp_fastopen=3 >> /etc/sysctl.conf
   sysctl -p
   echo "TCP Fast Open 已开启"
 }
-
 ipv4fwd() {
   echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
   sysctl -p
   echo "IPv4 Forward 已开启"
 }
-
 ipv6fwd() {
   echo net.ipv6.conf.all.forwarding=1 >> /etc/sysctl.conf
   sysctl -p
   echo "IPv6 Forward 已开启"
 }
-
 network() {
 sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
@@ -69,7 +64,6 @@ EOF
 sysctl -p && sysctl --system
 echo "内核参数已调整"
 }
-
 ulimit() {
 echo "1000000" > /proc/sys/fs/file-max
 sed -i '/fs.file-max/d' /etc/sysctl.conf
@@ -125,32 +119,26 @@ EOF
 systemctl daemon-reload
 echo "ulimit 已调整"
 }
-
 if [[ $1 == "bbr" ]]; then
   bbr
   exit 0
 fi
-
 if [[ $1 == "tfo" ]]; then
   tfo
   exit 0
 fi
-
 if [[ $1 == "ipv4fwd" ]]; then
   ipv4fwd
   exit 0
 fi
-
 if [[ $1 == "ipv6fwd" ]]; then
   ipv6fwd
   exit 0
 fi
-
 if [[ $1 == "network" ]]; then
   network
   exit 0
 fi
-
 if [[ $1 == "ulimit" ]]; then
   ulimit
   exit 0
