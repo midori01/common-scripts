@@ -12,9 +12,7 @@ if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
 fi
-
 snell_version=v4.0.1
-
 if [[ "$(uname -m)" == "x86_64" ]]; then
   snell_type="amd64"
 elif [[ "$(uname -m)" == "aarch64" ]]; then
@@ -23,7 +21,6 @@ else
   echo "$(uname -m) 架构不支持"
   exit 1
 fi
-
 uninstall() {
   systemctl stop snell.service
   systemctl disable snell.service
@@ -32,7 +29,6 @@ uninstall() {
   rm -f /usr/local/bin/snell-server
   echo "Snell 已卸载"
 }
-
 update() {
   rm /usr/local/bin/snell-server
   wget -N --no-check-certificate https://dl.nssurge.com/snell/snell-server-${snell_version}-linux-${snell_type}.zip
@@ -43,7 +39,6 @@ update() {
   systemctl restart snell.service
   echo "Snell 已更新"
 }
-
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
@@ -52,18 +47,14 @@ if [[ $1 == "update" ]]; then
   update
   exit 0
 fi
-
 read -r -p "请输入 Snell 监听端口 (留空默认 6800): " snell_port
 snell_port=${snell_port:-6800}
-
 read -r -p "请输入 Snell 密码 (留空随机生成): " snell_password
 if [[ -z "$snell_password" ]]; then
   snell_password=$(openssl rand -base64 32)
 fi
-
 read -r -p "请输入 Snell 混淆方式 (可选值: http、tls) 不使用请留空: " snell_obfs
 snell_obfs=${snell_obfs:-off}
-
 cat <<EOF
 请确认以下配置信息：
 端口：${snell_port}
@@ -75,13 +66,11 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-
 wget -N --no-check-certificate https://dl.nssurge.com/snell/snell-server-${snell_version}-linux-${snell_type}.zip
 unzip snell-server-${snell_version}-linux-${snell_type}.zip
 mv snell-server /usr/local/bin/snell-server
 chmod +x /usr/local/bin/snell-server
 rm snell-server-${snell_version}-linux-${snell_type}.zip
-
 cat > /etc/systemd/system/snell.service <<EOF
 [Unit]
 Description=Snell Proxy Service
@@ -100,7 +89,6 @@ SyslogIdentifier=snell-server
 [Install]
 WantedBy=multi-user.target
 EOF
-
 cat > /etc/snell-server.conf <<EOF
 [snell-server]
 listen = ::0:${snell_port}
@@ -108,11 +96,9 @@ psk = ${snell_password}
 ipv6 = true
 obfs = ${snell_obfs}
 EOF
-
 systemctl daemon-reload
 systemctl start snell.service
 systemctl enable snell.service
-
 echo "Snell 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${shadowtls_port}"
