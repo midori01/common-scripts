@@ -4,15 +4,33 @@ if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
 fi
-
 if ! command -v wget &> /dev/null; then
   echo "wget 未安装，请安装后再运行脚本"
   exit 1
 fi
-
 if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
+fi
+
+snell_version=v4.0.1
+
+if [[ "$(uname -m)" == "x86_64" ]]; then
+  snell_type="amd64"
+elif [[ "$(uname -m)" == "aarch64" ]]; then
+  snell_type="aarch64"
+else
+  echo "$(uname -m) 架构不支持"
+  exit 1
+fi
+
+if [[ $1 == "uninstall" ]]; then
+  uninstall
+  exit 0
+fi
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
 fi
 
 uninstall() {
@@ -34,27 +52,6 @@ update() {
   systemctl restart snell.service
   echo "Snell 已更新"
 }
-
-if [[ $1 == "uninstall" ]]; then
-  uninstall
-  exit 0
-fi
-
-if [[ $1 == "update" ]]; then
-  update
-  exit 0
-fi
-
-snell_version=v4.0.1
-
-if [[ "$(uname -m)" == "x86_64" ]]; then
-  snell_type="amd64"
-elif [[ "$(uname -m)" == "aarch64" ]]; then
-  snell_type="aarch64"
-else
-  echo "$(uname -m) 架构不支持"
-  exit 1
-fi
 
 read -r -p "请输入 Snell 监听端口 (留空默认 6800): " snell_port
 snell_port=${snell_port:-6800}
