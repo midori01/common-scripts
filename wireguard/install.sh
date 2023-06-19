@@ -4,12 +4,10 @@ if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
 fi
-
 if ! command -v iptables &> /dev/null; then
   echo "iptables 未安装，请安装后再运行脚本"
   exit 1
 fi
-
 uninstall() {
   wg-quick down wg0
   systemctl disable wg-quick@wg0
@@ -17,7 +15,6 @@ uninstall() {
   apt purge -y wireguard wireguard-tools
   echo "WireGuard 已卸载"
 }
-
 peer() {
   read -r -p "请输入备注: " note
   read -r -p "请输入 Peer 公钥: " peer_public_key
@@ -32,20 +29,16 @@ peer() {
   wg syncconf wg0 <(wg-quick strip wg0)
   wg show wg0
 }
-
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
 fi
-
 if [[ $1 == "peer" ]]; then
   peer
   exit 0
 fi
-
 read -r -p "请输入 WireGuard 端口 (留空默认 8964): " wg_port
 wg_port=${wg_port:-8964}
-
 echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
 sysctl -p
 apt install -y wireguard wireguard-tools
@@ -55,7 +48,6 @@ i_publickey=$(cat i_private.key | wg pubkey)
 p_privatekey=$(wg genkey | tee p_private.key)
 p_publickey=$(cat p_private.key | wg pubkey)
 endpoint=$(curl -s ip.sb -4)
-
 cat > /etc/wireguard/wg0.conf <<EOF
 [Interface]
 Address = 10.89.64.1/32, fd10::1/128
@@ -69,11 +61,9 @@ MTU = 1280
 PublicKey = ${p_publickey}
 AllowedIPs = 10.89.64.2/32, fd10::2/128
 EOF
-
 rm -f i_private.key p_private.key
 wg-quick up wg0
 systemctl enable wg-quick@wg0
-
 echo "WireGuard 安装成功"
 echo "客户端配置: "
 echo "Self IPv4: 10.89.64.2"
