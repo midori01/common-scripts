@@ -12,7 +12,6 @@ if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
 fi
-
 snell_version=v4.0.1
 shadowtls_version=$(curl -m 10 -sL "https://api.github.com/repos/ihciah/shadow-tls/releases/latest" | awk -F'"' '/tag_name/{print $4}')
 if [[ "$(uname -m)" == "x86_64" ]]; then
@@ -25,7 +24,6 @@ else
   echo "$(uname -m) 架构不支持"
   exit 1
 fi
-
 uninstall() {
   systemctl stop snell.service
   systemctl stop shadow-tls.service
@@ -39,7 +37,6 @@ uninstall() {
   rm -f /usr/local/bin/shadow-tls
   echo "Snell + Shadow-TLS 已卸载"
 }
-
 update() {
   rm -f /usr/local/bin/snell-server
   rm -f /usr/local/bin/shadow-tls
@@ -54,7 +51,6 @@ update() {
   systemctl restart shadow-tls.service
   echo "Snell + Shadow-TLS 已更新"
 }
-
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
@@ -63,26 +59,20 @@ if [[ $1 == "update" ]]; then
   update
   exit 0
 fi
-
 read -r -p "请输入 Snell 监听端口 (留空默认 6800): " snell_port
 snell_port=${snell_port:-6800}
-
 read -r -p "请输入 Snell 密码 (留空随机生成): " snell_password
 if [[ -z "$snell_password" ]]; then
   snell_password=$(openssl rand -base64 32)
 fi
-
 read -r -p "请输入 Shadow-TLS 监听端口 (留空默认 443): " shadowtls_port
 shadowtls_port=${shadowtls_port:-443}
-
 read -r -p "请输入 Shadow-TLS 密码 (留空随机生成): " shadowtls_password
 if [[ -z "$shadowtls_password" ]]; then
   shadowtls_password=$(openssl rand -base64 32)
 fi
-
 read -r -p "请输入 Shadow-TLS SNI (留空默认 www.iq.com): " sni_domain
 sni_domain=${sni_domain:-www.iq.com}
-
 cat <<EOF
 请确认以下配置信息：
 Snell 端口：${snell_port}
@@ -96,13 +86,11 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-
 wget -N --no-check-certificate https://dl.nssurge.com/snell/snell-server-${snell_version}-linux-${snell_type}.zip
 unzip snell-server-${snell_version}-linux-${snell_type}.zip
 mv snell-server /usr/local/bin/snell-server
 chmod +x /usr/local/bin/snell-server
 rm -f snell-server-${snell_version}-linux-${snell_type}.zip
-
 cat > /etc/systemd/system/snell.service <<EOF
 [Unit]
 Description=Snell Proxy Service
@@ -121,7 +109,6 @@ SyslogIdentifier=snell-server
 [Install]
 WantedBy=multi-user.target
 EOF
-
 cat > /etc/snell-server.conf <<EOF
 [snell-server]
 listen = 127.0.0.1:${snell_port}
@@ -129,10 +116,8 @@ psk = ${snell_password}
 ipv6 = true
 obfs = off
 EOF
-
 wget -O /usr/local/bin/shadow-tls "https://github.com/ihciah/shadow-tls/releases/download/${shadowtls_version}/shadow-tls-${shadowtls_type}-unknown-linux-musl"
 chmod +x /usr/local/bin/shadow-tls
-
 cat > /etc/systemd/system/shadow-tls.service <<EOF
 [Unit]
 Description=shadow-tls service
@@ -151,7 +136,6 @@ SyslogIdentifier=shadow-tls
 [Install]
 WantedBy=multi-user.target
 EOF
-
 cat > /etc/shadow-tls.json <<EOF
 {
   "disable_nodelay": false,
@@ -174,13 +158,11 @@ cat > /etc/shadow-tls.json <<EOF
   }
 }
 EOF
-
 systemctl daemon-reload
 systemctl start snell.service
 systemctl start shadow-tls.service
 systemctl enable snell.service
 systemctl enable shadow-tls.service
-
 echo "Snell + Shadow-TLS 安装成功"
 echo "客户端连接信息: "
 echo "连接端口: ${shadowtls_port}"
