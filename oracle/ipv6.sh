@@ -15,6 +15,6 @@ fi
 netdevice=$(ip route get 1.1.1.1 | awk -F"dev " '{print $2}' | awk '{print $1; exit}')
 echo "iface ${netdevice} inet6 dhcp" >> /etc/network/interfaces
 ifdown ${netdevice} && ifup ${netdevice}
-sleep 30
+sleep 15
 echo "IPv6 地址已添加"
 echo "$(curl -s ip.sb -6)"
