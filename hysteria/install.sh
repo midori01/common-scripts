@@ -32,12 +32,32 @@ update() {
   systemctl restart hysteria.service
   echo "Hysteria 已更新"
 }
+hopping() {
+  if ! command -v jq &> /dev/null; then
+    echo "jq 未安装，请安装后再运行脚本"
+    exit 1
+  fi
+  if ! command -v iptables &> /dev/null; then
+    echo "iptables 未安装，请安装后再运行脚本"
+    exit 1
+  fi
+  read -r -p "请输入跳跃端口范围 (以冒号连接，例如10000:20000): " hopping
+  netdevice=$(ip route get 1.1.1.1 | awk -F"dev " '{print $2}' | awk '{print $1; exit}')
+  listen_port=$(jq -r '.listen' /etc/hysteria.json)
+  iptables -t nat -A PREROUTING -i ${netdevice} -p udp --dport ${hopping} -j DNAT --to-destination ${listen_port}
+  ip6tables -t nat -A PREROUTING -i ${netdevice} -p udp --dport ${hopping} -j DNAT --to-destination ${listen_port}
+  echo "端口跳跃已设置"
+}
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
 fi
 if [[ $1 == "update" ]]; then
   update
+  exit 0
+fi
+if [[ $1 == "hopping" ]]; then
+  hopping
   exit 0
 fi
 read -r -p "请输入 Hysteria 端口 (留空默认 8888): " port
