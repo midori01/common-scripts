@@ -1,13 +1,13 @@
 # Node-Exporter
 `Install:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/install/node-exporter.sh")
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/node-exporter/install.sh")
 ```
 `Update:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/install/node-exporter.sh") update
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/node-exporter/install.sh") update
 ```
 `Uninstall:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/install/node-exporter.sh") uninstall
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/node-exporter/install.sh") uninstall
 ```
