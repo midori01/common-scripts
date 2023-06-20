@@ -27,5 +27,5 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```
 `Enable IPv6 Forward:`
 ```bash
-echo net.ipv6.conf.all.forwarding=1 >> /etc/sysctl.conf && sysctl -p
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/network.sh") ipv6fwd
 ```
