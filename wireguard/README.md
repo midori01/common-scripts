@@ -11,6 +11,10 @@ wg-quick down wg0 && wg-quick up wg0
 ```bash
 wg show wg0
 ```
+`View Surge Configuration:`
+```bash
+cat /etc/wireguard/wg_surge.conf
+```
 `Uninstall:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/wireguard/install.sh") uninstall
@@ -21,7 +25,7 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/wireguard/install.sh") peer
 ```
-`IPv6 Forward:`
+`Enable IPv6 Forward:`
 ```bash
 echo net.ipv6.conf.all.forwarding=1 >> /etc/sysctl.conf && sysctl -p
 ```
