@@ -48,6 +48,7 @@ i_publickey=$(cat i_private.key | wg pubkey)
 p_privatekey=$(wg genkey | tee p_private.key)
 p_publickey=$(cat p_private.key | wg pubkey)
 endpoint=$(curl -s ip.sb -4)
+section_name=$(cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w 8 | head -n 1)
 cat > /etc/wireguard/wg0.conf <<EOF
 [Interface]
 Address = 10.89.64.1/32, fd10::1/128
@@ -64,6 +65,18 @@ EOF
 rm -f i_private.key p_private.key
 wg-quick up wg0
 systemctl enable wg-quick@wg0
+cat > /etc/wireguard/wg_surge.conf <<EOF
+[Proxy]
+WG-Proxy = wireguard, section-name=${section_name}
+
+[WireGuard ${section_name}]
+private-key = ${p_privatekey}
+self-ip = 10.89.64.2
+self-ip-v6 = fd10::2
+dns-server = 1.1.1.1, 2606:4700:4700::1111
+mtu = 1280
+peer = (public-key = ${i_publickey}, allowed-ips = "0.0.0.0/0, ::0/0", endpoint = ${endpoint}:${wg_port}, keepalive = 25)
+EOF
 echo "WireGuard 安装成功"
 echo "客户端配置: "
 echo "Self IPv4: 10.89.64.2"
