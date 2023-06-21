@@ -5,5 +5,5 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```
 `Remove:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/ddns/ddns.sh") rm
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/ddns/ddns.sh") remove
 ```
