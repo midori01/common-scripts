@@ -14,9 +14,10 @@ read -r -p "Zone Name: " cf_zone
 read -r -p "Record Name: " cf_name
 wget -O /root/ddns.sh https://raw.githubusercontent.com/midori01/common-scripts/main/ddns/ddns.sh
 chmod +x /root/ddns.sh
+rm -f /root/.cf-*
 cron_entry="*/5 * * * * /bin/bash /root/ddns.sh -k ${cf_key} -u ${cf_user} -z ${cf_zone} -h ${cf_name}"
 (crontab -l ; echo "$cron_entry") | crontab -
-bash /root/ddns.sh -k ${cf_key} -u ${cf_user} -z ${cf_zone} -h ${cf_name}
+bash /root/ddns.sh -k ${cf_key} -u ${cf_user} -z ${cf_zone} -h ${cf_name} -f true
 }
 
 if [[ $1 == "set" ]]; then
