@@ -7,11 +7,7 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/caddy/install.sh") uninstall
 ```
-`Caddyfile Path:`
-```bash
-/etc/caddy/Caddyfile
-```
-`Reverse Proxy:`
+`Set Reverse Proxy:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/caddy/install.sh") reverse
 ```
