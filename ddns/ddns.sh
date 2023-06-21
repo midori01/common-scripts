@@ -65,6 +65,3 @@ else
     log "$message"
     echo "$message"
 fi
-
-cron_entry="*/5 * * * * /bin/bash /root/ddns.sh"
-(crontab -l ; echo "$cron_entry") | crontab -
