@@ -17,7 +17,8 @@ reverse() {
   echo "https://${domain} {
   encode gzip
   reverse_proxy localhost:${reverse_port}
-}" >> /etc/caddy/Caddyfile
+}
+" >> /etc/caddy/Caddyfile
   systemctl restart caddy.service
   echo "反向代理设置成功 https://${domain}"
 }
