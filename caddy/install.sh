@@ -19,7 +19,7 @@ reverse() {
          reverse_proxy localhost:${reverse_port}
 }" >> /etc/caddy/Caddyfile
   systemctl restart caddy.service
-  echo "反向代理添加成功"
+  echo "反向代理设置成功 https://${domain}"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
