@@ -119,6 +119,15 @@ EOF
 systemctl daemon-reload
 echo "ulimit 已调整"
 }
+dns() {
+  systemctl disable --now systemd-resolved.service
+  systemctl disable --now resolvconf.service
+  systemctl disable --now openresolv.service
+  systemctl disable --now rdnssd.service
+  rm -rf /etc/resolv*
+  echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1" > /etc/resolv.conf
+  echo "DNS 已更换"
+}
 if [[ $1 == "bbr" ]]; then
   bbr
   exit 0
@@ -141,5 +150,9 @@ if [[ $1 == "network" ]]; then
 fi
 if [[ $1 == "ulimit" ]]; then
   ulimit
+  exit 0
+fi
+if [[ $1 == "dns" ]]; then
+  dns
   exit 0
 fi
