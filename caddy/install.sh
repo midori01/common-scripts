@@ -9,7 +9,7 @@ uninstall() {
   apt autoremove -y
   rm -f /usr/share/keyrings/caddy-stable-archive-keyring.gpg
   rm -f /etc/apt/sources.list.d/caddy-stable.list
-  echo “Caddy 已卸载”
+  echo "Caddy 已卸载"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
