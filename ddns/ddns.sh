@@ -1,9 +1,9 @@
 #!/bin/bash
 
-read -p "Cloudflare Email: " auth_email
-read -p "Cloudflare API Key: " auth_key
-read -p "Zone name: " zone_name
-read -p "Record name: " record_name
+auth_email=""
+auth_key=""
+zone_name=""
+record_name=""
 
 ip_v4=$(curl -s ip.sb -4)
 ip_v6=$(curl -s ip.sb -6)
