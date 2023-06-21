@@ -15,8 +15,8 @@ reverse() {
   read -r -p "请输入网站域名: " domain
   read -r -p "请输入反代端口: " reverse_port
   echo "https://${domain} {
-         encode gzip
-         reverse_proxy localhost:${reverse_port}
+  encode gzip
+  reverse_proxy localhost:${reverse_port}
 }" >> /etc/caddy/Caddyfile
   systemctl restart caddy.service
   echo "反向代理设置成功 https://${domain}"
