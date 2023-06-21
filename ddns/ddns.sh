@@ -20,7 +20,7 @@ cron_entry="*/5 * * * * /bin/bash /root/ddns.sh -k ${cf_key} -u ${cf_user} -z ${
 bash /root/ddns.sh -k ${cf_key} -u ${cf_user} -z ${cf_zone} -h ${cf_name} -f true
 }
 
-rm() {
+remove() {
 if [[ $EUID -ne 0 ]]; then
   echo "请切换到 root 用户后再运行脚本"
   exit 1
@@ -36,8 +36,8 @@ if [[ $1 == "set" ]]; then
   exit 0
 fi
 
-if [[ $1 == "rm" ]]; then
-  rm
+if [[ $1 == "remove" ]]; then
+  remove
   exit 0
 fi
 
