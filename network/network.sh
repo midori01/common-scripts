@@ -128,6 +128,9 @@ dns() {
   echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1" > /etc/resolv.conf
   echo "DNS 已更换"
 }
+nat64() {
+  echo -e "nameserver 2001:67c:2b0::4\nnameserver 2001:67c:2b0::6" > /etc/resolv.conf
+}
 besttrace() {
   if ! command -v wget &> /dev/null; then
     echo "wget 未安装，请安装后再运行脚本"
@@ -188,6 +191,10 @@ if [[ $1 == "ulimit" ]]; then
 fi
 if [[ $1 == "dns" ]]; then
   dns
+  exit 0
+fi
+if [[ $1 == "nat64" ]]; then
+  nat64
   exit 0
 fi
 if [[ $1 == "besttrace" ]]; then
