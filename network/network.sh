@@ -158,6 +158,10 @@ tcping() {
   pip3 install tcping
   echo "tcping 已安装"
 }
+speedtest() {
+  curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
+  apt install -y speedtest
+}
 if [[ $1 == "bbr" ]]; then
   bbr
   exit 0
@@ -192,5 +196,9 @@ if [[ $1 == "besttrace" ]]; then
 fi
 if [[ $1 == "tcping" ]]; then
   tcping
+  exit 0
+fi
+if [[ $1 == "speedtest" ]]; then
+  speedtest
   exit 0
 fi
