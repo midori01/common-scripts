@@ -14,6 +14,7 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
   docker stop keeporaclealive
+  docker rmi alpine
   crontab -l | grep -v "keeporaclealive" | crontab -
   echo "Keep Oracle Alive 任务已清除"
 }
