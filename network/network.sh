@@ -128,6 +128,30 @@ dns() {
   echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1" > /etc/resolv.conf
   echo "DNS 已更换"
 }
+besttrace() {
+  if ! command -v wget &> /dev/null; then
+    echo "wget 未安装，请安装后再运行脚本"
+    exit 1
+  fi
+  if ! command -v unzip &> /dev/null; then
+    echo "unzip 未安装，请安装后再运行脚本"
+    exit 1
+  fi
+  wget https://cdn.ipip.net/17mon/besttrace4linux.zip
+  unzip besttrace4linux.zip -d best
+  chmod +x best/besttrace*
+  arch=$(uname -m)
+  if [[ "$arch" == "x86_64" ]]; then
+    mv best/besttrace /usr/bin/besttrace
+  elif [[ "$arch" == "aarch64" ]]; then
+    mv best/besttracearm /usr/bin/besttrace
+  else
+    echo "$arch 架构不支持"
+    exit 1
+  fi
+  rm -r best besttrace4linux.zip
+  echo "BestTrace 已安装"
+}
 tcping() {
   apt update
   apt install -y python3 python3-pip
@@ -160,6 +184,10 @@ if [[ $1 == "ulimit" ]]; then
 fi
 if [[ $1 == "dns" ]]; then
   dns
+  exit 0
+fi
+if [[ $1 == "besttrace" ]]; then
+  besttrace
   exit 0
 fi
 if [[ $1 == "tcping" ]]; then
