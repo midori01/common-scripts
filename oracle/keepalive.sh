@@ -9,10 +9,6 @@ if ! command -v docker &> /dev/null; then
   exit 1
 fi
 remove() {
-if [[ $EUID -ne 0 ]]; then
-  echo "请切换到 root 用户后再运行脚本"
-  exit 1
-fi
   docker stop keeporaclealive
   docker rmi alpine
   crontab -l | grep -v "keeporaclealive" | crontab -
