@@ -59,7 +59,7 @@ EOF
   chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/socks5.service <<EOF
 [Unit]
-Description=SOCKS5 Proxy Service
+Description=socks5 proxy service
 After=network.target
 
 [Service]
@@ -70,7 +70,7 @@ LimitNOFILE=32768
 ExecStart=/usr/local/bin/gost -L "socks5+tls://${socks5_username}:${socks5_password}@:${socks5_port}?udp=true&bind=true&cert=${cer_path}&key=${key_path}"
 StandardOutput=null
 StandardError=null
-SyslogIdentifier=socks5-server
+SyslogIdentifier=socks5
 
 [Install]
 WantedBy=multi-user.target
@@ -119,7 +119,7 @@ mv gost-linux-${type}-2.11.5 /usr/local/bin/gost
 chmod +x /usr/local/bin/gost
 cat > /etc/systemd/system/socks5.service <<EOF
 [Unit]
-Description=SOCKS5 Proxy Service
+Description=socks5 proxy service
 After=network.target
 
 [Service]
@@ -130,7 +130,7 @@ LimitNOFILE=32768
 ExecStart=/usr/local/bin/gost -L "socks5://${socks5_username}:${socks5_password}@:${socks5_port}?udp=true&bind=true"
 StandardOutput=null
 StandardError=null
-SyslogIdentifier=socks5-server
+SyslogIdentifier=socks5
 
 [Install]
 WantedBy=multi-user.target
