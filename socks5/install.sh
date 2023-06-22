@@ -25,7 +25,7 @@ uninstall() {
   systemctl disable socks5.service
   rm -f /etc/systemd/system/socks5.service
   rm -f /usr/local/bin/gost
-  echo "SOCKS5 已卸载"
+  echo "已卸载"
 }
 tls() {
   read -r -p "请输入 SOCKS5-TLS 监听端口 (留空默认 1080): " socks5_port
