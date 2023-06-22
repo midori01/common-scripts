@@ -27,6 +27,10 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/network.sh") dns
 ```
+`NAT64/DNS64:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/network.sh") nat64
+```
 `Install BestTrace:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/network/network.sh") besttrace
