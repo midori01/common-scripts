@@ -1,9 +1,9 @@
 # Oralce Common
-`Remove Firewall:`
+`Remove Firewall (Ubuntu):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/firewall.sh")
 ```
-`Remove Oracle Cloud Agent:`
+`Remove System Monitor:`
 ```bash
 snap remove oracle-cloud-agent
 ```
