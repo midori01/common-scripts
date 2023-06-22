@@ -67,7 +67,7 @@ Type=simple
 User=root
 Group=nogroup
 LimitNOFILE=32768
-ExecStart=/usr/local/bin/gost -L "socks5+tls://${socks5_username}:${socks5_password}@:${socks5_port}?udp=true&bind=true&${cer_path}&key=${key_path}"
+ExecStart=/usr/local/bin/gost -L "socks5+tls://${socks5_username}:${socks5_password}@:${socks5_port}?udp=true&bind=true&cert=${cer_path}&key=${key_path}"
 StandardOutput=null
 StandardError=null
 SyslogIdentifier=snell-server
