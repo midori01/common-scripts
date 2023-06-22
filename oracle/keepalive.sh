@@ -14,7 +14,7 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
   docker stop keeporaclealive
-  crontab -l | grep -v "ddns.sh" | crontab -
+  crontab -l | grep -v "keeporaclealive" | crontab -
   echo "Keep Oracle Alive 任务已清除"
 }
 if [[ $1 == "remove" ]]; then
