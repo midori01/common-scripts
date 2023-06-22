@@ -21,7 +21,9 @@ else
   exit 1
 fi
 uninstall() {
-  killall gost
+  systemctl stop socks5.service
+  systemctl disable socks5.service
+  rm -f /etc/systemd/system/socks5.service
   rm -f /usr/local/bin/gost
   echo "SOCKS5 已卸载"
 }
@@ -54,8 +56,27 @@ wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/downloa
 gzip -d gost-linux-${type}-2.11.5.gz
 mv gost-linux-${type}-2.11.5 /usr/local/bin/gost
 chmod +x /usr/local/bin/gost
-killall gost
-nohup /usr/local/bin/gost -L "socks5://${socks5_username}:${socks5_password}@:${socks5_port}?udp=true&bind=true" > /dev/null 2>&1 &
+cat > /etc/systemd/system/socks5.service <<EOF
+[Unit]
+Description=Snell Proxy Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=nogroup
+LimitNOFILE=32768
+ExecStart=/usr/local/bin/gost -L "socks5://${socks5_username}:${socks5_password}@:${socks5_port}?udp=true&bind=true"
+StandardOutput=null
+StandardError=null
+SyslogIdentifier=snell-server
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl start socks5.service
+systemctl enable socks5.service
 echo "SOCKS5 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${socks5_port}"
