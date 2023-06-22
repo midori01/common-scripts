@@ -15,11 +15,11 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 curl http://169.254.169.254/opc/v1/instance/definedTags
 ```
-`Keep Alive (CPU):`
+`Keep Oracle Alive (CPU):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/keepalive.sh")
 ```
-`Remove Keep Alive:`
+`Remove Keep Oracle Alive:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/keepalive.sh") remove
 ```
