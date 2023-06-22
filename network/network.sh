@@ -128,6 +128,12 @@ dns() {
   echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1" > /etc/resolv.conf
   echo "DNS 已更换"
 }
+tcping() {
+  apt update
+  apt install -y python3 python3-pip
+  pip3 install tcping
+  echo "tcping 已安装"
+}
 if [[ $1 == "bbr" ]]; then
   bbr
   exit 0
@@ -154,5 +160,9 @@ if [[ $1 == "ulimit" ]]; then
 fi
 if [[ $1 == "dns" ]]; then
   dns
+  exit 0
+fi
+if [[ $1 == "tcping" ]]; then
+  tcping
   exit 0
 fi
