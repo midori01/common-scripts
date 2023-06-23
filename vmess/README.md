@@ -15,6 +15,14 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/vmess/install.sh") wss
 ```
+`gRPC:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/vmess/install.sh") grpc
+```
+`gRPC + TLS:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/vmess/install.sh") grpc-tls
+```
 
 # Update
 ```bash
