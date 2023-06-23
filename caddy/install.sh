@@ -14,13 +14,21 @@ uninstall() {
 reverse() {
   read -r -p "请输入网站域名: " domain
   read -r -p "请输入反代端口: " reverse_port
-  echo "https://${domain} {
+  read -r -p "是否开启HTTPS？留空默认开启 (y/n) " enable_https
+  if [[ $enable_https == [Yy] ]]; then
+    protocol="https"
+  elif [[ $enable_https == [Nn] ]]; then
+    protocol="http"
+  else
+    protocol="https"
+  fi  
+  echo "${protocol}://${domain} {
   encode gzip
   reverse_proxy localhost:${reverse_port}
 }
 " >> /etc/caddy/Caddyfile
   systemctl restart caddy.service
-  echo "反向代理设置成功 https://${domain}"
+  echo "反向代理设置成功 ${protocol}://${domain}"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
