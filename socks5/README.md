@@ -8,7 +8,7 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/socks5/install.sh") tls
 ```
 
-# Uninstall
+# Update
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/socks5/install.sh") update
 ```
