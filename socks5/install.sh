@@ -20,12 +20,22 @@ else
   echo "$(uname -m) 架构不支持"
   exit 1
 fi
+latest_version=$(curl -m 10 -sL "https://api.github.com/repos/ginuerzh/gost/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
 uninstall() {
   systemctl stop socks5.service
   systemctl disable socks5.service
   rm -f /etc/systemd/system/socks5.service
   rm -f /usr/local/bin/gost
-  echo "已卸载"
+  echo "SOCKS5 已卸载"
+}
+update() {
+  rm -f /usr/local/bin/gost
+  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
+  gzip -d gost-linux-${type}-${latest_version}.gz
+  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
+  chmod +x /usr/local/bin/gost
+  systemctl restart socks5.service
+  echo "SOCKS5 已更新"
 }
 tls() {
   read -r -p "请输入 SOCKS5-TLS 监听端口 (留空默认 1080): " socks5_port
@@ -53,9 +63,9 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v2.11.5/gost-linux-${type}-2.11.5.gz
-  gzip -d gost-linux-${type}-2.11.5.gz
-  mv gost-linux-${type}-2.11.5 /usr/local/bin/gost
+  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
+  gzip -d gost-linux-${type}-${latest_version}.gz
+  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
   chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/socks5.service <<EOF
 [Unit]
@@ -88,6 +98,10 @@ if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
 fi
+if [[ $1 == "update" ]]; then
+  update
+  exit 0
+fi
 if [[ $1 == "tls" ]]; then
   tls
   exit 0
@@ -113,9 +127,9 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v2.11.5/gost-linux-${type}-2.11.5.gz
-gzip -d gost-linux-${type}-2.11.5.gz
-mv gost-linux-${type}-2.11.5 /usr/local/bin/gost
+wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
+gzip -d gost-linux-${type}-${latest_version}.gz
+mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
 chmod +x /usr/local/bin/gost
 cat > /etc/systemd/system/socks5.service <<EOF
 [Unit]
