@@ -615,7 +615,7 @@ echo "端口: ${vless_port}"
 echo "UUID: ${vless_uuid}"
 echo "传输: TCP"
 echo "Flow: xtls-rprx-vision"
-echo "Public Key: ${pubkickey}"
+echo "Public Key: ${publickey}"
 echo "Short ID: ${shortid}"
 echo "SNI: ${sni_domain}"
 }
