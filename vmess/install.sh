@@ -466,8 +466,8 @@ cat <<EOF
 端口：${vmess_port}
 UUID：${vmess_uuid}
 传输：QUIC
-加密：none
-伪装：${obfs}
+QUIC 加密：none
+QUIC 伪装：${obfs}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -533,8 +533,8 @@ echo "客户端连接信息: "
 echo "端口: ${vmess_port}"
 echo "UUID: ${vmess_uuid}"
 echo "传输: QUIC"
-echo "加密: none"
-echo "伪装: ${obfs}"
+echo "QUIC 加密: none"
+echo "QUIC 伪装: ${obfs}"
 echo "TLS: Enabled"
 }
 if [[ $1 == "uninstall" ]]; then
