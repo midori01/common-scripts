@@ -1,4 +1,4 @@
-# VLESS REALITY VISION
+# VLESS REALITY
 
 `Install:`
 ```bash
