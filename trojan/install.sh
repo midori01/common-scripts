@@ -24,7 +24,7 @@ read -r -p "请输入私钥文件路径: " key_path
 cat <<EOF
 请确认以下配置信息：
 端口：${trojan_port}
-密码：${trojan_uuid}
+密码：${trojan_password}
 传输：TCP
 证书路径：${cer_path}
 私钥路径：${key_path}
