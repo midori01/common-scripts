@@ -108,7 +108,7 @@ if [[ $1 == "tls" ]]; then
 fi
 read -r -p "请输入 HTTP 监听端口 (留空默认 1080): " http_port
 http_port=${http_port:-1080}
-read -r -p "请输入 SOCKS5 用户名 (留空随机生成): " http_username
+read -r -p "请输入 HTTP 用户名 (留空随机生成): " http_username
 if [[ -z "$http_username" ]]; then
   http_username=$(openssl rand -hex 8)
 fi
