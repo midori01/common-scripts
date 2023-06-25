@@ -450,6 +450,92 @@ echo "传输: gRPC"
 echo "服务名称: ${service_name}"
 echo "TLS: Enabled"
 }
+quic() {
+read -r -p "请输入 VMess 端口 (留空默认 1024): " vmess_port
+vmess_port=${vmess_port:-1024}
+read -r -p "请输入 VMess UUID (留空随机生成): " vmess_uuid
+if [[ -z "$vmess_uuid" ]]; then
+  vmess_uuid=$(uuidgen)
+fi
+read -r -p "请输入 QUIC 伪装类型 (可选值：none、srtp、utp、wechat-video、dtls、wireguard，留空默认 none): " obfs
+obfs=${obfs:-none}
+read -r -p "请输入证书文件路径: " cer_path
+read -r -p "请输入私钥文件路径: " key_path
+cat <<EOF
+请确认以下配置信息：
+端口：${vmess_port}
+UUID：${vmess_uuid}
+传输：QUIC
+加密：none
+伪装：${obfs}
+证书路径：${cer_path}
+私钥路径：${key_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --beta -u root
+cat > /usr/local/etc/xray/config.json <<EOF
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "routing": {
+        "domainStrategy": "AsIs"
+    },
+    "inbounds": [
+        {
+            "listen": "0.0.0.0",
+            "port": ${vmess_port},
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${vmess_uuid}"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "quic",
+                "security": "tls",
+                "quicSettings": {
+                    "security": "none",
+                    "header": {
+                        "type": "${obfs}"
+                    }
+                },
+                "tlsSettings": {
+                    "certificates": [
+                        {
+                            "certificateFile": "${cer_path}",
+                            "keyFile": "${key_path}"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "UseIPv4"
+            }
+        }
+    ]
+}
+EOF
+systemctl restart xray.service
+echo "VMess 安装成功"
+echo "客户端连接信息: "
+echo "端口: ${vmess_port}"
+echo "UUID: ${vmess_uuid}"
+echo "传输: QUIC"
+echo "加密: none"
+echo "伪装: ${obfs}"
+}
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
@@ -480,5 +566,9 @@ if [[ $1 == "grpc" ]]; then
 fi
 if [[ $1 == "grpc-tls" ]]; then
   grpc-tls
+  exit 0
+fi
+if [[ $1 == "quic" ]]; then
+  quic
   exit 0
 fi
