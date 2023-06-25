@@ -3,7 +3,7 @@
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/gost/install.sh") socks5
 ```
-`SOCKS5 over TLS (SOCKS5-TLS)`
+`SOCKS5 over TLS (SOCKS5-TLS):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/gost/install.sh") socks5-tls
 ```
