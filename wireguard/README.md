@@ -31,5 +31,5 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```
 `Get WARP Reserved:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/wireguard/warp_reserved.sh")
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/wireguard/install.sh") reserved
 ```
