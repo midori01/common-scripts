@@ -535,6 +535,7 @@ echo "UUID: ${vmess_uuid}"
 echo "传输: QUIC"
 echo "加密: none"
 echo "伪装: ${obfs}"
+echo "TLS: Enabled"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
