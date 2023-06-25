@@ -65,6 +65,11 @@ reserved() {
   decoded_client_id=$(echo "$client_id" | base64 -d | xxd -p | fold -w2 | while read HEX; do printf '%d ' "0x${HEX}"; done | awk '{print "["$1", "$2", "$3"]"}')
   echo "WARP Reserved: ${decoded_client_id}"
 }
+clientid() {
+  read -r -p "请输入 WARP client_id: " client_id
+  decoded_client_id=$(echo "$client_id" | base64 -d | xxd -p | fold -w2 | while read HEX; do printf '%d ' "0x${HEX}"; done | awk '{print "["$1", "$2", "$3"]"}')
+  echo "WARP Reserved: ${decoded_client_id}"
+}
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
@@ -75,6 +80,10 @@ if [[ $1 == "peer" ]]; then
 fi
 if [[ $1 == "reserved" ]]; then
   reserved
+  exit 0
+fi
+if [[ $1 == "clientid" ]]; then
+  clientid
   exit 0
 fi
 read -r -p "请输入 WireGuard 端口 (留空默认 8964): " wg_port
