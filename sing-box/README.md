@@ -1,7 +1,8 @@
 # Install
-`NaïveProxy:`
+Good Protocols
+`Shadowsocks 2022:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") naive
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") ss
 ```
 `Hysteria:`
 ```bash
@@ -11,6 +12,11 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") trojan
 ```
+Bad Protocols
+`NaïveProxy:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") naive
+```
 `VMess:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vmess
@@ -18,10 +24,6 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 `VLESS Reality:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vless
-```
-`Shadowsocks 2022:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") ss
 ```
 
 # Update
