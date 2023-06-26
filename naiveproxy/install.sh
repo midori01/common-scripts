@@ -44,8 +44,8 @@ if [[ -z "$naive_user" ]]; then
   naive_user=$(openssl rand -hex 8)
 fi
 read -r -p "请输入节点密码 (留空随机生成): " naive_pass
-if [[ -z "$naive_password" ]]; then
-  naive_password=$(openssl rand -base64 32)
+if [[ -z "$naive_pass" ]]; then
+  naive_pass=$(openssl rand -base64 32)
 fi
 cat <<EOF
 请确认以下配置信息：
