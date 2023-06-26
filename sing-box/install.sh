@@ -182,7 +182,7 @@ cat > /etc/sing-box.json <<EOF
     },
     "inbounds": [
         {
-            "type": "naive",
+            "type": "hysteria",
             "listen": "::",
             "listen_port": ${hy_port},
             "up_mbps": 100,
