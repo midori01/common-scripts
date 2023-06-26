@@ -15,7 +15,7 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/gost/install.sh") https
 ```
-`HTTP2-TLS:`
+`HTTP2:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/gost/install.sh") http2
 ```
