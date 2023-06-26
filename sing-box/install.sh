@@ -17,7 +17,7 @@ else
   exit 1
 fi
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
-package_name=sing-box-${latest_version}-linux-{type}
+package_name=sing-box-${latest_version}-linux-${type}
 download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
 uninstall() {
   systemctl stop sing-box.service
