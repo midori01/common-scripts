@@ -91,7 +91,7 @@ EOF
   echo "用户: ${gost_username}"
   echo "密码: ${gost_password}"
 }
-socks5-tls() {
+socks5tls() {
   read -r -p "请输入 SOCKS5-TLS 监听端口 (留空默认 1080): " gost_port
 gost_port=${gost_port:-1080}
   read -r -p "请输入 SOCKS5-TLS 用户名 (留空随机生成): " gost_username
@@ -269,11 +269,11 @@ if [[ $1 == "update" ]]; then
   update
   exit 0
 fi
-if [[ $1 == "socks5-tls" ]]; then
+if [[ $1 == "socks5" ]]; then
   socks5
   exit 0
 fi
-if [[ $1 == "socks5" ]]; then
+if [[ $1 == "socks5tls" ]]; then
   socks5
   exit 0
 fi
