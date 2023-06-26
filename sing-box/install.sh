@@ -131,6 +131,7 @@ echo "端口: ${naive_port}"
 echo "用户名: ${naive_user}"
 echo "密码: ${naive_pass}"
 echo "SNI: ${naive_domain}"
+echo "Padding: Enabled"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
