@@ -603,12 +603,13 @@ EOF
 systemctl daemon-reload
 systemctl start sing-box.service
 systemctl enable sing-box.service
-echo "SS x ShadowTLS 安装成功"
+echo "Shadowsocks x ShadowTLS 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${ss_port}"
 echo "密码: ${ss_pass}"
 echo "加密: aes-128-gcm"
 echo "SNI: ${ss_sni}"
+echo "版本: v3"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
