@@ -538,9 +538,9 @@ echo "QUIC 伪装: ${obfs}"
 echo "TLS: Enabled"
 }
 vless() {
-read -r -p "请输入端口 (留空默认 1024): " vless_port
+read -r -p "请输入 VLESS 端口 (留空默认 1024): " vless_port
 vless_port=${vless_port:-1024}
-read -r -p "请输入 UUID (留空随机生成): " vless_uuid
+read -r -p "请输入 VLESS 密码 (留空随机生成): " vless_uuid
 if [[ -z "$vless_uuid" ]]; then
   vless_uuid=$(uuidgen)
 fi
@@ -620,9 +620,9 @@ echo "Short ID: ${shortid}"
 echo "SNI: ${sni_domain}"
 }
 trojan-tcp() {
-read -r -p "请输入端口 (留空默认 1024): " trojan_port
+read -r -p "请输入 Trojan 端口 (留空默认 1024): " trojan_port
 trojan_port=${trojan_port:-1024}
-read -r -p "请输入密码 (留空随机生成): " trojan_password
+read -r -p "请输入 Trojan 密码 (留空随机生成): " trojan_password
 if [[ -z "$trojan_password" ]]; then
   trojan_password=$(openssl rand -base64 16)
 fi
@@ -694,9 +694,9 @@ echo "密码: ${trojan_password}"
 echo "传输: TCP"
 }
 trojan-ws() {
-read -r -p "请输入端口 (留空默认 1024): " trojan_port
+read -r -p "请输入 Trojan 端口 (留空默认 1024): " trojan_port
 trojan_port=${trojan_port:-1024}
-read -r -p "请输入密码 (留空随机生成): " trojan_password
+read -r -p "请输入 Trojan 密码 (留空随机生成): " trojan_password
 if [[ -z "$trojan_password" ]]; then
   trojan_password=$(openssl rand -base64 16)
 fi
