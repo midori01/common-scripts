@@ -268,7 +268,7 @@ http2() {
   if [[ -z "$gost_username" ]]; then
     gost_username=$(openssl rand -hex 8)
   fi
-  read -r -p "请输入 HTTPS-TLS 密码 (留空随机生成): " gost_password
+  read -r -p "请输入 HTTP2-TLS 密码 (留空随机生成): " gost_password
   if [[ -z "$gost_password" ]]; then
     gost_password=$(openssl rand -hex 16)
   fi
@@ -276,7 +276,7 @@ http2() {
   read -r -p "请输入私钥文件路径: " key_path
   cat <<EOF
 请确认以下配置信息：
-协议：HTTPS
+协议：HTTP2-TLS
 端口：${gost_port}
 用户：${gost_username}
 密码：${gost_password}
@@ -302,7 +302,7 @@ Type=simple
 User=root
 Group=nogroup
 LimitNOFILE=32768
-ExecStart=/usr/local/bin/gost -L "https://${gost_username}:${gost_password}@:${gost_port}?cert=${cer_path}&key=${key_path}"
+ExecStart=/usr/local/bin/gost -L "http2://${gost_username}:${gost_password}@:${gost_port}?cert=${cer_path}&key=${key_path}"
 StandardOutput=null
 StandardError=null
 SyslogIdentifier=gost
