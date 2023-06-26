@@ -27,7 +27,7 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") quic
 ```
-`VLESS 'TCP + REALITY':`
+`VLESS 'TCP + REALITY + XTLS-RPRX-VISION':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") vless
 ```
