@@ -405,7 +405,8 @@ vless_sid=$(/usr/local/bin/sing-box generate rand --hex 8)
 output=$(/usr/local/bin/sing-box generate reality-keypair)
 vless_prikey=$(echo "$output" | awk '/PrivateKey:/ {print $2}')
 vless_pubkey=$(echo "$output" | awk '/PublicKey:/ {print $2}')
-cat > /etc/sing-box.json <<EOF{
+cat > /etc/sing-box.json <<EOF
+{
     "log": {
         "level": "info",
         "timestamp": true
