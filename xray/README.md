@@ -1,41 +1,41 @@
 # Install
-`VMess TCP:`
+`VMess 'TCP':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") tcp
 ```
-`VMess WebSocket:`
+`VMess 'WebSocket':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") ws
 ```
-`VMess gRPC:`
+`VMess 'gRPC':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") grpc
 ```
-`VMess TCP + TLS:`
+`VMess 'TCP + TLS':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") tls
 ```
-`VMess WebSocket + TLS:`
+`VMess 'WebSocket + TLS':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") wss
 ```
-`VMess gRPC + TLS:`
+`VMess 'gRPC + TLS':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") grpc-tls
 ```
-`VMess QUIC + TLS:`
+`VMess 'QUIC + TLS':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") quic
 ```
-`VLESS TCP + REALITY:`
+`VLESS 'TCP + REALITY':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") vless
 ```
-`Trojan TCP + TLS:`
+`Trojan 'TCP + TLS':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") trojan-tcp
 ```
-`Trojan WebSocket + TLS:`
+`Trojan 'WebSocket + TLS':`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/xray/install.sh") trojan-ws
 ```
