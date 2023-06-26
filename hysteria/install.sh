@@ -115,8 +115,8 @@ cat > /etc/hysteria.json <<EOF
     "config": ["${password}"]
   },
   "alpn": "h3",
-  "up": "500 Mbps",
-  "down": "500 Mbps",
+  "up": "100 Mbps",
+  "down": "100 Mbps",
   "recv_window_conn": 15728640,
   "recv_window_client": 67108864,
   "max_conn_client": 4096,
