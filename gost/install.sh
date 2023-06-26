@@ -269,11 +269,11 @@ if [[ $1 == "update" ]]; then
   update
   exit 0
 fi
-if [[ $1 == "socks5" ]]; then
+if [[ $1 == "socks5-tls" ]]; then
   socks5
   exit 0
 fi
-if [[ $1 == "socks5-tls" ]]; then
+if [[ $1 == "socks5" ]]; then
   socks5
   exit 0
 fi
