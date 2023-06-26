@@ -261,6 +261,64 @@ EOF
   echo "用户: ${gost_username}"
   echo "密码: ${gost_password}"
 }
+http2() {
+  read -r -p "请输入 HTTP2-TLS 监听端口 (留空默认 1080): " gost_port
+  gost_port=${gost_port:-1080}
+  read -r -p "请输入 HTTP2-TLS 用户名 (留空随机生成): " gost_username
+  if [[ -z "$gost_username" ]]; then
+    gost_username=$(openssl rand -hex 8)
+  fi
+  read -r -p "请输入 HTTPS-TLS 密码 (留空随机生成): " gost_password
+  if [[ -z "$gost_password" ]]; then
+    gost_password=$(openssl rand -hex 16)
+  fi
+  read -r -p "请输入证书文件路径: " cer_path
+  read -r -p "请输入私钥文件路径: " key_path
+  cat <<EOF
+请确认以下配置信息：
+协议：HTTPS
+端口：${gost_port}
+用户：${gost_username}
+密码：${gost_password}
+证书路径：${cer_path}
+私钥路径：${key_path}
+EOF
+  read -r -p "确认无误？(Y/N)" confirm
+  case "$confirm" in
+    [yY]) ;;
+    *) echo "已取消安装"; exit 0;;
+  esac
+  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
+  gzip -d gost-linux-${type}-${latest_version}.gz
+  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
+  chmod +x /usr/local/bin/gost
+  cat > /etc/systemd/system/gost.service <<EOF
+[Unit]
+Description=gost proxy service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=nogroup
+LimitNOFILE=32768
+ExecStart=/usr/local/bin/gost -L "https://${gost_username}:${gost_password}@:${gost_port}?cert=${cer_path}&key=${key_path}"
+StandardOutput=null
+StandardError=null
+SyslogIdentifier=gost
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  systemctl daemon-reload
+  systemctl start gost.service
+  systemctl enable gost.service
+  echo "HTTP2-TLS 安装成功"
+  echo "客户端连接信息: "
+  echo "端口: ${gost_port}"
+  echo "用户: ${gost_username}"
+  echo "密码: ${gost_password}"
+}
 ss() {
   read -r -p "请输入 Shadowsocks 监听端口 (留空默认 1080): " gost_port
   gost_port=${gost_port:-1080}
@@ -391,6 +449,10 @@ if [[ $1 == "http" ]]; then
 fi
 if [[ $1 == "https" ]]; then
   https
+  exit 0
+fi
+if [[ $1 == "http2" ]]; then
+  http2
   exit 0
 fi
 if [[ $1 == "ss" ]]; then
