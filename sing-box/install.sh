@@ -116,8 +116,7 @@ cat > /etc/sing-box.json <<EOF
     ],
     "outbounds": [
         {
-            "type": "direct",
-            "tag": "direct"
+            "type": "direct"
         }
     ]
 }
