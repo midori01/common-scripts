@@ -15,6 +15,10 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/gost/install.sh") https
 ```
+`Shadowsocks:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/gost/install.sh") ss
+```
 
 # Update
 ```bash
