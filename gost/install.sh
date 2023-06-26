@@ -322,13 +322,15 @@ ssobfs() {
   fi
   read -r -p "请输入 Shadowsocks 加密方式 (留空默认 rc4-md5): " gost_method
   gost_method=${gost_method:-rc4-md5}
+  read -r -p "请输入 Simple-Obfs 混淆方式 (可选值：http、tls，留空默认 http): " ss_obfs
+  ss_obfs=${ss_obfs:-http}
   cat <<EOF
 请确认以下配置信息：
 协议：Shadowsocks
 端口：${gost_port}
 密码：${gost_password}
 加密：${gost_method}
-混淆：HTTP
+混淆：${ss_obfs}
 EOF
   read -r -p "确认无误？(Y/N)" confirm
   case "$confirm" in
@@ -349,7 +351,7 @@ Type=simple
 User=root
 Group=nogroup
 LimitNOFILE=32768
-ExecStart=/bin/sh -c '/usr/local/bin/gost -L "ss+ohttp://${gost_method}:${gost_password}@:${gost_port}" & /usr/local/bin/gost -L "ssu://${gost_method}:${gost_password}@:${gost_port}"'
+ExecStart=/bin/sh -c '/usr/local/bin/gost -L "ss+o${ss_obfs}://${gost_method}:${gost_password}@:${gost_port}" & /usr/local/bin/gost -L "ssu://${gost_method}:${gost_password}@:${gost_port}"'
 StandardOutput=null
 StandardError=null
 SyslogIdentifier=gost
@@ -365,7 +367,7 @@ EOF
   echo "端口: ${gost_port}"
   echo "密码: ${gost_password}"
   echo "加密: ${gost_method}"
-  echo "混淆: HTTP"
+  echo "混淆: ${ss_obfs}"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
