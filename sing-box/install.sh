@@ -339,7 +339,7 @@ cat > /etc/sing-box.json <<EOF
             "listen": "::",
             "listen_port": ${ss_port},
             "method": "2022-blake3-aes-128-gcm",
-            "password": "${ss_pass}
+            "password": "${ss_pass}"
         }
     ],
     "outbounds": [
