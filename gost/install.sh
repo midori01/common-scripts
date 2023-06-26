@@ -262,13 +262,13 @@ EOF
   echo "密码: ${gost_password}"
 }
 http2() {
-  read -r -p "请输入 HTTP2-TLS 监听端口 (留空默认 1080): " gost_port
+  read -r -p "请输入 HTTP2 监听端口 (留空默认 1080): " gost_port
   gost_port=${gost_port:-1080}
-  read -r -p "请输入 HTTP2-TLS 用户名 (留空随机生成): " gost_username
+  read -r -p "请输入 HTTP2 用户名 (留空随机生成): " gost_username
   if [[ -z "$gost_username" ]]; then
     gost_username=$(openssl rand -hex 8)
   fi
-  read -r -p "请输入 HTTP2-TLS 密码 (留空随机生成): " gost_password
+  read -r -p "请输入 HTTP2 密码 (留空随机生成): " gost_password
   if [[ -z "$gost_password" ]]; then
     gost_password=$(openssl rand -hex 16)
   fi
@@ -276,7 +276,7 @@ http2() {
   read -r -p "请输入私钥文件路径: " key_path
   cat <<EOF
 请确认以下配置信息：
-协议：HTTP2-TLS
+协议：HTTP2
 端口：${gost_port}
 用户：${gost_username}
 密码：${gost_password}
@@ -313,7 +313,7 @@ EOF
   systemctl daemon-reload
   systemctl start gost.service
   systemctl enable gost.service
-  echo "HTTP2-TLS 安装成功"
+  echo "HTTP2 安装成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
   echo "用户: ${gost_username}"
