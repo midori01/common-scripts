@@ -3,6 +3,10 @@
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") naive
 ```
+`Hysteria:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") hy
+```
 
 # Update
 ```bash
