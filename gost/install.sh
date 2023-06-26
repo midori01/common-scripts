@@ -93,7 +93,7 @@ EOF
 }
 socks5-tls() {
   read -r -p "请输入 SOCKS5-TLS 监听端口 (留空默认 1080): " gost_port
-gost_port=${gost_port:-1080}
+  gost_port=${gost_port:-1080}
   read -r -p "请输入 SOCKS5-TLS 用户名 (留空随机生成): " gost_username
   if [[ -z "$gost_username" ]]; then
     gost_username=$(openssl rand -hex 8)
@@ -205,7 +205,7 @@ EOF
 }
 https() {
   read -r -p "请输入 HTTPS 监听端口 (留空默认 1080): " gost_port
-gost_port=${gost_port:-1080}
+  gost_port=${gost_port:-1080}
   read -r -p "请输入 HTTPS 用户名 (留空随机生成): " gost_username
   if [[ -z "$gost_username" ]]; then
     gost_username=$(openssl rand -hex 8)
@@ -261,6 +261,58 @@ EOF
   echo "用户: ${gost_username}"
   echo "密码: ${gost_password}"
 }
+ss() {
+  read -r -p "请输入 Shadowsocks 监听端口 (留空默认 1080): " gost_port
+  gost_port=${gost_port:-1080}
+  read -r -p "请输入 Shadowsocks 密码 (留空随机生成): " gost_password
+  if [[ -z "$gost_password" ]]; then
+    gost_password=$(openssl rand -hex 16)
+  fi
+  read -r -p "请输入 Shadowsocks 加密方式 (留空默认 rc4-md5): " gost_method
+  gost_method=${gost_method:-rc4-md5}
+  cat <<EOF
+请确认以下配置信息：
+协议：Shadowsocks
+端口：${gost_port}
+密码：${gost_password}
+加密：${gost_method}
+EOF
+  read -r -p "确认无误？(Y/N)" confirm
+  case "$confirm" in
+    [yY]) ;;
+    *) echo "已取消安装"; exit 0;;
+  esac
+  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
+  gzip -d gost-linux-${type}-${latest_version}.gz
+  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
+  chmod +x /usr/local/bin/gost
+  cat > /etc/systemd/system/gost.service <<EOF
+[Unit]
+Description=gost proxy service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=nogroup
+LimitNOFILE=32768
+ExecStart=/bin/sh -c '/usr/local/bin/gost -L "ss://${gost_method}:${gost_password}@:${gost_port}" & /usr/local/bin/gost -L "ssu://${gost_method}:${gost_password}@:${gost_port}"'
+StandardOutput=null
+StandardError=null
+SyslogIdentifier=gost
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  systemctl daemon-reload
+  systemctl start gost.service
+  systemctl enable gost.service
+  echo "Shadowsocks 安装成功"
+  echo "客户端连接信息: "
+  echo "端口: ${gost_port}"
+  echo "密码: ${gost_password}"
+  echo "加密: ${gost_method}"
+}
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
@@ -283,5 +335,9 @@ if [[ $1 == "http" ]]; then
 fi
 if [[ $1 == "https" ]]; then
   https
+  exit 0
+fi
+if [[ $1 == "ss" ]]; then
+  ss
   exit 0
 fi
