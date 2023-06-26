@@ -11,6 +11,10 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") trojan
 ```
+`VMess:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vmess
+```
 `Shadowsocks 2022:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") ss
@@ -24,3 +28,4 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 # Uninstall
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") uninstall
+```
