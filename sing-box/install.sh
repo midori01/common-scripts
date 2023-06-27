@@ -27,6 +27,14 @@ uninstall() {
   rm -f /usr/local/bin/sing-box
   echo "sing-box 已卸载"
 }
+uninstall-keep() {
+  systemctl stop sing-box.service
+  systemctl disable sing-box.service
+  rm -f /etc/systemd/system/sing-box.service
+  rm -f /usr/local/bin/sing-box
+  echo "sing-box 已卸载"
+  echo "配置文件保留 /etc/sing-box.json"
+}
 update() {
   rm -f /usr/local/bin/sing-box
   wget -N --no-check-certificate ${download_url}
@@ -711,6 +719,10 @@ if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
 fi
+if [[ $1 == "uninstall-keep" ]]; then
+  uninstall-keep
+  exit 0
+fi
 if [[ $1 == "update" ]]; then
   update
   exit 0
@@ -751,3 +763,31 @@ if [[ $1 == "mix" ]]; then
   mix
   exit 0
 fi
+wget -N --no-check-certificate ${download_url}
+tar zxvf ${package_name}.tar.gz
+mv ${package_name}/sing-box /usr/local/bin/sing-box
+chmod +x /usr/local/bin/sing-box
+rm -r ${package_name}
+rm -f ${package_name}.tar.gz
+cat > /etc/systemd/system/sing-box.service <<EOF
+[Unit]
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/bin
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl start sing-box.service
+systemctl enable sing-box.service
+echo "sing-box 安装成功"
