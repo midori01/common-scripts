@@ -1,7 +1,11 @@
 # Install
-`Shadowsocks 2022:`
+`Shadowsocks AEAD:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") ss
+```
+`Shadowsocks AEAD-2022:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") ss2
 ```
 `Shadowsocks x ShadowTLS:`
 ```bash
