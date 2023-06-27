@@ -321,6 +321,96 @@ echo "客户端连接信息: "
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 }
+trojan-ws() {
+read -r -p "请输入证书路径: " cer_path
+read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
+trojan_port=${trojan_port:-8964}
+read -r -p "请输入密码 (留空随机生成): " trojan_pass
+if [[ -z "$trojan_pass" ]]; then
+  trojan_pass=$(openssl rand -hex 8)
+fi
+cat <<EOF
+请确认以下配置信息：
+端口：${trojan_port}
+密码：${trojan_pass}
+证书路径：${cer_path}
+私钥路径：${key_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+wget -N --no-check-certificate ${download_url}
+tar zxvf ${package_name}.tar.gz
+mv ${package_name}/sing-box /usr/local/bin/sing-box
+chmod +x /usr/local/bin/sing-box
+rm -r ${package_name}
+rm -f ${package_name}.tar.gz
+cat > /etc/systemd/system/sing-box.service <<EOF
+[Unit]
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/bin
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
+EOF
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "trojan",
+            "listen": "::",
+            "listen_port": ${trojan_port},
+            "users": [
+                {
+                    "password": "${trojan_pass}"
+                }
+            ],
+            "transport": {
+                "type": "ws",
+                "path": "",
+                "max_early_data": 2048,
+                "early_data_header_name": "Sec-WebSocket-Protocol"
+            },
+            "tls": {
+                "enabled": true,
+                "certificate_path": "${cer_path}",
+                "key_path": "${key_path}"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+systemctl daemon-reload
+systemctl start sing-box.service
+systemctl enable sing-box.service
+echo "Trojan 安装成功"
+echo "客户端连接信息: "
+echo "端口: ${trojan_port}"
+echo "密码: ${trojan_pass}"
+echo "WebSocket 路径: /"
+}
 vmess() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
 vmess_port=${vmess_port:-8964}
@@ -382,6 +472,75 @@ echo "VMess 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${vmess_port}"
 echo "UUID: ${vmess_pass}"
+}
+vmess-ws() {
+read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
+vmess_port=${vmess_port:-8964}
+wget -N --no-check-certificate ${download_url}
+tar zxvf ${package_name}.tar.gz
+mv ${package_name}/sing-box /usr/local/bin/sing-box
+chmod +x /usr/local/bin/sing-box
+rm -r ${package_name}
+rm -f ${package_name}.tar.gz
+cat > /etc/systemd/system/sing-box.service <<EOF
+[Unit]
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/bin
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
+EOF
+vmess_pass=$(/usr/local/bin/sing-box generate uuid)
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "vmess",
+            "listen": "::",
+            "listen_port": ${vmess_port},
+            "users": [
+                {
+                    "uuid": "${vmess_pass}",
+                    "alterId": 0
+                }
+            ],
+            "transport": {
+                "type": "ws",
+                "path": "",
+                "max_early_data": 2048,
+                "early_data_header_name": "Sec-WebSocket-Protocol"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+systemctl daemon-reload
+systemctl start sing-box.service
+systemctl enable sing-box.service
+echo "VMess 安装成功"
+echo "客户端连接信息: "
+echo "端口: ${vmess_port}"
+echo "UUID: ${vmess_pass}"
+echo "WebSocket 路径: /"
 }
 vless() {
 read -r -p "请输入节点端口 (留空默认 8964): " vless_port
@@ -743,8 +902,16 @@ if [[ $1 == "trojan" ]]; then
   trojan
   exit 0
 fi
+if [[ $1 == "trojan-ws" ]]; then
+  trojan-ws
+  exit 0
+fi
 if [[ $1 == "vmess" ]]; then
   vmess
+  exit 0
+fi
+if [[ $1 == "vmess-ws" ]]; then
+  vmess-ws
   exit 0
 fi
 if [[ $1 == "vless" ]]; then
