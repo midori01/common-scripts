@@ -83,7 +83,7 @@ SyslogIdentifier=gost
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl start gost.service
+  systemctl restart gost.service
   systemctl enable gost.service
   echo "SOCKS5 安装成功"
   echo "客户端连接信息: "
@@ -141,7 +141,7 @@ SyslogIdentifier=gost
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl start gost.service
+  systemctl restart gost.service
   systemctl enable gost.service
   echo "SOCKS5-TLS 安装成功"
   echo "客户端连接信息: "
@@ -195,7 +195,7 @@ SyslogIdentifier=gost
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl start gost.service
+  systemctl restart gost.service
   systemctl enable gost.service
   echo "HTTP 安裝成功"
   echo "客户端连接信息: "
@@ -253,7 +253,7 @@ SyslogIdentifier=gost
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl start gost.service
+  systemctl restart gost.service
   systemctl enable gost.service
   echo "HTTPS 安装成功"
   echo "客户端连接信息: "
@@ -311,7 +311,7 @@ SyslogIdentifier=gost
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl start gost.service
+  systemctl restart gost.service
   systemctl enable gost.service
   echo "HTTP2 安装成功"
   echo "客户端连接信息: "
@@ -363,7 +363,7 @@ SyslogIdentifier=gost
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl start gost.service
+  systemctl restart gost.service
   systemctl enable gost.service
   echo "Shadowsocks 安装成功"
   echo "客户端连接信息: "
@@ -418,7 +418,7 @@ SyslogIdentifier=gost
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl start gost.service
+  systemctl restart gost.service
   systemctl enable gost.service
   echo "Shadowsocks 安装成功"
   echo "客户端连接信息: "
