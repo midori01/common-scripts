@@ -38,6 +38,20 @@ update() {
   systemctl restart sing-box.service
   echo "sing-box 已更新"
 }
+update-beta() {
+  latest_version=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}' | head -n 1)
+  package_name=sing-box-${latest_version}-linux-${type}
+  download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
+  rm -f /usr/local/bin/sing-box
+  wget -N --no-check-certificate ${download_url}
+  tar zxvf ${package_name}.tar.gz
+  mv ${package_name}/sing-box /usr/local/bin/sing-box
+  chmod +x /usr/local/bin/sing-box
+  rm -r ${package_name}
+  rm -f ${package_name}.tar.gz
+  systemctl restart sing-box.service
+  echo "sing-box 已更新"
+}
 naive() {
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
@@ -699,6 +713,10 @@ if [[ $1 == "uninstall" ]]; then
 fi
 if [[ $1 == "update" ]]; then
   update
+  exit 0
+fi
+if [[ $1 == "update-beta" ]]; then
+  update-beta
   exit 0
 fi
 if [[ $1 == "naive" ]]; then
