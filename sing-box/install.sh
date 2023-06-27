@@ -736,7 +736,7 @@ vless_port=${vless_port:-8964}
 read -r -p "请输入握手 SNI (不懂请留空): " vless_sni
 vless_sni=${vless_sni:-www.iq.com}
 read -r -p "请输入 gRPC 服务名 (留空默认 nmsl): " service_name
-service_name=${service_name:-www.iq.com}
+service_name=${service_name:-nmsl}
 cat <<EOF
 请确认以下配置信息：
 端口：${vless_port}
