@@ -791,7 +791,7 @@ cat > /etc/sing-box.json <<EOF
             "users": [
                 {
                     "uuid": "${vless_pass}",
-                    "flow": "xtls-rprx-vision"
+                    "flow": ""
                 }
             ],
             "transport": {
@@ -827,11 +827,11 @@ systemctl start sing-box.service
 systemctl enable sing-box.service
 echo "VLESS 安装成功"
 echo "客户端连接信息: "
-echo "端口: ${vless_port}"
+echo "Port: ${vless_port}"
 echo "UUID: ${vless_pass}"
 echo "SNI: ${vless_sni}"
-echo "gRPC 服务名: ${service_name}"
-echo "XTLS Flow: xtls-rprx-vision"
+echo "gRPC Service Name: ${service_name}"
+echo "XTLS Flow: none"
 echo "Reality Public Key: ${vless_pubkey}"
 echo "Reality Short ID: ${vless_sid}"
 }
