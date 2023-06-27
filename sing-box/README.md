@@ -12,6 +12,15 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") mix
 ```
+## Bad Protocols
+`Hysteria:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") hy
+```
+`NaïveProxy:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") naive
+```
 `Trojan (TCP):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") trojan
@@ -23,15 +32,6 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 `Trojan (gRPC):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") trojan-grpc
-```
-## Bad Protocols
-`Hysteria:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") hy
-```
-`NaïveProxy:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") naive
 ```
 `VMess (TCP):`
 ```bash
