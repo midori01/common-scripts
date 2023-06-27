@@ -142,7 +142,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "NaïveProxy 安装成功"
 echo "客户端连接信息: "
@@ -230,7 +230,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Hysteria 安装成功"
 echo "客户端连接信息: "
@@ -314,7 +314,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
@@ -403,7 +403,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
@@ -494,7 +494,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
@@ -557,7 +557,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VMess 安装成功"
 echo "客户端连接信息: "
@@ -625,7 +625,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VMess 安装成功"
 echo "客户端连接信息: "
@@ -719,7 +719,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VLESS 安装成功"
 echo "客户端连接信息: "
@@ -823,7 +823,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VLESS 安装成功"
 echo "客户端连接信息: "
@@ -886,7 +886,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Shadowsocks 2022 安装成功"
 echo "客户端连接信息: "
@@ -978,7 +978,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Shadowsocks x ShadowTLS 安装成功"
 echo "客户端连接信息: "
@@ -1061,7 +1061,7 @@ cat > /etc/sing-box.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl start sing-box.service
+systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Mixed 安装成功"
 echo "客户端连接信息: "
