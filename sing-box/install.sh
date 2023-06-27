@@ -874,6 +874,65 @@ cat > /etc/sing-box.json <<EOF
             "type": "shadowsocks",
             "listen": "::",
             "listen_port": ${ss_port},
+            "method": "aes-128-gcm",
+            "password": "${ss_pass}"
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+systemctl daemon-reload
+systemctl restart sing-box.service
+systemctl enable sing-box.service
+echo "Shadowsocks 安装成功"
+echo "客户端连接信息: "
+echo "端口: ${ss_port}"
+echo "密码: ${ss_pass}"
+echo "加密: aes-128-gcm"
+}
+ss2() {
+read -r -p "请输入节点端口 (留空默认 8964): " ss_port
+ss_port=${ss_port:-8964}
+ss_pass=$(openssl rand -base64 16)
+wget -N --no-check-certificate ${download_url}
+tar zxvf ${package_name}.tar.gz
+mv ${package_name}/sing-box /usr/local/bin/sing-box
+chmod +x /usr/local/bin/sing-box
+rm -r ${package_name}
+rm -f ${package_name}.tar.gz
+cat > /etc/systemd/system/sing-box.service <<EOF
+[Unit]
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/bin
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
+EOF
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "shadowsocks",
+            "listen": "::",
+            "listen_port": ${ss_port},
             "method": "2022-blake3-aes-128-gcm",
             "password": "${ss_pass}"
         }
@@ -888,7 +947,7 @@ EOF
 systemctl daemon-reload
 systemctl restart sing-box.service
 systemctl enable sing-box.service
-echo "Shadowsocks 2022 安装成功"
+echo "Shadowsocks 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${ss_port}"
 echo "密码: ${ss_pass}"
@@ -1124,6 +1183,10 @@ if [[ $1 == "vless-grpc" ]]; then
 fi
 if [[ $1 == "ss" ]]; then
   ss
+  exit 0
+fi
+if [[ $1 == "ss2" ]]; then
+  ss2
   exit 0
 fi
 if [[ $1 == "stls" ]]; then
