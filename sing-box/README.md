@@ -12,9 +12,13 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") mix
 ```
-`Trojan:`
+`Trojan (TCP):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") trojan
+```
+`Trojan (WebSocket):`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") trojan-ws
 ```
 ## Bad Protocols
 `Hysteria:`
@@ -25,9 +29,13 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") naive
 ```
-`VMess:`
+`VMess (TCP):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vmess
+```
+`VMess (WebSocket):`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vmess-ws
 ```
 `VLESS Reality:`
 ```bash
