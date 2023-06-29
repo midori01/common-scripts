@@ -112,7 +112,7 @@ check_ver_comparison(){
 	fi
 }
 
-stable_Download() {
+Download() {
 	echo -e "${Info} 默认开始下载官方源 Shadowsocks Rust ……"
 	wget --no-check-certificate -N "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${new_ver}/shadowsocks-${new_ver}.${arch}-unknown-linux-gnu.tar.xz"
 	if [[ ! -e "shadowsocks-${new_ver}.${arch}-unknown-linux-gnu.tar.xz" ]]; then
@@ -135,10 +135,6 @@ stable_Download() {
         echo -e "${Info} Shadowsocks Rust 主程序下载安装完毕！"
 		return 0
 	fi
-}
-
-Download() {
-	stable_Download
 }
 
 Service(){
