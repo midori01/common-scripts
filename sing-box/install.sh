@@ -17,9 +17,46 @@ else
   exit 1
 fi
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
+latest_version_beta=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}' | head -n 1)
 package_name=sing-box-${latest_version}-linux-${type}
+package_name_beta=sing-box-${latest_version_beta}-linux-${type}
 download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
+download_url_beta=https://github.com/SagerNet/sing-box/releases/download/v${latest_version_beta}/${package_name_beta}.tar.gz
 public_ip=$(curl -s ip.sb -4)
+install() {
+if [ -f "/usr/local/bin/sing-box" ]; then
+  systemctl restart sing-box.service
+else
+wget -N --no-check-certificate ${download_url}
+tar zxvf ${package_name}.tar.gz
+mv ${package_name}/sing-box /usr/local/bin/sing-box
+chmod +x /usr/local/bin/sing-box
+rm -r ${package_name}
+rm -f ${package_name}.tar.gz
+cat > /etc/systemd/system/sing-box.service <<EOF
+[Unit]
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/bin
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl start sing-box.service
+systemctl enable sing-box.service
+echo "sing-box 安装成功"
+fi
+}
 uninstall() {
   systemctl stop sing-box.service
   systemctl disable sing-box.service
@@ -48,16 +85,13 @@ update() {
   echo "sing-box 已更新"
 }
 update-beta() {
-  latest_version=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}' | head -n 1)
-  package_name=sing-box-${latest_version}-linux-${type}
-  download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
   rm -f /usr/local/bin/sing-box
-  wget -N --no-check-certificate ${download_url}
-  tar zxvf ${package_name}.tar.gz
-  mv ${package_name}/sing-box /usr/local/bin/sing-box
+  wget -N --no-check-certificate ${download_url_beta}
+  tar zxvf ${package_name_beta}.tar.gz
+  mv ${package_name_beta}/sing-box /usr/local/bin/sing-box
   chmod +x /usr/local/bin/sing-box
-  rm -r ${package_name}
-  rm -f ${package_name}.tar.gz
+  rm -r ${package_name_beta}
+  rm -f ${package_name_beta}.tar.gz
   systemctl restart sing-box.service
   echo "sing-box 已更新"
 }
@@ -1261,30 +1295,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -1311,9 +1321,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Mixed 安装成功"
 echo "客户端连接信息: "
 echo "协议: SOCKS5 或 HTTP"
@@ -1495,31 +1503,3 @@ if [[ $1 == "https" ]]; then
   https
   exit 0
 fi
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl start sing-box.service
-systemctl enable sing-box.service
-echo "sing-box 安装成功"
