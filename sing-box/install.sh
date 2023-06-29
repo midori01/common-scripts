@@ -69,11 +69,11 @@ read -r -p "请输入节点端口 (留空默认 8964): " naive_port
 naive_port=${naive_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " naive_user
 if [[ -z "$naive_user" ]]; then
-  naive_user=$(openssl rand -hex 8)
+  naive_user=$(openssl rand -base64 12)
 fi
 read -r -p "请输入密码 (留空随机生成): " naive_pass
 if [[ -z "$naive_pass" ]]; then
-  naive_pass=$(openssl rand -hex 8)
+  naive_pass=$(openssl rand -base64 12)
 fi
 cat <<EOF
 请确认以下配置信息：
@@ -165,7 +165,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " hy_port
 hy_port=${hy_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " hy_pass
 if [[ -z "$hy_pass" ]]; then
-  hy_pass=$(openssl rand -hex 8)
+  hy_pass=$(openssl rand -base64 12)
 fi
 cat <<EOF
 请确认以下配置信息：
@@ -257,7 +257,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
 if [[ -z "$trojan_pass" ]]; then
-  trojan_pass=$(openssl rand -hex 8)
+  trojan_pass=$(openssl rand -base64 12)
 fi
 cat <<EOF
 请确认以下配置信息：
@@ -346,7 +346,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
 if [[ -z "$trojan_pass" ]]; then
-  trojan_pass=$(openssl rand -hex 8)
+  trojan_pass=$(openssl rand -base64 12)
 fi
 read -r -p "请输入WebSocket 路径 (留空默认 /): " ws_path
 ws_path=${ws_path:-/}
@@ -445,7 +445,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
 if [[ -z "$trojan_pass" ]]; then
-  trojan_pass=$(openssl rand -hex 8)
+  trojan_pass=$(openssl rand -base64 12)
 fi
 read -r -p "请输入 gRPC 服务名 (留空默认 nmsl): " service_name
 service_name=${service_name:-nmsl}
@@ -542,7 +542,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
 if [[ -z "$trojan_pass" ]]; then
-  trojan_pass=$(openssl rand -hex 8)
+  trojan_pass=$(openssl rand -base64 12)
 fi
 cat <<EOF
 请确认以下配置信息：
@@ -995,7 +995,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " ss_port
 ss_port=${ss_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " ss_pass
 if [[ -z "$ss_pass" ]]; then
-  ss_pass=$(openssl rand -hex 8)
+  ss_pass=$(openssl rand -base64 12)
 fi
 cat <<EOF
 请确认以下配置信息：
@@ -1137,7 +1137,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " ss_port
 ss_port=${ss_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " ss_pass
 if [[ -z "$ss_pass" ]]; then
-  ss_pass=$(openssl rand -hex 8)
+  ss_pass=$(openssl rand -base64 12)
 fi
 read -r -p "请输入握手 SNI (不懂请留空): " ss_sni
 ss_sni=${ss_sni:-www.iq.com}
@@ -1232,11 +1232,11 @@ read -r -p "请输入节点端口 (留空默认 8964): " mixed_port
 mixed_port=${mixed_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " mixed_user
 if [[ -z "$mixed_user" ]]; then
-  mixed_user=$(openssl rand -hex 8)
+  mixed_user=$(openssl rand -base64 12)
 fi
 read -r -p "请输入密码 (留空随机生成): " mixed_pass
 if [[ -z "$mixed_pass" ]]; then
-  mixed_pass=$(openssl rand -hex 8)
+  mixed_pass=$(openssl rand -base64 12)
 fi
 cat <<EOF
 请确认以下配置信息：
@@ -1318,11 +1318,11 @@ read -r -p "请输入节点端口 (留空默认 8964): " https_port
 https_port=${https_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " https_user
 if [[ -z "$https_user" ]]; then
-  https_user=$(openssl rand -hex 8)
+  https_user=$(openssl rand -base64 12)
 fi
 read -r -p "请输入密码 (留空随机生成): " https_pass
 if [[ -z "$https_pass" ]]; then
-  https_pass=$(openssl rand -hex 8)
+  https_pass=$(openssl rand -base64 12)
 fi
 cat <<EOF
 请确认以下配置信息：
