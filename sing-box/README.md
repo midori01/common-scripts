@@ -80,8 +80,8 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") uninstall-keep
 ```
 
-# Cert Apply
-`acme script:`
+# Others
+`Cert Apply Script:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/Misaka-blog/acme-script/main/acme.sh")
 ```
