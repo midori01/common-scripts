@@ -274,8 +274,8 @@ Set_cipher(){
 }
 
 Set_password(){
-	echo "请输入 Shadowsocks Rust 密码（如使用AEAD-2022加密 请留空让其随机生成密码）"
-	read -e -p "(默认：随机生成32位长度base64密钥)：" password
+	echo "请输入 Shadowsocks Rust 密码（如使用AEAD-2022加密方式请留空让其随机生成密码）"
+	read -e -p "(默认：随机生成)：" password
 	[[ -z "${password}" ]] && password=$(openssl rand -base64 32)
 	echo && echo "=================================="
 	echo -e "密码：${Red_background_prefix} ${password} ${Font_color_suffix}"
