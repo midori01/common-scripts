@@ -27,13 +27,13 @@ install() {
 if [ -f "/usr/local/bin/sing-box" ]; then
   systemctl restart sing-box.service
 else
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
+  wget -N --no-check-certificate ${download_url}
+  tar zxvf ${package_name}.tar.gz
+  mv ${package_name}/sing-box /usr/local/bin/sing-box
+  chmod +x /usr/local/bin/sing-box
+  rm -r ${package_name}
+  rm -f ${package_name}.tar.gz
+  cat > /etc/systemd/system/sing-box.service <<EOF
 [Unit]
 After=network.target nss-lookup.target
 
@@ -51,10 +51,10 @@ LimitNOFILE=infinity
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl daemon-reload
-systemctl start sing-box.service
-systemctl enable sing-box.service
-echo "sing-box 安装成功"
+  systemctl daemon-reload
+  systemctl start sing-box.service
+  systemctl enable sing-box.service
+  echo "sing-box 安装成功"
 fi
 }
 uninstall() {
