@@ -993,10 +993,14 @@ echo "Reality Short ID: ${vless_sid}"
 ss() {
 read -r -p "请输入节点端口 (留空默认 8964): " ss_port
 ss_port=${ss_port:-8964}
-ss_pass=$(openssl rand -base64 16)
+read -r -p "请输入密码 (留空随机生成): " ss_pass
+if [[ -z "$ss_pass" ]]; then
+  ss_pass=$(openssl rand -hex 8)
+fi
 cat <<EOF
 请确认以下配置信息：
 端口：${ss_port}
+密码：${ss_pass}
 EOF
 read -r -p "确认无误？(Y/N)" confirm
 case "$confirm" in
@@ -1200,7 +1204,7 @@ cat > /etc/sing-box.json <<EOF
             "type": "shadowsocks",
             "tag": "shadowsocks",
             "listen": "127.0.0.1",
-            "method": "aes-128-gcm",
+            "method": "chacha20-ietf-poly1305",
             "password": "${ss_pass}"
         }
     ],
@@ -1219,7 +1223,7 @@ echo "客户端连接信息: "
 echo "地址: ${public_ip}"
 echo "端口: ${ss_port}"
 echo "密码: ${ss_pass}"
-echo "加密: aes-128-gcm"
+echo "加密: chacha20-ietf-poly1305"
 echo "SNI: ${ss_sni}"
 echo "版本: v3"
 }
