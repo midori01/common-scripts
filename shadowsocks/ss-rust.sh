@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-sh_ver="2.0.4"
+sh_ver="2.0.5"
 filepath=$(cd "$(dirname "$0")"; pwd)
 file_1=$(echo -e "${filepath}"|awk -F "$0" '{print $1}')
 FILE="/usr/local/bin/ss-rust"
@@ -234,15 +234,6 @@ ${Green_font_prefix} 1.${Font_color_suffix} 开启  ${Green_font_prefix} 2.${Fon
 	echo "==================================" && echo
 }
 
-Set_password(){
-	echo "请输入 Shadowsocks Rust 密码（使用2022-blake3协议请注意密码要符合格式要求，建议留空默认生成。）"
-	read -e -p "(默认：随机生成32位长度base64密钥)：" password
-	[[ -z "${password}" ]] && password=$(openssl rand -base64 32)
-	echo && echo "=================================="
-	echo -e "密码：${Red_background_prefix} ${password} ${Font_color_suffix}"
-	echo "==================================" && echo
-}
-
 Set_cipher(){
 	echo -e "请选择 Shadowsocks Rust 加密方式
 ==================================	
@@ -279,6 +270,15 @@ Set_cipher(){
 	fi
 	echo && echo "=================================="
 	echo -e "加密：${Red_background_prefix} ${cipher} ${Font_color_suffix}"
+	echo "==================================" && echo
+}
+
+Set_password(){
+	echo "请输入 Shadowsocks Rust 密码（如使用AEAD-2022加密 请留空让其随机生成密码）"
+	read -e -p "(默认：随机生成32位长度base64密钥)：" password
+	[[ -z "${password}" ]] && password=$(openssl rand -base64 32)
+	echo && echo "=================================="
+	echo -e "密码：${Red_background_prefix} ${password} ${Font_color_suffix}"
 	echo "==================================" && echo
 }
 
@@ -343,8 +343,8 @@ Install(){
 	[[ -e ${FILE} ]] && echo -e "${Error} 检测到 Shadowsocks Rust 已安装！" && exit 1
 	echo -e "${Info} 开始设置 配置..."
 	Set_port
+ 	Set_cipher
 	Set_password
-	Set_cipher
 	Set_tfo
 	echo -e "${Info} 开始安装/配置 依赖..."
 	Installation_dependency
