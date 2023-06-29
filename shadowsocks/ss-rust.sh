@@ -2,13 +2,12 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-sh_ver="2.0.0"
+sh_ver="2.0.1"
 filepath=$(cd "$(dirname "$0")"; pwd)
 file_1=$(echo -e "${filepath}"|awk -F "$0" '{print $1}')
-FOLDER="/etc/ss-rust"
 FILE="/usr/local/bin/ss-rust"
-CONF="/etc/ss-rust/config.json"
-Now_ver_File="/etc/ss-rust/ver.txt"
+CONF="/etc/ss-rust.json"
+Now_ver_File="/etc/ss-rust-ver.txt"
 Local="/etc/sysctl.d/local.conf"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m" && Yellow_font_prefix="\033[0;33m"
@@ -103,9 +102,7 @@ check_ver_comparison(){
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ $yn == [Yy] ]]; then
 			check_status
-			# [[ "$status" == "running" ]] && systemctl stop ss-rust
 			\cp "${CONF}" "/tmp/config.json"
-			# rm -rf ${FOLDER}
 			Download
 			mv -f "/tmp/config.json" "${CONF}"
 			Restart
@@ -141,9 +138,6 @@ stable_Download() {
 }
 
 Download() {
-	if [[ ! -e "${FOLDER}" ]]; then
-		mkdir "${FOLDER}"
-	fi
 	stable_Download
 }
 
@@ -161,7 +155,7 @@ Restart=on-failure
 RestartSec=5s
 DynamicUser=true
 ExecStartPre=/bin/sh -c 'ulimit -n 51200'
-ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust/config.json
+ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust.json
 [Install]
 WantedBy=multi-user.target' > /etc/systemd/system/ss-rust.service
 systemctl enable --now ss-rust
@@ -417,7 +411,6 @@ Uninstall(){
 		check_status
 		[[ "$status" == "running" ]] && systemctl stop ss-rust
         systemctl disable ss-rust
-		rm -rf "${FOLDER}"
 		rm -rf "${FILE}"
 		echo && echo "Shadowsocks Rust 卸载完成！" && echo
 	else
