@@ -78,7 +78,7 @@ fi
 cat <<EOF
 请确认以下配置信息：
 端口：${naive_port}
-用户名：${naive_user}
+用户：${naive_user}
 密码：${naive_pass}
 证书域名：${cer_domain}
 证书路径：${cer_path}
@@ -152,10 +152,10 @@ echo "NaïveProxy 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
 echo "端口: ${naive_port}"
-echo "用户名: ${naive_user}"
+echo "用户: ${naive_user}"
 echo "密码: ${naive_pass}"
 echo "SNI: ${cer_domain}"
-echo "Padding: Enabled"
+echo "填充: Enabled"
 }
 hy() {
 read -r -p "请输入证书域名: " cer_domain
@@ -336,6 +336,7 @@ echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
+echo "传输: TCP"
 }
 trojan-ws() {
 read -r -p "请输入证书域名: " cer_domain
@@ -430,6 +431,7 @@ echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
+echo "传输: WebSocket"
 echo "WebSocket 路径: /"
 }
 trojan-grpc() {
@@ -526,6 +528,7 @@ echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
+echo "传输: gRPC"
 echo "gRPC 服务名: ${service_name}"
 }
 trojan-quic() {
@@ -619,6 +622,7 @@ echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
+echo "传输: QUIC"
 echo "ALPN: h3"
 }
 vmess() {
@@ -682,7 +686,8 @@ echo "VMess 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
 echo "端口: ${vmess_port}"
-echo "UUID: ${vmess_pass}"
+echo "用户: ${vmess_pass}"
+echo "传输: TCP"
 }
 vmess-ws() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
@@ -751,7 +756,8 @@ echo "VMess 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
 echo "端口: ${vmess_port}"
-echo "UUID: ${vmess_pass}"
+echo "用户: ${vmess_pass}"
+echo "传输: WebSocket"
 echo "WebSocket 路径: /"
 }
 vless() {
@@ -846,8 +852,9 @@ echo "VLESS 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
 echo "端口: ${vless_port}"
-echo "UUID: ${vless_pass}"
+echo "用户: ${vless_pass}"
 echo "SNI: ${vless_sni}"
+echo "传输: TCP"
 echo "XTLS Flow: xtls-rprx-vision"
 echo "Reality Public Key: ${vless_pubkey}"
 echo "Reality Short ID: ${vless_sid}"
@@ -951,8 +958,9 @@ echo "VLESS 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
 echo "端口: ${vless_port}"
-echo "UUID: ${vless_pass}"
+echo "用户: ${vless_pass}"
 echo "SNI: ${vless_sni}"
+echo "传输: gRPC"
 echo "gRPC Service Name: ${service_name}"
 echo "XTLS Flow: none"
 echo "Reality Public Key: ${vless_pubkey}"
