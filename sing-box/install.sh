@@ -1253,6 +1253,10 @@ if [[ $1 == "trojan-grpc" ]]; then
   trojan-grpc
   exit 0
 fi
+if [[ $1 == "trojan-quic" ]]; then
+  trojan-quic
+  exit 0
+fi
 if [[ $1 == "vmess" ]]; then
   vmess
   exit 0
