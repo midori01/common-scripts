@@ -61,6 +61,7 @@ update-beta() {
   echo "sing-box 已更新"
 }
 naive() {
+read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
 read -r -p "请输入节点端口 (留空默认 8964): " naive_port
@@ -78,6 +79,7 @@ cat <<EOF
 端口：${naive_port}
 用户名：${naive_user}
 密码：${naive_pass}
+证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -129,6 +131,7 @@ cat > /etc/sing-box.json <<EOF
             ],
             "tls": {
                 "enabled": true,
+                "server_name": "${cer_domain}",
                 "certificate_path": "${cer_path}",
                 "key_path": "${key_path}"
             }
@@ -149,9 +152,11 @@ echo "客户端连接信息: "
 echo "端口: ${naive_port}"
 echo "用户名: ${naive_user}"
 echo "密码: ${naive_pass}"
+echo "SNI: ${cer_domain}"
 echo "Padding: Enabled"
 }
 hy() {
+read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
 read -r -p "请输入节点端口 (留空默认 8964): " hy_port
@@ -164,6 +169,7 @@ cat <<EOF
 请确认以下配置信息：
 端口：${hy_port}
 密码：${hy_pass}
+证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -216,7 +222,8 @@ cat > /etc/sing-box.json <<EOF
             ],
             "tls": {
                 "enabled": true,
-                "alpn": [ "h3" ],
+                "server_name": "${cer_domain}",
+                "alpn": "h3",
                 "certificate_path": "${cer_path}",
                 "key_path": "${key_path}"
             }
@@ -236,9 +243,11 @@ echo "Hysteria 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${hy_port}"
 echo "密码: ${hy_pass}"
+echo "SNI: ${cer_domain}"
 echo "ALPN: h3"
 }
 trojan() {
+read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
@@ -251,6 +260,7 @@ cat <<EOF
 请确认以下配置信息：
 端口：${trojan_port}
 密码：${trojan_pass}
+证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -301,6 +311,7 @@ cat > /etc/sing-box.json <<EOF
             ],
             "tls": {
                 "enabled": true,
+                "server_name": "${cer_domain}",
                 "certificate_path": "${cer_path}",
                 "key_path": "${key_path}"
             }
@@ -320,8 +331,10 @@ echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
+echo "SNI: ${cer_domain}"
 }
 trojan-ws() {
+read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
@@ -334,6 +347,7 @@ cat <<EOF
 请确认以下配置信息：
 端口：${trojan_port}
 密码：${trojan_pass}
+证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -390,6 +404,7 @@ cat > /etc/sing-box.json <<EOF
             },
             "tls": {
                 "enabled": true,
+                "server_name": "${cer_domain}",
                 "certificate_path": "${cer_path}",
                 "key_path": "${key_path}"
             }
@@ -409,9 +424,11 @@ echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
+echo "SNI: ${cer_domain}"
 echo "WebSocket 路径: /"
 }
 trojan-grpc() {
+read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
@@ -427,6 +444,7 @@ cat <<EOF
 端口：${trojan_port}
 密码：${trojan_pass}
 gRPC 服务名：${service_name}
+证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -481,6 +499,7 @@ cat > /etc/sing-box.json <<EOF
             },
             "tls": {
                 "enabled": true,
+                "server_name": "${cer_domain}",
                 "certificate_path": "${cer_path}",
                 "key_path": "${key_path}"
             }
@@ -500,9 +519,11 @@ echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
+echo "SNI: ${cer_domain}"
 echo "gRPC 服务名: ${service_name}"
 }
 trojan-quic() {
+read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
@@ -515,6 +536,7 @@ cat <<EOF
 请确认以下配置信息：
 端口：${trojan_port}
 密码：${trojan_pass}
+证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -568,6 +590,7 @@ cat > /etc/sing-box.json <<EOF
             },
             "tls": {
                 "enabled": true,
+                "server_name": "${cer_domain}",
                 "alpn": "h3",
                 "certificate_path": "${cer_path}",
                 "key_path": "${key_path}"
@@ -588,6 +611,7 @@ echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
+echo "SNI: ${cer_domain}"
 echo "ALPN: h3"
 }
 vmess() {
@@ -1218,6 +1242,7 @@ echo "用户: ${mixed_user}"
 echo "密码: ${mixed_pass}"
 }
 https() {
+read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径: " cer_path
 read -r -p "请输入私钥路径: " key_path
 read -r -p "请输入节点端口 (留空默认 8964): " https_port
@@ -1235,6 +1260,7 @@ cat <<EOF
 端口：${https_port}
 用户：${https_user}
 密码：${https_pass}
+证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
 EOF
@@ -1286,6 +1312,7 @@ cat > /etc/sing-box.json <<EOF
             ],
             "tls": {
                 "enabled": true,
+                "server_name": "${cer_domain}",
                 "certificate_path": "${cer_path}",
                 "key_path": "${key_path}"
             }
@@ -1306,6 +1333,7 @@ echo "客户端连接信息: "
 echo "端口: ${https_port}"
 echo "用户: ${https_user}"
 echo "密码: ${https_pass}"
+echo "SNI: ${cer_domain}"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
