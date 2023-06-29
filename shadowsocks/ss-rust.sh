@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-sh_ver="2.0.1"
+sh_ver="2.0.2"
 filepath=$(cd "$(dirname "$0")"; pwd)
 file_1=$(echo -e "${filepath}"|awk -F "$0" '{print $1}')
 FILE="/usr/local/bin/ss-rust"
@@ -113,7 +113,7 @@ check_ver_comparison(){
 }
 
 Download() {
-	echo -e "${Info} 默认开始下载官方源 Shadowsocks Rust ……"
+	echo -e "${Info} 开始下载 Shadowsocks Rust ……"
 	wget --no-check-certificate -N "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${new_ver}/shadowsocks-${new_ver}.${arch}-unknown-linux-gnu.tar.xz"
 	if [[ ! -e "shadowsocks-${new_ver}.${arch}-unknown-linux-gnu.tar.xz" ]]; then
 		echo -e "${Error} Shadowsocks Rust 官方源下载失败！"
