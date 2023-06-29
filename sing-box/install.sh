@@ -63,8 +63,10 @@ update-beta() {
 }
 naive() {
 read -r -p "请输入证书域名: " cer_domain
-read -r -p "请输入证书路径: " cer_path
-read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
 read -r -p "请输入节点端口 (留空默认 8964): " naive_port
 naive_port=${naive_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " naive_user
@@ -159,8 +161,10 @@ echo "填充: Enabled"
 }
 hy() {
 read -r -p "请输入证书域名: " cer_domain
-read -r -p "请输入证书路径: " cer_path
-read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
 read -r -p "请输入节点端口 (留空默认 8964): " hy_port
 hy_port=${hy_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " hy_pass
@@ -251,8 +255,10 @@ echo "ALPN: h3"
 }
 trojan() {
 read -r -p "请输入证书域名: " cer_domain
-read -r -p "请输入证书路径: " cer_path
-read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
@@ -340,8 +346,10 @@ echo "传输: TCP"
 }
 trojan-ws() {
 read -r -p "请输入证书域名: " cer_domain
-read -r -p "请输入证书路径: " cer_path
-read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
@@ -439,8 +447,10 @@ echo "WebSocket 路径: ${ws_path}"
 }
 trojan-grpc() {
 read -r -p "请输入证书域名: " cer_domain
-read -r -p "请输入证书路径: " cer_path
-read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
@@ -536,8 +546,10 @@ echo "gRPC 服务名: ${service_name}"
 }
 trojan-quic() {
 read -r -p "请输入证书域名: " cer_domain
-read -r -p "请输入证书路径: " cer_path
-read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
 read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
 trojan_port=${trojan_port:-8964}
 read -r -p "请输入密码 (留空随机生成): " trojan_pass
@@ -1312,8 +1324,10 @@ echo "密码: ${mixed_pass}"
 }
 https() {
 read -r -p "请输入证书域名: " cer_domain
-read -r -p "请输入证书路径: " cer_path
-read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
 read -r -p "请输入节点端口 (留空默认 8964): " https_port
 https_port=${https_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " https_user
