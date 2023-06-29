@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-sh_ver="2.0.2"
+sh_ver="2.0.3"
 filepath=$(cd "$(dirname "$0")"; pwd)
 file_1=$(echo -e "${filepath}"|awk -F "$0" '{print $1}')
 FILE="/usr/local/bin/ss-rust"
@@ -407,7 +407,9 @@ Uninstall(){
 		check_status
 		[[ "$status" == "running" ]] && systemctl stop ss-rust
         systemctl disable ss-rust
-		rm -rf "${FILE}"
+		rm -f "${FILE}"
+                rm -f "${CONF}"
+                rm -f "${Now_ver_File}"
 		echo && echo "Shadowsocks Rust 卸载完成！" && echo
 	else
 		echo && echo "卸载已取消..." && echo
