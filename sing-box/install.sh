@@ -19,6 +19,7 @@ fi
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
 package_name=sing-box-${latest_version}-linux-${type}
 download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
+public_ip=$(curl -s ip.sb -4)
 uninstall() {
   systemctl stop sing-box.service
   systemctl disable sing-box.service
@@ -149,6 +150,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "NaïveProxy 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${naive_port}"
 echo "用户名: ${naive_user}"
 echo "密码: ${naive_pass}"
@@ -241,6 +243,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Hysteria 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${hy_port}"
 echo "密码: ${hy_pass}"
 echo "SNI: ${cer_domain}"
@@ -329,6 +332,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
@@ -422,6 +426,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
@@ -517,6 +522,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
@@ -534,6 +540,7 @@ if [[ -z "$trojan_pass" ]]; then
 fi
 cat <<EOF
 请确认以下配置信息：
+echo "地址: ${public_ip}"
 端口：${trojan_port}
 密码：${trojan_pass}
 证书域名：${cer_domain}
@@ -609,6 +616,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
@@ -673,6 +681,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VMess 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${vmess_port}"
 echo "UUID: ${vmess_pass}"
 }
@@ -741,6 +750,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VMess 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${vmess_port}"
 echo "UUID: ${vmess_pass}"
 echo "WebSocket 路径: /"
@@ -835,6 +845,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VLESS 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${vless_port}"
 echo "UUID: ${vless_pass}"
 echo "SNI: ${vless_sni}"
@@ -939,7 +950,8 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "VLESS 安装成功"
 echo "客户端连接信息: "
-echo "Port: ${vless_port}"
+echo "地址: ${public_ip}"
+echo "端口: ${vless_port}"
 echo "UUID: ${vless_pass}"
 echo "SNI: ${vless_sni}"
 echo "gRPC Service Name: ${service_name}"
@@ -1002,6 +1014,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Shadowsocks 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${ss_port}"
 echo "密码: ${ss_pass}"
 echo "加密: aes-128-gcm"
@@ -1061,6 +1074,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Shadowsocks 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${ss_port}"
 echo "密码: ${ss_pass}"
 echo "加密: 2022-blake3-aes-128-gcm"
@@ -1153,6 +1167,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Shadowsocks x ShadowTLS 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${ss_port}"
 echo "密码: ${ss_pass}"
 echo "加密: aes-128-gcm"
@@ -1236,7 +1251,8 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "Mixed 安装成功"
 echo "客户端连接信息: "
-echo "协议: SOCKS/HTTP"
+echo "协议: SOCKS5 或 HTTP"
+echo "地址: ${public_ip}"
 echo "端口: ${mixed_port}"
 echo "用户: ${mixed_user}"
 echo "密码: ${mixed_pass}"
@@ -1330,6 +1346,7 @@ systemctl restart sing-box.service
 systemctl enable sing-box.service
 echo "HTTPS 安装成功"
 echo "客户端连接信息: "
+echo "地址: ${public_ip}"
 echo "端口: ${https_port}"
 echo "用户: ${https_user}"
 echo "密码: ${https_pass}"
