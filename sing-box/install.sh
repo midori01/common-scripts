@@ -24,7 +24,13 @@ download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_ve
 download_url_beta=https://github.com/SagerNet/sing-box/releases/download/v${latest_version_beta}/${package_name_beta}.tar.gz
 public_ipv4=$(curl -m 3 -s ip.sb -4)
 public_ipv6=$(curl -m 1 -s ip.sb -6)
-public_ip="${public_ipv4} 或 ${public_ipv6}"
+if [[ -n "$public_ipv4" && -n "$public_ipv6" ]]; then
+  public_ip="${public_ipv4} 或 ${public_ipv6}"
+elif [[ -n "$public_ipv4" ]]; then
+  public_ip="$public_ipv4"
+else
+  public_ip="$public_ipv6"
+fi
 install() {
 if [ -f "/usr/local/bin/sing-box" ]; then
   systemctl restart sing-box.service
