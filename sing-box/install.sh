@@ -125,30 +125,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -181,9 +157,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "NaïveProxy 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -218,30 +192,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -276,9 +226,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Hysteria 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -312,30 +260,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -367,9 +291,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -406,30 +328,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -467,9 +365,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -507,30 +403,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -566,9 +438,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -603,30 +473,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -662,9 +508,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Trojan 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -686,30 +530,7 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
+install
 vmess_pass=$(/usr/local/bin/sing-box generate uuid)
 cat > /etc/sing-box.json <<EOF
 {
@@ -737,9 +558,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
 systemctl restart sing-box.service
-systemctl enable sing-box.service
 echo "VMess 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -762,30 +581,7 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
+install
 vmess_pass=$(/usr/local/bin/sing-box generate uuid)
 cat > /etc/sing-box.json <<EOF
 {
@@ -819,9 +615,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
 systemctl restart sing-box.service
-systemctl enable sing-box.service
 echo "VMess 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -845,30 +639,7 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
+install
 vless_pass=$(/usr/local/bin/sing-box generate uuid)
 vless_sid=$(/usr/local/bin/sing-box generate rand --hex 8)
 output=$(/usr/local/bin/sing-box generate reality-keypair)
@@ -915,9 +686,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
 systemctl restart sing-box.service
-systemctl enable sing-box.service
 echo "VLESS 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -947,30 +716,7 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
+install
 vless_pass=$(/usr/local/bin/sing-box generate uuid)
 vless_sid=$(/usr/local/bin/sing-box generate rand --hex 8)
 output=$(/usr/local/bin/sing-box generate reality-keypair)
@@ -1021,9 +767,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
 systemctl restart sing-box.service
-systemctl enable sing-box.service
 echo "VLESS 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -1053,30 +797,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -1099,9 +819,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Shadowsocks 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -1122,30 +840,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -1168,9 +862,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Shadowsocks 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -1198,30 +890,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -1261,9 +929,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "Shadowsocks x ShadowTLS 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
@@ -1360,30 +1026,6 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate ${download_url}
-tar zxvf ${package_name}.tar.gz
-mv ${package_name}/sing-box /usr/local/bin/sing-box
-chmod +x /usr/local/bin/sing-box
-rm -r ${package_name}
-rm -f ${package_name}.tar.gz
-cat > /etc/systemd/system/sing-box.service <<EOF
-[Unit]
-After=network.target nss-lookup.target
-
-[Service]
-User=root
-WorkingDirectory=/usr/local/bin
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
-
-[Install]
-WantedBy=multi-user.target
-EOF
 cat > /etc/sing-box.json <<EOF
 {
     "log": {
@@ -1416,9 +1058,7 @@ cat > /etc/sing-box.json <<EOF
     ]
 }
 EOF
-systemctl daemon-reload
-systemctl restart sing-box.service
-systemctl enable sing-box.service
+install
 echo "HTTPS 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
