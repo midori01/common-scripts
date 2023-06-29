@@ -69,7 +69,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " naive_port
 naive_port=${naive_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " naive_user
 if [[ -z "$naive_user" ]]; then
-  naive_user=$(openssl rand -base64 12)
+  naive_user=$(openssl rand -base64 6)
 fi
 read -r -p "请输入密码 (留空随机生成): " naive_pass
 if [[ -z "$naive_pass" ]]; then
@@ -1232,7 +1232,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " mixed_port
 mixed_port=${mixed_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " mixed_user
 if [[ -z "$mixed_user" ]]; then
-  mixed_user=$(openssl rand -base64 12)
+  mixed_user=$(openssl rand -base64 6)
 fi
 read -r -p "请输入密码 (留空随机生成): " mixed_pass
 if [[ -z "$mixed_pass" ]]; then
@@ -1318,7 +1318,7 @@ read -r -p "请输入节点端口 (留空默认 8964): " https_port
 https_port=${https_port:-8964}
 read -r -p "请输入用户名 (留空随机生成): " https_user
 if [[ -z "$https_user" ]]; then
-  https_user=$(openssl rand -base64 12)
+  https_user=$(openssl rand -base64 6)
 fi
 read -r -p "请输入密码 (留空随机生成): " https_pass
 if [[ -z "$https_pass" ]]; then
