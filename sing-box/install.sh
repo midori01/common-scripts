@@ -348,10 +348,13 @@ read -r -p "请输入密码 (留空随机生成): " trojan_pass
 if [[ -z "$trojan_pass" ]]; then
   trojan_pass=$(openssl rand -hex 8)
 fi
+read -r -p "请输入WebSocket 路径 (留空默认 /): " ws_path
+ws_path=${ws_path:-/}
 cat <<EOF
 请确认以下配置信息：
 端口：${trojan_port}
 密码：${trojan_pass}
+WebSocket 路径：${ws_path}
 证书域名：${cer_domain}
 证书路径：${cer_path}
 私钥路径：${key_path}
@@ -403,7 +406,7 @@ cat > /etc/sing-box.json <<EOF
             ],
             "transport": {
                 "type": "ws",
-                "path": "",
+                "path": "${ws_path}",
                 "max_early_data": 2048,
                 "early_data_header_name": "Sec-WebSocket-Protocol"
             },
@@ -432,7 +435,7 @@ echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "SNI: ${cer_domain}"
 echo "传输: WebSocket"
-echo "WebSocket 路径: /"
+echo "WebSocket 路径: ${ws_path}"
 }
 trojan-grpc() {
 read -r -p "请输入证书域名: " cer_domain
@@ -628,6 +631,15 @@ echo "ALPN: h3"
 vmess() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
 vmess_port=${vmess_port:-8964}
+cat <<EOF
+请确认以下配置信息：
+端口：${vmess_port}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
 wget -N --no-check-certificate ${download_url}
 tar zxvf ${package_name}.tar.gz
 mv ${package_name}/sing-box /usr/local/bin/sing-box
@@ -692,6 +704,18 @@ echo "传输: TCP"
 vmess-ws() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
 vmess_port=${vmess_port:-8964}
+read -r -p "请输入WebSocket 路径 (留空默认 /): " ws_path
+ws_path=${ws_path:-/}
+cat <<EOF
+请确认以下配置信息：
+端口：${vmess_port}
+WebSocket 路径：${ws_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
 wget -N --no-check-certificate ${download_url}
 tar zxvf ${package_name}.tar.gz
 mv ${package_name}/sing-box /usr/local/bin/sing-box
@@ -736,7 +760,7 @@ cat > /etc/sing-box.json <<EOF
             ],
             "transport": {
                 "type": "ws",
-                "path": "",
+                "path": "${ws_path}",
                 "max_early_data": 2048,
                 "early_data_header_name": "Sec-WebSocket-Protocol"
             }
@@ -758,7 +782,7 @@ echo "地址: ${public_ip}"
 echo "端口: ${vmess_port}"
 echo "用户: ${vmess_pass}"
 echo "传输: WebSocket"
-echo "WebSocket 路径: /"
+echo "WebSocket 路径: ${ws_path}"
 }
 vless() {
 read -r -p "请输入节点端口 (留空默认 8964): " vless_port
@@ -970,6 +994,15 @@ ss() {
 read -r -p "请输入节点端口 (留空默认 8964): " ss_port
 ss_port=${ss_port:-8964}
 ss_pass=$(openssl rand -base64 16)
+cat <<EOF
+请确认以下配置信息：
+端口：${ss_port}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
 wget -N --no-check-certificate ${download_url}
 tar zxvf ${package_name}.tar.gz
 mv ${package_name}/sing-box /usr/local/bin/sing-box
@@ -1030,6 +1063,15 @@ ss2() {
 read -r -p "请输入节点端口 (留空默认 8964): " ss_port
 ss_port=${ss_port:-8964}
 ss_pass=$(openssl rand -base64 16)
+cat <<EOF
+请确认以下配置信息：
+端口：${ss_port}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
 wget -N --no-check-certificate ${download_url}
 tar zxvf ${package_name}.tar.gz
 mv ${package_name}/sing-box /usr/local/bin/sing-box
