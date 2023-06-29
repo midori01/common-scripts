@@ -502,6 +502,94 @@ echo "端口: ${trojan_port}"
 echo "密码: ${trojan_pass}"
 echo "gRPC 服务名: ${service_name}"
 }
+trojan-quic() {
+read -r -p "请输入证书路径: " cer_path
+read -r -p "请输入私钥路径: " key_path
+read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
+trojan_port=${trojan_port:-8964}
+read -r -p "请输入密码 (留空随机生成): " trojan_pass
+if [[ -z "$trojan_pass" ]]; then
+  trojan_pass=$(openssl rand -hex 8)
+fi
+cat <<EOF
+请确认以下配置信息：
+端口：${trojan_port}
+密码：${trojan_pass}
+证书路径：${cer_path}
+私钥路径：${key_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+wget -N --no-check-certificate ${download_url}
+tar zxvf ${package_name}.tar.gz
+mv ${package_name}/sing-box /usr/local/bin/sing-box
+chmod +x /usr/local/bin/sing-box
+rm -r ${package_name}
+rm -f ${package_name}.tar.gz
+cat > /etc/systemd/system/sing-box.service <<EOF
+[Unit]
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/bin
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
+EOF
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "trojan",
+            "listen": "::",
+            "listen_port": ${trojan_port},
+            "users": [
+                {
+                    "password": "${trojan_pass}"
+                }
+            ],
+            "transport": {
+                "type": "quic"
+            },
+            "tls": {
+                "enabled": true,
+                "alpn": "h3",
+                "certificate_path": "${cer_path}",
+                "key_path": "${key_path}"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+systemctl daemon-reload
+systemctl restart sing-box.service
+systemctl enable sing-box.service
+echo "Trojan 安装成功"
+echo "客户端连接信息: "
+echo "端口: ${trojan_port}"
+echo "密码: ${trojan_pass}"
+echo "ALPN: h3"
+}
 vmess() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
 vmess_port=${vmess_port:-8964}
