@@ -540,7 +540,6 @@ if [[ -z "$trojan_pass" ]]; then
 fi
 cat <<EOF
 请确认以下配置信息：
-echo "地址: ${public_ip}"
 端口：${trojan_port}
 密码：${trojan_pass}
 证书域名：${cer_domain}
