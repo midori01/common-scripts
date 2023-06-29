@@ -21,6 +21,20 @@ else
   exit 1
 fi
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/ginuerzh/gost/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
+install() {
+if [ -f "/usr/local/bin/gost" ]; then
+  systemctl daemon-reload
+  systemctl restart gost.service
+else
+  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
+  gzip -d gost-linux-${type}-${latest_version}.gz
+  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
+  chmod +x /usr/local/bin/gost
+  systemctl daemon-reload
+  systemctl start gost.service
+  systemctl enable gost.service
+fi
+}
 uninstall() {
   systemctl stop gost.service
   systemctl disable gost.service
@@ -60,10 +74,6 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
-  gzip -d gost-linux-${type}-${latest_version}.gz
-  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
-  chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/gost.service <<EOF
 [Unit]
 Description=gost proxy service
@@ -82,9 +92,7 @@ SyslogIdentifier=gost
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl daemon-reload
-  systemctl restart gost.service
-  systemctl enable gost.service
+  install
   echo "SOCKS5 安装成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
@@ -118,10 +126,6 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
-  gzip -d gost-linux-${type}-${latest_version}.gz
-  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
-  chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/gost.service <<EOF
 [Unit]
 Description=gost proxy service
@@ -140,9 +144,7 @@ SyslogIdentifier=gost
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl daemon-reload
-  systemctl restart gost.service
-  systemctl enable gost.service
+  install
   echo "SOCKS5-TLS 安装成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
@@ -172,10 +174,6 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
-  gzip -d gost-linux-${type}-${latest_version}.gz
-  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
-  chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/gost.service <<EOF
 [Unit]
 Description=gost proxy service
@@ -194,9 +192,7 @@ SyslogIdentifier=gost
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl daemon-reload
-  systemctl restart gost.service
-  systemctl enable gost.service
+  install
   echo "HTTP 安裝成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
@@ -230,10 +226,6 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
-  gzip -d gost-linux-${type}-${latest_version}.gz
-  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
-  chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/gost.service <<EOF
 [Unit]
 Description=gost proxy service
@@ -252,9 +244,7 @@ SyslogIdentifier=gost
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl daemon-reload
-  systemctl restart gost.service
-  systemctl enable gost.service
+  install
   echo "HTTPS 安装成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
@@ -288,10 +278,6 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
-  gzip -d gost-linux-${type}-${latest_version}.gz
-  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
-  chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/gost.service <<EOF
 [Unit]
 Description=gost proxy service
@@ -310,9 +296,7 @@ SyslogIdentifier=gost
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl daemon-reload
-  systemctl restart gost.service
-  systemctl enable gost.service
+  install
   echo "HTTP2 安装成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
@@ -340,10 +324,6 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
-  gzip -d gost-linux-${type}-${latest_version}.gz
-  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
-  chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/gost.service <<EOF
 [Unit]
 Description=gost proxy service
@@ -362,9 +342,7 @@ SyslogIdentifier=gost
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl daemon-reload
-  systemctl restart gost.service
-  systemctl enable gost.service
+  install
   echo "Shadowsocks 安装成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
@@ -395,10 +373,6 @@ EOF
     [yY]) ;;
     *) echo "已取消安装"; exit 0;;
   esac
-  wget -N --no-check-certificate https://github.com/ginuerzh/gost/releases/download/v${latest_version}/gost-linux-${type}-${latest_version}.gz
-  gzip -d gost-linux-${type}-${latest_version}.gz
-  mv gost-linux-${type}-${latest_version} /usr/local/bin/gost
-  chmod +x /usr/local/bin/gost
   cat > /etc/systemd/system/gost.service <<EOF
 [Unit]
 Description=gost proxy service
@@ -417,9 +391,7 @@ SyslogIdentifier=gost
 [Install]
 WantedBy=multi-user.target
 EOF
-  systemctl daemon-reload
-  systemctl restart gost.service
-  systemctl enable gost.service
+  install
   echo "Shadowsocks 安装成功"
   echo "客户端连接信息: "
   echo "端口: ${gost_port}"
