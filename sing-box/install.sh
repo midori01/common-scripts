@@ -22,7 +22,9 @@ package_name=sing-box-${latest_version}-linux-${type}
 package_name_beta=sing-box-${latest_version_beta}-linux-${type}
 download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
 download_url_beta=https://github.com/SagerNet/sing-box/releases/download/v${latest_version_beta}/${package_name_beta}.tar.gz
-public_ip=$(curl -s ip.sb -4)
+public_ipv4=$(curl -m 3 -s ip.sb -4)
+public_ipv6=$(curl -m 1 -s ip.sb -6)
+public_ip="${public_ipv4} 或 ${public_ipv6}"
 install() {
 if [ -f "/usr/local/bin/sing-box" ]; then
   systemctl restart sing-box.service
