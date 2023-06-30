@@ -863,6 +863,83 @@ echo "XTLS Flow: none"
 echo "Reality Public Key: ${vless_pubkey}"
 echo "Reality Short ID: ${vless_sid}"
 }
+vless-h2() {
+read -r -p "请输入节点端口 (留空默认 8964): " vless_port
+vless_port=${vless_port:-8964}
+read -r -p "请输入握手 SNI (不懂请留空): " vless_sni
+vless_sni=${vless_sni:-www.iq.com}
+cat <<EOF
+请确认以下配置信息：
+端口：${vless_port}
+SNI：${vless_sni}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+install
+vless_pass=$(/usr/local/bin/sing-box generate uuid)
+vless_sid=$(/usr/local/bin/sing-box generate rand --hex 8)
+output=$(/usr/local/bin/sing-box generate reality-keypair)
+vless_prikey=$(echo "$output" | awk '/PrivateKey:/ {print $2}')
+vless_pubkey=$(echo "$output" | awk '/PublicKey:/ {print $2}')
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "vless",
+            "listen": "::",
+            "listen_port": ${vless_port},
+            "users": [
+                {
+                    "uuid": "${vless_pass}",
+                    "flow": ""
+                }
+            ],
+            "transport": {
+                "type": "http"
+            },
+            "tls": {
+                "enabled": true,
+                "server_name": "${vless_sni}",
+                "reality": {
+                    "enabled": true,
+                    "handshake": {
+                        "server": "${vless_sni}",
+                        "server_port": 443
+                    },
+                    "private_key": "${vless_prikey}",
+                    "short_id": [
+                        "${vless_sid}"
+                    ]
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+systemctl restart sing-box.service
+echo "VLESS 安装成功"
+echo "客户端连接信息: "
+echo "地址: ${public_ip}"
+echo "端口: ${vless_port}"
+echo "用户: ${vless_pass}"
+echo "SNI: ${vless_sni}"
+echo "传输: HTTP/2"
+echo "XTLS Flow: none"
+echo "Reality Public Key: ${vless_pubkey}"
+echo "Reality Short ID: ${vless_sid}"
+}
 ss() {
 read -r -p "请输入节点端口 (留空默认 8964): " ss_port
 ss_port=${ss_port:-8964}
@@ -1208,6 +1285,10 @@ if [[ $1 == "vless" ]]; then
 fi
 if [[ $1 == "vless-grpc" ]]; then
   vless-grpc
+  exit 0
+fi
+if [[ $1 == "vless-h2" ]]; then
+  vless-h2
   exit 0
 fi
 if [[ $1 == "ss" ]]; then
