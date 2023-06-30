@@ -55,15 +55,15 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vmess-ws
 ```
-`VLESS REALITY (TCP):`
+`VLESS-REALITY-XTLS (TCP):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vless
 ```
-`VLESS REALITY (H2):`
+`VLESS-REALITY-TLS (H2):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vless-h2
 ```
-`VLESS REALITY (gRPC):`
+`VLESS-REALITY-TLS (gRPC):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vless-grpc
 ```
