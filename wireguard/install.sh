@@ -30,24 +30,28 @@ peer() {
   wg show wg0
 }
 reserved() {
-  read -p "请输入 access_token (留空将从 wgcf-account.toml 文件中获取): " access_token_input
+  read -p "请输入 access_token (留空将尝试从 wgcf 或 warp-go 配置文件中获取): " access_token_input
   if [ -z "$access_token_input" ]; then
     if [ -f "/etc/wireguard/wgcf-account.toml" ]; then
       access_token=$(grep -Po "(?<=access_token = ')[^']+" /etc/wireguard/wgcf-account.toml)
+    elif [ -f "/opt/warp-go/warp.conf" ]; then
+      access_token=$(grep -Po "(?<=Token\s*=\s*)[^\s]+" /opt/warp-go/warp.conf)
     else
-      echo "/etc/wireguard/wgcf-account.toml 文件不存在"
+      echo "未发现 wgcf 或 warp-go 配置文件"
       exit 1
     fi
   else
     access_token="$access_token_input"
   fi
   if [ -n "$access_token" ]; then
-    read -p "请输入 device_id (留空将从 wgcf-account.toml 文件中获取): " device_id_input
+    read -p "请输入 device_id (留空将尝试从 wgcf 或 warp-go 配置文件中获取): " device_id_input
     if [ -z "$device_id_input" ]; then
       if [ -f "/etc/wireguard/wgcf-account.toml" ]; then
         device_id=$(grep -Po "(?<=device_id = ')[^']+" /etc/wireguard/wgcf-account.toml)
+      elif [ -f "/opt/warp-go/warp.conf" ]; then
+        device_id=$(grep -Po "(?<=Device\s*=\s*)[^\s]+" /opt/warp-go/warp.conf)
       else
-        echo "/etc/wireguard/wgcf-account.toml 文件不存在"
+        echo "未发现 wgcf 或 warp-go 配置文件"
         exit 1
       fi
     else
