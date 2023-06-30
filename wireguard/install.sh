@@ -35,7 +35,7 @@ reserved() {
     if [ -f "/etc/wireguard/wgcf-account.toml" ]; then
       access_token=$(grep -Po "(?<=access_token = ')[^']+" /etc/wireguard/wgcf-account.toml)
     elif [ -f "/opt/warp-go/warp.conf" ]; then
-      access_token=$(grep -Po "(?<=Token\s*=\s*)[^\s]+" /opt/warp-go/warp.conf)
+      access_token=$(awk -F' *= *' '/Token/{print $2}' /opt/warp-go/warp.conf)
     else
       echo "未发现 wgcf 或 warp-go 配置文件"
       exit 1
@@ -49,7 +49,7 @@ reserved() {
       if [ -f "/etc/wireguard/wgcf-account.toml" ]; then
         device_id=$(grep -Po "(?<=device_id = ')[^']+" /etc/wireguard/wgcf-account.toml)
       elif [ -f "/opt/warp-go/warp.conf" ]; then
-        device_id=$(grep -Po "(?<=Device\s*=\s*)[^\s]+" /opt/warp-go/warp.conf)
+        device_id=$(awk -F' *= *' '/Device/{print $2}' /opt/warp-go/warp.conf)
       else
         echo "未发现 wgcf 或 warp-go 配置文件"
         exit 1
