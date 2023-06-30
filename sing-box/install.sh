@@ -648,6 +648,7 @@ echo "地址: ${public_ip}"
 echo "端口: ${vmess_port}"
 echo "用户: ${vmess_pass}"
 echo "传输: TCP"
+echo "AlterID: 0 (AEAD Enabled)"
 }
 vmess-ws() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
@@ -706,6 +707,7 @@ echo "端口: ${vmess_port}"
 echo "用户: ${vmess_pass}"
 echo "传输: WebSocket"
 echo "WebSocket 路径: ${ws_path}"
+echo "AlterID: 0 (AEAD Enabled)"
 }
 vless() {
 read -r -p "请输入节点端口 (留空默认 8964): " vless_port
