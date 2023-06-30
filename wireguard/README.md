@@ -11,7 +11,7 @@ wg-quick down wg0 && wg-quick up wg0
 ```bash
 wg show wg0
 ```
-`View Surge Configuration:`
+`View Surge Conf:`
 ```bash
 cat /etc/wireguard/wg_surge.conf
 ```
