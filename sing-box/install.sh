@@ -533,6 +533,74 @@ echo "SNI: ${cer_domain}"
 echo "传输: QUIC"
 echo "ALPN: h3"
 }
+trojan-h2() {
+read -r -p "请输入证书域名: " cer_domain
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
+read -r -p "请输入节点端口 (留空默认 8964): " trojan_port
+trojan_port=${trojan_port:-8964}
+read -r -p "请输入密码 (留空随机生成): " trojan_pass
+if [[ -z "$trojan_pass" ]]; then
+  trojan_pass=$(openssl rand -base64 12)
+fi
+cat <<EOF
+请确认以下配置信息：
+端口：${trojan_port}
+密码：${trojan_pass}
+证书域名：${cer_domain}
+证书路径：${cer_path}
+私钥路径：${key_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "trojan",
+            "listen": "::",
+            "listen_port": ${trojan_port},
+            "users": [
+                {
+                    "password": "${trojan_pass}"
+                }
+            ],
+            "transport": {
+                "type": "http"
+            },
+            "tls": {
+                "enabled": true,
+                "server_name": "${cer_domain}",
+                "certificate_path": "${cer_path}",
+                "key_path": "${key_path}"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+install
+echo "Trojan 安装成功"
+echo "客户端连接信息: "
+echo "地址: ${public_ip}"
+echo "端口: ${trojan_port}"
+echo "密码: ${trojan_pass}"
+echo "SNI: ${cer_domain}"
+echo "传输: HTTP/2"
+}
 vmess() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
 vmess_port=${vmess_port:-8964}
@@ -1120,6 +1188,10 @@ if [[ $1 == "trojan-grpc" ]]; then
 fi
 if [[ $1 == "trojan-quic" ]]; then
   trojan-quic
+  exit 0
+fi
+if [[ $1 == "trojan-h2" ]]; then
+  trojan-h2
   exit 0
 fi
 if [[ $1 == "vmess" ]]; then
