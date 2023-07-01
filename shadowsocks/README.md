@@ -11,9 +11,9 @@ wget https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/
 # SIP003 Plugin
 `simple-obfs:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/simple-obfs.sh")
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/sip003.sh") simple-obfs
 ```
 `v2ray-plugin:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/v2ray-plugin.sh")
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/sip003.sh") v2ray-plugin
 ```
