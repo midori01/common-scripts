@@ -9,3 +9,4 @@ git submodule update --init --recursive
 make install
 cd ..
 rm -r simple-obfs
+obfs-server -h
