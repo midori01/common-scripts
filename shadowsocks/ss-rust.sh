@@ -29,6 +29,7 @@ simple-obfs() {
   make install
   cd ..
   rm -r simple-obfs
+  obfs-server -h
 }
 
 v2ray-plugin() {
@@ -49,13 +50,11 @@ v2ray-plugin() {
 
 if [[ $1 == "simple-obfs" ]]; then
   simple-obfs
-  obfs-server -h
   exit 0
 fi
 
 if [[ $1 == "v2ray-plugin" ]]; then
   v2ray-plugin
-  v2ray-plugin -version
   exit 0
 fi
 
