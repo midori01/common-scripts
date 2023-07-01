@@ -1080,6 +1080,7 @@ cat > /etc/sing-box.json <<EOF
             "type": "shadowsocks",
             "tag": "shadowsocks",
             "listen": "127.0.0.1",
+            "network": "tcp",
             "method": "chacha20-ietf-poly1305",
             "password": "${ss_pass}"
         }
