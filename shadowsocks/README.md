@@ -8,8 +8,12 @@ wget -O ss-rust.sh --no-check-certificate https://raw.githubusercontent.com/mido
 ./ss-rust.sh
 ```
 
-# Advanced
+# SIP003 Plugin
 `simple-obfs:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/simple-obfs.sh")
+```
+`v2ray-plugin:`
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/v2ray-plugin.sh")
 ```
