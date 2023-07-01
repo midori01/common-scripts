@@ -26,7 +26,6 @@ v2ray-plugin() {
   rm -f v2ray-plugin-linux-${os_type}-${latest_version}.tar.gz
   mv ./v2ray-plugin_linux_${os_type} /usr/local/bin/v2ray-plugin
   chmod +x /usr/local/bin/v2ray-plugin
-  v2ray-plugin -version
 }
 if [[ $1 == "simple-obfs" ]]; then
   simple-obfs
@@ -34,5 +33,6 @@ if [[ $1 == "simple-obfs" ]]; then
 fi
 if [[ $1 == "v2ray-plugin" ]]; then
   v2ray-plugin
+  v2ray-plugin -version
   exit 0
 fi
