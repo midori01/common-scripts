@@ -21,10 +21,12 @@ peer() {
   read -r -p "请输入 Self IP: " peer_self_ipv4
   last_octet=$(echo "${peer_self_ipv4}" | awk -F. '{print $4}')
   peer_self_ipv6="fd10::${last_octet}"
+  presharedkey=$(openssl rand -base64 32)
   echo "" >> /etc/wireguard/wg0.conf
   echo "# ${note}" >> /etc/wireguard/wg0.conf
   echo "[Peer]" >> /etc/wireguard/wg0.conf
   echo "PublicKey = ${peer_public_key}" >> /etc/wireguard/wg0.conf
+  echo "PreSharedKey = ${presharedkey}" >> /etc/wireguard/wg0.conf
   echo "AllowedIPs = ${peer_self_ipv4}/32, ${peer_self_ipv6}/128" >> /etc/wireguard/wg0.conf
   wg syncconf wg0 <(wg-quick strip wg0)
   wg show wg0
@@ -100,6 +102,7 @@ i_privatekey=$(wg genkey | tee i_private.key)
 i_publickey=$(cat i_private.key | wg pubkey)
 p_privatekey=$(wg genkey | tee p_private.key)
 p_publickey=$(cat p_private.key | wg pubkey)
+presharedkey=$(openssl rand -base64 32)
 endpoint=$(curl -s ip.sb -4)
 section_name=$(cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w 8 | head -n 1)
 cat > /etc/wireguard/wg0.conf <<EOF
@@ -113,6 +116,7 @@ MTU = 1280
 
 [Peer]
 PublicKey = ${p_publickey}
+PreSharedKey = ${presharedkey}
 AllowedIPs = 10.89.64.2/32, fd10::2/128
 EOF
 rm -f i_private.key p_private.key
@@ -128,7 +132,7 @@ self-ip = 10.89.64.2
 self-ip-v6 = fd10::2
 dns-server = 1.1.1.1, 2606:4700:4700::1111
 mtu = 1280
-peer = (public-key = ${i_publickey}, allowed-ips = "0.0.0.0/0, ::0/0", endpoint = ${endpoint}:${wg_port}, keepalive = 25)
+peer = (public-key = ${i_publickey}, allowed-ips = "0.0.0.0/0, ::0/0", endpoint = ${endpoint}:${wg_port}, preshared-key=${presharedkey}, keepalive = 25)
 EOF
 echo "WireGuard 安装成功"
 echo "客户端配置: "
@@ -136,6 +140,7 @@ echo "Self IPv4: 10.89.64.2"
 echo "Self IPv6: fd10::2"
 echo "Private Key: ${p_privatekey}"
 echo "Public Key: ${i_publickey}"
+echo "Pre-shared Key: ${presharedkey}"
 echo "Endpoint: ${endpoint}:${wg_port}"
 echo "DNS: 1.1.1.1, 2606:4700:4700::1111"
 echo "MTU: 1280"
