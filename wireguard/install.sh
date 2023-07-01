@@ -28,6 +28,7 @@ peer() {
   echo "PublicKey = ${peer_public_key}" >> /etc/wireguard/wg0.conf
   echo "PreSharedKey = ${presharedkey}" >> /etc/wireguard/wg0.conf
   echo "AllowedIPs = ${peer_self_ipv4}/32, ${peer_self_ipv6}/128" >> /etc/wireguard/wg0.conf
+  echo "PersistentKeepalive = 25" >> /etc/wireguard/wg0.conf
   wg syncconf wg0 <(wg-quick strip wg0)
   wg show wg0
 }
@@ -118,14 +119,16 @@ MTU = 1280
 PublicKey = ${p_publickey}
 PreSharedKey = ${presharedkey}
 AllowedIPs = 10.89.64.2/32, fd10::2/128
+PersistentKeepalive = 25
 EOF
 rm -f i_private.key p_private.key
 wg-quick up wg0
 systemctl enable wg-quick@wg0
 cat > /etc/wireguard/wg_surge.conf <<EOF
-[Proxy]
+# 把以下内容添加到配置文件的 [Proxy] 段落中
 WG-Proxy = wireguard, section-name=${section_name}
 
+# 把以下内容添加到配置文件末尾
 [WireGuard ${section_name}]
 private-key = ${p_privatekey}
 self-ip = 10.89.64.2
