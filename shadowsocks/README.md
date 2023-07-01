@@ -8,7 +8,7 @@ wget https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/
 ./ss-rust.sh
 ```
 
-# SIP003 Plugin
+# Install Plugins
 `simple-obfs:`
 ```bash
 ./ss-rust.sh simple-obfs
