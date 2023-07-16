@@ -53,8 +53,12 @@ read -r -p "请输入 Snell 密码 (留空随机生成): " snell_password
 if [[ -z "$snell_password" ]]; then
   snell_password=$(openssl rand -base64 32)
 fi
-read -r -p "请输入 Snell 混淆方式 (可选值: http、tls) 不使用请留空: " snell_obfs
-snell_obfs=${snell_obfs:-off}
+read -r -p "是否开启 HTTP 混淆 (Y/N 默认不开启): " enable_http_obfs
+if [[ ${enable_http_obfs,,} == "y" ]]; then
+  snell_obfs="http"
+else
+  snell_obfs="off"
+fi
 cat <<EOF
 请确认以下配置信息：
 端口：${snell_port}
