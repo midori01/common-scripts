@@ -1035,11 +1035,9 @@ echo "加密: 2022-blake3-aes-128-gcm"
 ss-none() {
 read -r -p "请输入节点端口 (留空默认 8964): " ss_port
 ss_port=${ss_port:-8964}
-read -r -p "请输入密码 (不设置密码请留空): " ss_pass
 cat <<EOF
 请确认以下配置信息：
 端口：${ss_port}
-密码：${ss_pass}
 EOF
 read -r -p "确认无误？(Y/N)" confirm
 case "$confirm" in
@@ -1058,7 +1056,7 @@ cat > /etc/sing-box.json <<EOF
             "listen": "::",
             "listen_port": ${ss_port},
             "method": "none",
-            "password": "${ss_pass}"
+            "password": ""
         }
     ],
     "outbounds": [
@@ -1073,7 +1071,7 @@ echo "Shadowsocks 安装成功"
 echo "客户端连接信息: "
 echo "地址: ${public_ip}"
 echo "端口: ${ss_port}"
-echo "密码: ${ss_pass}"
+echo "密码: 无"
 echo "加密: none"
 }
 stls() {
