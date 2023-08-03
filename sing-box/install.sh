@@ -110,6 +110,87 @@ update-beta() {
   systemctl restart sing-box.service
   echo "sing-box 已更新"
 }
+tuic() {
+read -r -p "请输入证书域名: " cer_domain
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
+read -r -p "请输入节点端口 (留空默认 8964): " tuic_port
+tuic_port=${tuic_port:-8964}
+read -r -p "请输入密码 (留空随机生成): " tuic_pass
+if [[ -z "$tuic_pass" ]]; then
+  tuic_pass=$(openssl rand -base64 12)
+fi
+read -r -p "是否开启 0-RTT (Y/N 默认不开启): " enable_0_rtt
+if [[ ${enable_0_rtt,,} == "y" ]]; then
+  zero_rtt="true"
+else
+  zero_rtt="false"
+fi
+cat <<EOF
+请确认以下配置信息：
+端口：${tuic_port}
+密码：${tuic_pass}
+0-RTT：${zero_rtt}
+证书域名：${cer_domain}
+证书路径：${cer_path}
+私钥路径：${key_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+install
+tuic_uuid=$(/usr/local/bin/sing-box generate uuid)
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "tuic",
+            "listen": "::",
+            "listen_port": ${tuic_port},
+            "users": [
+                {
+                    "uuid": "${tuic_uuid}",
+                    "password": "${tuic_pass}"
+                }
+            ],
+            "congestion_control": "bbr",
+            "zero_rtt_handshake": ${zero_rtt},
+            "tls": {
+                "enabled": true,
+                "alpn": [
+                    "h3"
+                ],
+                "certificate_path": "${cer_path}",
+                "key_path": "${key_path}"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+systemctl restart sing-box.service
+echo "TUIC 安装成功"
+echo "客户端连接信息: "
+echo "地址: ${public_ip}"
+echo "端口: ${tuic_port}"
+echo "UUID: ${tuic_uuid}"
+echo "密码: ${tuic_pass}"
+echo "SNI: ${cer_domain}"
+echo "ALPN: h3"
+echo "流控: BBR"
+}
 naive() {
 read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
@@ -1286,6 +1367,10 @@ if [[ $1 == "update" ]]; then
 fi
 if [[ $1 == "update-beta" ]]; then
   update-beta
+  exit 0
+fi
+if [[ $1 == "tuic" ]]; then
+  tuic
   exit 0
 fi
 if [[ $1 == "naive" ]]; then
