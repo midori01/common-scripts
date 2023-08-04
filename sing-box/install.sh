@@ -189,7 +189,9 @@ echo "UUID: ${tuic_uuid}"
 echo "密码: ${tuic_pass}"
 echo "SNI: ${cer_domain}"
 echo "ALPN: h3"
-echo "流控: BBR"
+echo "流控模式: BBR"
+echo "UDP 转发模式: native 或 QUIC"
+echo "协议版本: v5"
 }
 naive() {
 read -r -p "请输入证书域名: " cer_domain
