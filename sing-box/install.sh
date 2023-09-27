@@ -333,6 +333,72 @@ echo "密码: ${hy_pass}"
 echo "SNI: ${cer_domain}"
 echo "ALPN: h3"
 }
+hy2() {
+read -r -p "请输入证书域名: " cer_domain
+read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
+cer_path=${cer_path:-/root/cert.crt}
+read -r -p "请输入私钥路径 (留空默认 /root/private.key): " key_path
+key_path=${key_path:-/root/private.key}
+read -r -p "请输入节点端口 (留空默认 8964): " hy_port
+hy_port=${hy_port:-8964}
+read -r -p "请输入密码 (留空随机生成): " hy_pass
+if [[ -z "$hy_pass" ]]; then
+  hy_pass=$(openssl rand -base64 12)
+fi
+cat <<EOF
+请确认以下配置信息：
+端口：${hy_port}
+密码：${hy_pass}
+证书域名：${cer_domain}
+证书路径：${cer_path}
+私钥路径：${key_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "hysteria2",
+            "listen": "::",
+            "listen_port": ${hy_port},
+            "users": [
+                {
+                    "password": "${hy_pass}"
+                }
+            ],
+            "tls": {
+                "enabled": true,
+                "server_name": "${cer_domain}",
+                "alpn": "h3",
+                "certificate_path": "${cer_path}",
+                "key_path": "${key_path}"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+install
+echo "Hysteria2 安装成功"
+echo "客户端连接信息: "
+echo "地址: ${public_ip}"
+echo "端口: ${hy_port}"
+echo "密码: ${hy_pass}"
+echo "SNI: ${cer_domain}"
+echo "ALPN: h3"
+}
 trojan() {
 read -r -p "请输入证书域名: " cer_domain
 read -r -p "请输入证书路径 (留空默认 /root/cert.crt): " cer_path
@@ -1381,6 +1447,10 @@ if [[ $1 == "naive" ]]; then
 fi
 if [[ $1 == "hy" ]]; then
   hy
+  exit 0
+fi
+if [[ $1 == "hy2" ]]; then
+  hy2
   exit 0
 fi
 if [[ $1 == "trojan" ]]; then
