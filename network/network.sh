@@ -45,7 +45,7 @@ sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.conf
 sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.conf
 cat >> /etc/sysctl.conf << EOF
 net.ipv4.tcp_no_metrics_save=1
-net.ipv4.tcp_ecn=0
+net.ipv4.tcp_ecn=1
 net.ipv4.tcp_frto=0
 net.ipv4.tcp_mtu_probing=0
 net.ipv4.tcp_rfc1337=0
