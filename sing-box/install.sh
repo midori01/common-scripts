@@ -9,7 +9,7 @@ if ! command -v wget &> /dev/null; then
   exit 1
 fi
 if [[ "$(uname -m)" == "x86_64" ]]; then
-  type="amd64v3"
+  type="amd64"
 elif [[ "$(uname -m)" == "aarch64" ]]; then
   type="arm64"
 else
