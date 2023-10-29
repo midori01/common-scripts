@@ -8,6 +8,10 @@ if ! command -v wget &> /dev/null; then
   echo "wget 未安装，请安装后再运行脚本"
   exit 1
 fi
+if ! command -v jq &> /dev/null; then
+  echo "jq 未安装，请安装后再运行脚本"
+  exit 1
+fi
 latest_release=$(curl -s https://api.github.com/repos/zhboner/realm/releases/latest)
 if [[ "$(echo "$latest_release" | jq -r '.message')" == "Not Found" ]]; then
   echo "获取最新版本失败"
