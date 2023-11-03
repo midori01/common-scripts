@@ -20,8 +20,12 @@ latest_version=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/
 latest_version_beta=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}' | head -n 1)
 package_name=sing-box-${latest_version}-linux-${type}
 package_name_beta=sing-box-${latest_version_beta}-linux-${type}
+package_name_v3=sing-box-${latest_version}-linux-amd64v3
+package_name_v3_beta=sing-box-${latest_version_beta}-linux-amd64v3
 download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
 download_url_beta=https://github.com/SagerNet/sing-box/releases/download/v${latest_version_beta}/${package_name_beta}.tar.gz
+download_url_v3=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name_v3}.tar.gz
+download_url_v3_beta=https://github.com/SagerNet/sing-box/releases/download/v${latest_version_beta}/${package_name_v3_beta}.tar.gz
 getip() {
 systemctl stop warp-go >/dev/null 2>&1
 wg-quick down wgcf >/dev/null 2>&1
@@ -99,6 +103,17 @@ update() {
   systemctl restart sing-box.service
   echo "sing-box 已更新"
 }
+update-v3() {
+  rm -f /usr/local/bin/sing-box
+  wget -N --no-check-certificate ${download_url_v3}
+  tar zxvf ${package_name_v3}.tar.gz
+  mv ${package_name_v3}/sing-box /usr/local/bin/sing-box
+  chmod +x /usr/local/bin/sing-box
+  rm -r ${package_name_v3}
+  rm -f ${package_name_v3}.tar.gz
+  systemctl restart sing-box.service
+  echo "sing-box 已更新"
+}
 update-beta() {
   rm -f /usr/local/bin/sing-box
   wget -N --no-check-certificate ${download_url_beta}
@@ -107,6 +122,17 @@ update-beta() {
   chmod +x /usr/local/bin/sing-box
   rm -r ${package_name_beta}
   rm -f ${package_name_beta}.tar.gz
+  systemctl restart sing-box.service
+  echo "sing-box 已更新"
+}
+update-beta-v3() {
+  rm -f /usr/local/bin/sing-box
+  wget -N --no-check-certificate ${download_url_v3_beta}
+  tar zxvf ${package_name_v3_beta}.tar.gz
+  mv ${package_name_v3_beta}/sing-box /usr/local/bin/sing-box
+  chmod +x /usr/local/bin/sing-box
+  rm -r ${package_name_v3_beta}
+  rm -f ${package_name_v3_beta}.tar.gz
   systemctl restart sing-box.service
   echo "sing-box 已更新"
 }
@@ -1433,8 +1459,16 @@ if [[ $1 == "update" ]]; then
   update
   exit 0
 fi
+if [[ $1 == "update-v3" ]]; then
+  update-v3
+  exit 0
+fi
 if [[ $1 == "update-beta" ]]; then
   update-beta
+  exit 0
+fi
+if [[ $1 == "update-beta-v3" ]]; then
+  update-beta-v3
   exit 0
 fi
 if [[ $1 == "tuic" ]]; then
