@@ -828,7 +828,7 @@ echo "AlterID: 0 (AEAD Enabled)"
 vmess-ws() {
 read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
 vmess_port=${vmess_port:-8964}
-read -r -p "请输入WebSocket 路径 (留空默认 /): " ws_path
+read -r -p "请输入 WebSocket 路径 (留空默认 /): " ws_path
 ws_path=${ws_path:-/}
 cat <<EOF
 请确认以下配置信息：
@@ -882,6 +882,63 @@ echo "端口: ${vmess_port}"
 echo "用户: ${vmess_pass}"
 echo "传输: WebSocket"
 echo "WebSocket 路径: ${ws_path}"
+echo "AlterID: 0 (AEAD Enabled)"
+}
+vmess-upgrade() {
+read -r -p "请输入节点端口 (留空默认 8964): " vmess_port
+vmess_port=${vmess_port:-8964}
+read -r -p "请输入 HTTP Upgrade 路径 (留空默认 /): " http_path
+http_path=${http_path:-/}
+cat <<EOF
+请确认以下配置信息：
+端口：${vmess_port}
+HTTP Upgrade 路径：${http_path}
+EOF
+read -r -p "确认无误？(Y/N)" confirm
+case "$confirm" in
+  [yY]) ;;
+  *) echo "已取消安装"; exit 0;;
+esac
+install
+vmess_pass=$(/usr/local/bin/sing-box generate uuid)
+cat > /etc/sing-box.json <<EOF
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "inbounds": [
+        {
+            "type": "vmess",
+            "listen": "::",
+            "listen_port": ${vmess_port},
+            "users": [
+                {
+                    "uuid": "${vmess_pass}",
+                    "alterId": 0
+                }
+            ],
+            "transport": {
+                "type": "httpupgrade",
+                "path": "${http_path}"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct"
+        }
+    ]
+}
+EOF
+systemctl restart sing-box.service
+echo "VMess 安装成功"
+echo "客户端连接信息: "
+echo "地址: ${public_ip}"
+echo "端口: ${vmess_port}"
+echo "用户: ${vmess_pass}"
+echo "传输: HTTP Upgrade"
+echo "HTTP Upgrade 路径: ${ws_path}"
 echo "AlterID: 0 (AEAD Enabled)"
 }
 vless() {
@@ -1513,6 +1570,10 @@ if [[ $1 == "vmess" ]]; then
 fi
 if [[ $1 == "vmess-ws" ]]; then
   vmess-ws
+  exit 0
+fi
+if [[ $1 == "vmess-upgrade" ]]; then
+  vmess-upgrade
   exit 0
 fi
 if [[ $1 == "vless" ]]; then
