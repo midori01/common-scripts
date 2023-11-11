@@ -1,8 +1,7 @@
 #!/bin/bash
 
 uninstall() {
-  systemctl stop sniproxy.service
-  systemctl disable sniproxy.service
+  systemctl disable sniproxy.service --now
   rm -f /etc/systemd/system/sniproxy.service
   apt purge sniproxy -y
   echo "done! "
@@ -31,19 +30,6 @@ ExecStart=/usr/sbin/sniproxy -c /etc/sniproxy.conf
 WantedBy=multi-user.target
 EOF
 cat > /etc/sniproxy.conf <<EOF
-user root
-pidfile /var/tmp/sniproxy.pid
-
-error_log {
-    syslog daemon
-    priority notice
-}
-
-resolver {
-    nameserver 1.1.1.1
-    nameserver 1.0.0.1
-}
-
 listener 80 {
     proto http
 }
@@ -53,12 +39,10 @@ listener 443 {
 }
 
 table {
-    .*example1\.com$ 127.0.0.1:8080
-    .*example2\.com$ 127.0.0.1:8443
-    .* *
+    example1.com 127.0.0.1:8080
+    example2.com 127.0.0.1:8443
 }
 EOF
 systemctl daemon-reload
-systemctl start sniproxy.service
-systemctl enable sniproxy.service
+systemctl enable sniproxy.service --now
 echo "done!"
