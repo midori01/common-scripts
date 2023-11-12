@@ -9,6 +9,7 @@ uninstall() {
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
+fi
 apt update && apt install sniproxy -y
 cat > /etc/systemd/system/sniproxy.service <<EOF
 [Unit]
