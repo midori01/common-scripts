@@ -33,10 +33,12 @@ EOF
 cat > /etc/sniproxy.conf <<EOF
 listener 80 {
     proto http
+    fallback 127.0.0.1:8080
 }
 
 listener 443 {
     proto tls
+    fallback 127.0.0.1:8443
 }
 
 table {
