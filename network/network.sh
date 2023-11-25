@@ -158,7 +158,7 @@ besttrace() {
 tcping() {
   apt update
   apt install -y python3 python3-pip
-  pip3 install tcping
+  pip3 install --no-cache-dir --break-system-packages tcping
   echo "tcping 已安装"
 }
 speedtest() {
