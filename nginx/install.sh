@@ -7,7 +7,7 @@ apt update
 apt install nginx -y
 apt install nginx-module-njs -y
 rm /etc/nginx/conf.d/*
-cat > /etc/nginx/http_server_name.js <<EOF
+cat > /etc/nginx/http_server_name.js <<'EOF'
 var server_name = '-';
 
 /**
@@ -47,7 +47,7 @@ function get_server_name(s) {
 
 export default {read_server_name, get_server_name}
 EOF
-cat > /etc/nginx/nginx.conf <<EOF
+cat > /etc/nginx/nginx.conf <<'EOF'
 user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
