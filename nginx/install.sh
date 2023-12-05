@@ -60,7 +60,7 @@ events {
 
 stream {
     map $ssl_preread_server_name $upstream_443 {
-        sni.nmsl.wsnd 127.0.0.1:8443
+        sni.nmsl.wsnd 127.0.0.1:8443;
     }
 
     js_import main from http_server_name.js;
