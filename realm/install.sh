@@ -88,7 +88,7 @@ Restart=on-failure
 RestartSec=5s
 DynamicUser=true
 WorkingDirectory=/usr/local/bin
-ExecStart=/usr/local/bin/realm -u -c /root/realm.json
+ExecStart=/usr/local/bin/realm -u -f -z --dns-mode ipv4_then_ipv6 -c /root/realm.json
 
 [Install]
 WantedBy=multi-user.target
