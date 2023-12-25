@@ -31,19 +31,30 @@ ExecStart=/usr/sbin/sniproxy -c /etc/sniproxy.conf
 WantedBy=multi-user.target
 EOF
 cat > /etc/sniproxy.conf <<EOF
+user root
+pidfile /var/tmp/sniproxy.pid
+
+error_log {
+    syslog daemon
+    priority notice
+}
+
+resolver {
+    nameserver 1.1.1.1
+    nameserver 1.0.0.1
+    mode ipv4_first
+}
+
 listener 80 {
     proto http
-    fallback 127.0.0.1:8080
 }
 
 listener 443 {
     proto tls
-    fallback 127.0.0.1:8443
 }
 
 table {
-    example1.com 127.0.0.1:8080
-    example2.com 127.0.0.1:8443
+    .* *
 }
 EOF
 systemctl daemon-reload
