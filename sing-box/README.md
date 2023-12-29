@@ -1,4 +1,4 @@
-# Good Protocols
+# Good TCP Protocols
 `Shadowsocks AEAD:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") ss
@@ -19,6 +19,8 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") mix
 ```
+
+# Good UDP Protocols
 `TUIC:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") tuic
