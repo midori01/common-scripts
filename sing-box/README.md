@@ -21,13 +21,9 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```
 
 # Good UDP Protocols
-`TUIC:`
+`TUIC-v5:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") tuic
-```
-`Hysteria:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") hy
 ```
 `Hysteria2:`
 ```bash
