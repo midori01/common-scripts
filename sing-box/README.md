@@ -1,4 +1,4 @@
-# Install
+# Good Protocols
 `Shadowsocks AEAD:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") ss
@@ -35,6 +35,8 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") hy2
 ```
+
+# Shit Protocols
 `NaïveProxy:`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") naive
