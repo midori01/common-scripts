@@ -61,12 +61,12 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") trojan-quic
 ```
+
+# Shit Protocols
 `VMess (TCP):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vmess
 ```
-
-# Shit Protocols
 `VMess (WebSocket):`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/sing-box/install.sh") vmess-ws
