@@ -71,22 +71,27 @@ stream {
     }
 
     server {
-        listen 443 reuseport;
-        listen [::]:443 reuseport;
+        listen 443;
+        listen [::]:443;
         ssl_preread on;
         proxy_pass $upstream_443;
     }
 
     server {
-        listen 80 reuseport;
-        listen [::]:80 reuseport;
+        listen 80;
+        listen [::]:80;
         js_preread main.read_server_name;
         proxy_pass $upstream_80;
     }
 }
 
 http {
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    gzip on;
     include /etc/nginx/mime.types;
+    default_type application/octet-stream;
     include /etc/nginx/conf.d/*.conf;
 }
 EOF
