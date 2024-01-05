@@ -71,15 +71,13 @@ stream {
     }
 
     server {
-        listen 443;
-        listen [::]:443;
+        listen [::]:443 ipv6only=off;
         ssl_preread on;
         proxy_pass $upstream_443;
     }
 
     server {
-        listen 80;
-        listen [::]:80;
+        listen [::]:80 ipv6only=off;
         js_preread main.read_server_name;
         proxy_pass $upstream_80;
     }
