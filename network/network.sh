@@ -140,7 +140,7 @@ besttrace() {
     echo "unzip 未安装，请安装后再运行脚本"
     exit 1
   fi
-  wget https://cdn.ipip.net/17mon/besttrace4linux.zip
+  wget https://pan.lvlv.lv/f/Oo7Cm/besttrace4linux.zip
   unzip besttrace4linux.zip -d best
   chmod +x best/besttrace*
   arch=$(uname -m)
