@@ -232,7 +232,7 @@
       "udp_disable_domain_unmapping": true,
       "network": "udp",
       "override_address": "<custom.target.address>",
-      "override_port": <custom.target.port>
+      "override_port": <custom.target.udp.port>
     },
     {
       "type": "direct",
