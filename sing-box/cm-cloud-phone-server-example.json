@@ -142,7 +142,6 @@
       "udp_disable_domain_unmapping": true,
       "users": [
         {
-          "name": "",
           "password": "<custom.generate.uuid>"
         }
       ],
