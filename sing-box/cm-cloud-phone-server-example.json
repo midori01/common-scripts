@@ -1,0 +1,288 @@
+{
+  "inbounds": [
+    {
+      "type": "shadowsocks",
+      "tag": "ss-none",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "method": "none",
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "ss-aead",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "method": "aes-128-gcm",
+      "password": "<custom.password>",
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "ss-2022",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "<custom.base64.16.password>",
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "mixed",
+      "tag": "mixed-auth",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "users": [
+        {
+          "Username": "<custom.username>",
+          "Password": "<custom.password>"
+        }
+      ]
+    },
+    {
+      "type": "mixed",
+      "tag": "mixed-no-auth",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true
+    },
+    {
+      "type": "vmess",
+      "tag": "vmess-tcp",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "users": [
+        {
+          "uuid": "<custom.generate.uuid>"
+        }
+      ],
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "vmess",
+      "tag": "vmess-ws",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "users": [
+        {
+          "uuid": "<custom.generate.uuid>"
+        }
+      ],
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      },
+      "transport": {
+        "type": "ws",
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "trojan",
+      "tag": "trojan-tcp",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "users": [
+        {
+          "password": "<custom.generate.uuid>"
+        }
+      ],
+      "tls": {
+        "enabled": true,
+        "certificate_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/cert.crt",
+        "key_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/key.crt"
+      },
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "trojan",
+      "tag": "trojan-ws",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "users": [
+        {
+          "name": "",
+          "password": "<custom.generate.uuid>"
+        }
+      ],
+      "tls": {
+        "enabled": true,
+        "certificate_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/cert.crt",
+        "key_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/key.crt"
+      },
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      },
+      "transport": {
+        "type": "ws",
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "shadowtls",
+      "tag": "stls",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "version": 3,
+      "users": [
+        {
+          "password": "<custom.password>"
+        }
+      ],
+      "handshake": {
+        "server": "www.iq.com",
+        "server_port": 443
+      },
+      "strict_mode": true
+    },
+    {
+      "type": "tuic",
+      "tag": "tuic",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "users": [
+        {
+          "uuid": "<custom.generate.uuid>",
+          "password": "<custom.password>"
+        }
+      ],
+      "congestion_control": "bbr",
+      "zero_rtt_handshake": true,
+      "tls": {
+        "enabled": true,
+        "alpn": "h3",
+        "certificate_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/cert.crt",
+        "key_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/key.crt"
+      }
+    },
+    {
+      "type": "hysteria2",
+      "tag": "hy2",
+      "listen": "::",
+      "listen_port": <custom.listen.port>,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "users": [
+        {
+          "password": "<custom.password>"
+        }
+      ],
+      "tls": {
+        "enabled": true,
+        "alpn": "h3",
+        "certificate_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/cert.crt",
+        "key_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/key.crt"
+      }
+    },
+    {
+      "type": "direct",
+      "listen": "::",
+      "listen_port": 10001,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "network": "udp",
+      "override_address": "<custom.target.address>",
+      "override_port": <custom.target.port>
+    },
+    {
+      "type": "direct",
+      "listen": "::",
+      "listen_port": 10002,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "override_address": "<custom.target.address>",
+      "override_port": <custom.target.port>
+    },
+    {
+      "type": "direct",
+      "listen": "::",
+      "listen_port": 10003,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "override_address": "<custom.target.address>",
+      "override_port": <custom.target.port>
+    },
+    {
+      "type": "direct",
+      "listen": "::",
+      "listen_port": 10004,
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "udp_disable_domain_unmapping": true,
+      "override_address": "<custom.target.address>",
+      "override_port": <custom.target.port>
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct"
+    },
+    {
+      "type": "direct",
+      "tag": "snell",
+      "override_address": "127.0.0.1",
+      "override_port": <custom.snell.listen.port>
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "inbound": "stls",
+        "outbound": "snell"
+      }
+    ]
+  }
+}
