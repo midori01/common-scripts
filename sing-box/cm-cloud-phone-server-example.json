@@ -30,21 +30,6 @@
       }
     },
     {
-      "type": "shadowsocks",
-      "tag": "ss-2022",
-      "listen": "::",
-      "listen_port": <custom.listen.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
-      "udp_disable_domain_unmapping": true,
-      "method": "2022-blake3-aes-128-gcm",
-      "password": "<custom.base64.16.password>",
-      "multiplex": {
-        "enabled": true,
-        "padding": true
-      }
-    },
-    {
       "type": "mixed",
       "tag": "mixed-auth",
       "listen": "::",
