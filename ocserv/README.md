@@ -4,5 +4,5 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```
 `Create user`
 ```bash
-ocpasswd -c /etc/ocserv/ocpasswd username
+ocpasswd -c /etc/ocserv/ocpasswd midori
 ```
