@@ -113,6 +113,7 @@ predictable-ips = true
 ping-leases = true
 net-priority = 3
 EOF
+cp /WebDAV/cert/server.* /etc/ocserv/
 systemctl restart ocserv.service
 iptables -I FORWARD -s 10.11.11.0/24 -j ACCEPT
 iptables -I FORWARD -d 10.11.11.0/24 -j ACCEPT
