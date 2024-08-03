@@ -51,6 +51,28 @@
   ],
   "outbounds": [
     {
+      "type": "selector",
+      "tag": "PROXY",
+      "outbounds": [
+        "AUTO",
+        "DIRECT",
+        "NODE-01",
+        "NODE-02",
+        "NODE-03"
+      ],
+      "interrupt_exist_connections": true
+    },
+    {
+      "type": "urltest",
+      "tag": "AUTO",
+      "outbounds": [
+        "NODE-01",
+        "NODE-02",
+        "NODE-03"
+      ],
+      "interrupt_exist_connections": true
+    },
+    {
       "type": "shadowsocks",
       "tag": "NODE-01",
       "tcp_fast_open": true,
@@ -91,28 +113,6 @@
         "enabled": true,
         "padding": true
       }
-    },
-    {
-      "type": "selector",
-      "tag": "PROXY",
-      "outbounds": [
-        "AUTO",
-        "DIRECT",
-        "NODE-01",
-        "NODE-02",
-        "NODE-03"
-      ],
-      "interrupt_exist_connections": true
-    },
-    {
-      "type": "urltest",
-      "tag": "AUTO",
-      "outbounds": [
-        "NODE-01",
-        "NODE-02",
-        "NODE-03"
-      ],
-      "interrupt_exist_connections": true
     },
     {
 "type": "direct",
