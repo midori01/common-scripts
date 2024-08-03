@@ -96,3 +96,4 @@ ip6tables -t nat -A POSTROUTING -s fd11::/80 ! -o op+ -j MASQUERADE
 echo "ocserv 安装成功"
 echo "添加用户: ocpasswd -c /etc/ocserv/ocpasswd example-username"
 echo "重启服务: systemctl restart ocserv.service"
+echo "配置路径: /etc/ocserv/ocserv.conf"
