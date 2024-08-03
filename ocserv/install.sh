@@ -26,6 +26,7 @@ read -r -p "请输入证书路径 (留空使用 /etc/ocserv/cert.pem): " cert_pa
 cert_path=${cert_path:-/etc/ocserv/cert.pem}
 read -r -p "请输入私钥路径 (留空使用 /etc/ocserv/key.pem): " key_path
 key_path=${key_path:-/etc/ocserv/key.pem}
+modprobe tun
 apt update && apt install ocserv -y
 cat > /etc/ocserv/ocserv.conf <<EOF
 log-level = 1
