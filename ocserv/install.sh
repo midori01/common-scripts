@@ -94,5 +94,5 @@ ip6tables -I FORWARD -d fd11::/80 -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.11.11.0/24 ! -o op+ -j MASQUERADE
 ip6tables -t nat -A POSTROUTING -s fd11::/80 ! -o op+ -j MASQUERADE
 echo "ocserv 安装成功"
-echo "添加用户: ocpasswd -c /etc/ocserv/ocpasswd example-username 添加用户"
+echo "添加用户: ocpasswd -c /etc/ocserv/ocpasswd example-username"
 echo "重启服务: systemctl restart ocserv.service"
