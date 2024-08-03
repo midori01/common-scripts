@@ -1,0 +1,91 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "address": "1.1.1.1",
+        "strategy": "prefer_ipv4"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "inet4_address": "10.13.0.1/30",
+      "inet6_address": "fd13::1/126",
+      "auto_route": true,
+      "strict_route": true,
+      "sniff": true
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "selector",
+      "tag": "PROXY",
+      "outbounds": [
+        "NODE-01",
+        "NODE-02",
+        "NODE-03"
+      ],
+      "interrupt_exist_connections": true
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "NODE-01",
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "server": "8.9.6.4",
+      "server_port": 8964,
+      "method": "aes-128-gcm",
+      "password": "nmsl",
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "NODE-02",
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "server": "8.9.6.4",
+      "server_port": 8964,
+      "method": "aes-128-gcm",
+      "password": "nmsl",
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "NODE-03",
+      "tcp_fast_open": true,
+      "udp_fragment": true,
+      "server": "8.9.6.4",
+      "server_port": 8964,
+      "method": "aes-128-gcm",
+      "password": "nmsl",
+      "multiplex": {
+        "enabled": true,
+        "padding": true
+      }
+    },
+    {
+      "type": "dns",
+      "tag": "DNS"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "DNS"
+      }
+    ],
+    "auto_detect_interface": true
+  }
+}
