@@ -40,8 +40,8 @@
       "udp_disable_domain_unmapping": true,
       "users": [
         {
-          "Username": "<custom.username>",
-          "Password": "<custom.password>"
+          "username": "<custom.username>",
+          "password": "<custom.password>"
         }
       ]
     },
