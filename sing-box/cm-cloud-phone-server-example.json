@@ -6,8 +6,6 @@
       "tag": "ss-none",
       "listen": "::",
       "listen_port": <custom.listen.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "method": "none",
       "multiplex": {
@@ -20,8 +18,6 @@
       "tag": "ss-aead",
       "listen": "::",
       "listen_port": <custom.listen.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "method": "aes-128-gcm",
       "password": "<custom.password>",
@@ -35,8 +31,6 @@
       "tag": "mixed-auth",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "users": [
         {
@@ -50,8 +44,6 @@
       "tag": "mixed-no-auth",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true
     },
     {
@@ -59,8 +51,6 @@
       "tag": "vmess-tcp",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "users": [
         {
@@ -77,8 +67,6 @@
       "tag": "vmess-ws",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "users": [
         {
@@ -100,8 +88,6 @@
       "tag": "trojan-tcp",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "users": [
         {
@@ -123,8 +109,6 @@
       "tag": "trojan-ws",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "users": [
         {
@@ -151,8 +135,6 @@
       "tag": "stls",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "version": 3,
       "users": [
@@ -171,8 +153,6 @@
       "tag": "tuic",
       "listen": "::",
       "listen_port": <custom.listen.udp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "users": [
         {
@@ -194,8 +174,6 @@
       "tag": "hy2",
       "listen": "::",
       "listen_port": <custom.listen.udp.port>,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
       "users": [
         {
@@ -215,9 +193,6 @@
       "type": "direct",
       "listen": "::",
       "listen_port": 10001,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
-      "udp_disable_domain_unmapping": true,
       "override_address": "<custom.target.address>",
       "override_port": <custom.target.port>
     },
@@ -225,9 +200,6 @@
       "type": "direct",
       "listen": "::",
       "listen_port": 10002,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
-      "udp_disable_domain_unmapping": true,
       "override_address": "<custom.target.address>",
       "override_port": <custom.target.port>
     },
@@ -235,9 +207,6 @@
       "type": "direct",
       "listen": "::",
       "listen_port": 10003,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
-      "udp_disable_domain_unmapping": true,
       "override_address": "<custom.target.address>",
       "override_port": <custom.target.port>
     },
@@ -245,9 +214,6 @@
       "type": "direct",
       "listen": "::",
       "listen_port": 10004,
-      "tcp_fast_open": true,
-      "udp_fragment": true,
-      "udp_disable_domain_unmapping": true,
       "override_address": "<custom.target.address>",
       "override_port": <custom.target.port>
     }
