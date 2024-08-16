@@ -1,5 +1,6 @@
 {
   "inbounds": [
+// Proxy Server //
     {
       "type": "shadowsocks",
       "tag": "ss-none",
@@ -208,6 +209,8 @@
         "key_path": "/storage/emulated/0/Android/data/io.nekohasekai.sfa/files/key.crt"
       }
     },
+
+// Port Forwarding //
     {
       "type": "direct",
       "listen": "::",
@@ -215,9 +218,8 @@
       "tcp_fast_open": true,
       "udp_fragment": true,
       "udp_disable_domain_unmapping": true,
-      "network": "udp",
       "override_address": "<custom.target.address>",
-      "override_port": <custom.target.udp.port>
+      "override_port": <custom.target.port>
     },
     {
       "type": "direct",
