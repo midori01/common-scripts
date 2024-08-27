@@ -12,7 +12,7 @@ if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
 fi
-snell_version=v4.0.1
+snell_version=v4.1.0b1
 shadowtls_version=$(curl -m 10 -sL "https://api.github.com/repos/ihciah/shadow-tls/releases/latest" | awk -F'"' '/tag_name/{print $4}')
 if [[ "$(uname -m)" == "x86_64" ]]; then
   snell_type="amd64"
@@ -35,7 +35,7 @@ uninstall() {
   rm -f /etc/shadow-tls.json
   rm -f /usr/local/bin/snell-server
   rm -f /usr/local/bin/shadow-tls
-  echo "Snell + Shadow-TLS 已卸载"
+  echo "Snell + Shadow TLS 已卸载"
 }
 update() {
   rm -f /usr/local/bin/snell-server
@@ -49,7 +49,7 @@ update() {
   chmod +x /usr/local/bin/shadow-tls
   systemctl restart snell.service
   systemctl restart shadow-tls.service
-  echo "Snell + Shadow-TLS 已更新"
+  echo "Snell + Shadow TLS 已更新"
 }
 if [[ $1 == "uninstall" ]]; then
   uninstall
@@ -65,21 +65,21 @@ read -r -p "请输入 Snell 密码 (留空随机生成): " snell_password
 if [[ -z "$snell_password" ]]; then
   snell_password=$(openssl rand -base64 32)
 fi
-read -r -p "请输入 Shadow-TLS 监听端口 (留空默认 443): " shadowtls_port
+read -r -p "请输入 Shadow TLS 监听端口 (留空默认 443): " shadowtls_port
 shadowtls_port=${shadowtls_port:-443}
-read -r -p "请输入 Shadow-TLS 密码 (留空随机生成): " shadowtls_password
+read -r -p "请输入 Shadow TLS 密码 (留空随机生成): " shadowtls_password
 if [[ -z "$shadowtls_password" ]]; then
   shadowtls_password=$(openssl rand -base64 32)
 fi
-read -r -p "请输入 Shadow-TLS SNI (留空默认 www.iq.com): " sni_domain
+read -r -p "请输入 Shadow TLS SNI (留空默认 www.iq.com): " sni_domain
 sni_domain=${sni_domain:-www.iq.com}
 cat <<EOF
 请确认以下配置信息：
 Snell 端口：${snell_port}
 Snell 密码：${snell_password}
-Shadow-TLS 端口：${shadowtls_port}
-Shadow-TLS 密码：${shadowtls_password}
-Shadow-TLS SNI：${sni_domain}
+Shadow TLS 端口：${shadowtls_port}
+Shadow TLS 密码：${shadowtls_password}
+Shadow TLS SNI：${sni_domain}
 EOF
 read -r -p "确认无误？(Y/N)" confirm
 case "$confirm" in
@@ -163,12 +163,12 @@ systemctl start snell.service
 systemctl start shadow-tls.service
 systemctl enable snell.service
 systemctl enable shadow-tls.service
-echo "Snell + Shadow-TLS 安装成功"
+echo "Snell + Shadow TLS 安装成功"
 echo "客户端连接信息: "
 echo "连接端口: ${shadowtls_port}"
 echo "Snell 密码: ${snell_password}"
 echo "Snell 混淆: Disabled"
 echo "Snell 版本: v4"
-echo "Shadow-TLS 密码: ${shadowtls_password}"
-echo "Shadow-TLS SNI: ${sni_domain}"
-echo "Shadow-TLS 版本: v3"
+echo "Shadow TLS 密码: ${shadowtls_password}"
+echo "Shadow TLS SNI: ${sni_domain}"
+echo "Shadow TLS 版本: v3"
