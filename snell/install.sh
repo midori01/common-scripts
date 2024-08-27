@@ -12,7 +12,7 @@ if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
 fi
-snell_version=v4.1.0b1
+snell_version=v4.1.0b2
 if [[ "$(uname -m)" == "x86_64" ]]; then
   snell_type="amd64"
 elif [[ "$(uname -m)" == "aarch64" ]]; then
