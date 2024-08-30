@@ -6,7 +6,6 @@
       "tag": "ss-none",
       "listen": "::",
       "listen_port": <custom.listen.port>,
-      "udp_disable_domain_unmapping": true,
       "method": "none",
       "multiplex": {
         "enabled": true,
@@ -18,7 +17,6 @@
       "tag": "ss-aead",
       "listen": "::",
       "listen_port": <custom.listen.port>,
-      "udp_disable_domain_unmapping": true,
       "method": "aes-128-gcm",
       "password": "<custom.password>",
       "multiplex": {
@@ -31,7 +29,6 @@
       "tag": "mixed-auth",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "udp_disable_domain_unmapping": true,
       "users": [
         {
           "username": "<custom.username>",
@@ -44,14 +41,12 @@
       "tag": "mixed-no-auth",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "udp_disable_domain_unmapping": true
     },
     {
       "type": "vmess",
       "tag": "vmess-tcp",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "udp_disable_domain_unmapping": true,
       "users": [
         {
           "uuid": "<custom.generate.uuid>"
@@ -67,7 +62,6 @@
       "tag": "vmess-ws",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "udp_disable_domain_unmapping": true,
       "users": [
         {
           "uuid": "<custom.generate.uuid>"
@@ -88,7 +82,6 @@
       "tag": "trojan-tcp",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "udp_disable_domain_unmapping": true,
       "users": [
         {
           "password": "<custom.generate.uuid>"
@@ -109,7 +102,6 @@
       "tag": "trojan-ws",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "udp_disable_domain_unmapping": true,
       "users": [
         {
           "password": "<custom.generate.uuid>"
@@ -135,7 +127,6 @@
       "tag": "stls",
       "listen": "::",
       "listen_port": <custom.listen.tcp.port>,
-      "udp_disable_domain_unmapping": true,
       "version": 3,
       "users": [
         {
@@ -153,7 +144,6 @@
       "tag": "tuic",
       "listen": "::",
       "listen_port": <custom.listen.udp.port>,
-      "udp_disable_domain_unmapping": true,
       "users": [
         {
           "uuid": "<custom.generate.uuid>",
@@ -174,7 +164,6 @@
       "tag": "hy2",
       "listen": "::",
       "listen_port": <custom.listen.udp.port>,
-      "udp_disable_domain_unmapping": true,
       "users": [
         {
           "password": "<custom.password>"
