@@ -12,7 +12,7 @@ if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
 fi
-snell_version=v4.1.0
+snell_version=v4.1.1
 shadowtls_version=$(curl -m 10 -sL "https://api.github.com/repos/ihciah/shadow-tls/releases/latest" | awk -F'"' '/tag_name/{print $4}')
 if [[ "$(uname -m)" == "x86_64" ]]; then
   snell_type="amd64"
