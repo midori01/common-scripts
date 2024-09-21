@@ -93,48 +93,48 @@ uninstall-keep() {
   echo "配置文件保留 /etc/sing-box.json"
 }
 update() {
-  rm -f /usr/local/bin/sing-box
-  wget -N --no-check-certificate ${download_url}
-  tar zxvf ${package_name}.tar.gz
-  mv ${package_name}/sing-box /usr/local/bin/sing-box
-  chmod +x /usr/local/bin/sing-box
-  rm -r ${package_name}
-  rm -f ${package_name}.tar.gz
-  systemctl restart sing-box.service
-  echo "sing-box 已更新"
+  rm -f /usr/local/bin/sing-box > /dev/null 2>&1
+  wget -N --no-check-certificate ${download_url} > /dev/null 2>&1
+  tar zxvf ${package_name}.tar.gz > /dev/null 2>&1
+  mv ${package_name}/sing-box /usr/local/bin/sing-box > /dev/null 2>&1
+  chmod +x /usr/local/bin/sing-box > /dev/null 2>&1
+  rm -r ${package_name} > /dev/null 2>&1
+  rm -f ${package_name}.tar.gz > /dev/null 2>&1
+  systemctl restart sing-box.service > /dev/null 2>&1
+  echo "sing-box ${latest_version} has been successfully updated."
 }
 update-v3() {
-  rm -f /usr/local/bin/sing-box
-  wget -N --no-check-certificate ${download_url_v3}
-  tar zxvf ${package_name_v3}.tar.gz
-  mv ${package_name_v3}/sing-box /usr/local/bin/sing-box
-  chmod +x /usr/local/bin/sing-box
-  rm -r ${package_name_v3}
-  rm -f ${package_name_v3}.tar.gz
-  systemctl restart sing-box.service
-  echo "sing-box 已更新"
+  rm -f /usr/local/bin/sing-box > /dev/null 2>&1
+  wget -N --no-check-certificate ${download_url_v3} > /dev/null 2>&1
+  tar zxvf ${package_name_v3}.tar.gz > /dev/null 2>&1
+  mv ${package_name_v3}/sing-box /usr/local/bin/sing-box > /dev/null 2>&1
+  chmod +x /usr/local/bin/sing-box > /dev/null 2>&1
+  rm -r ${package_name_v3} > /dev/null 2>&1
+  rm -f ${package_name_v3}.tar.gz > /dev/null 2>&1
+  systemctl restart sing-box.service > /dev/null 2>&1
+  echo "sing-box ${latest_version} has been successfully updated."
 }
 update-beta() {
-  rm -f /usr/local/bin/sing-box
-  wget -N --no-check-certificate ${download_url_beta}
-  tar zxvf ${package_name_beta}.tar.gz
-  mv ${package_name_beta}/sing-box /usr/local/bin/sing-box
-  chmod +x /usr/local/bin/sing-box
-  rm -r ${package_name_beta}
-  rm -f ${package_name_beta}.tar.gz
-  systemctl restart sing-box.service
-  echo "sing-box 已更新"
+  rm -f /usr/local/bin/sing-box > /dev/null 2>&1
+  wget -N --no-check-certificate ${download_url_beta} > /dev/null 2>&1
+  tar zxvf ${package_name_beta}.tar.gz > /dev/null 2>&1
+  mv ${package_name_beta}/sing-box /usr/local/bin/sing-box > /dev/null 2>&1
+  chmod +x /usr/local/bin/sing-box > /dev/null 2>&1
+  rm -r ${package_name_beta} > /dev/null 2>&1
+  rm -f ${package_name_beta}.tar.gz > /dev/null 2>&1
+  systemctl restart sing-box.service > /dev/null 2>&1
+  echo "sing-box ${latest_version_beta} has been successfully updated."
 }
 update-beta-v3() {
-  rm -f /usr/local/bin/sing-box
-  wget -N --no-check-certificate ${download_url_v3_beta}
-  tar zxvf ${package_name_v3_beta}.tar.gz
-  mv ${package_name_v3_beta}/sing-box /usr/local/bin/sing-box
-  chmod +x /usr/local/bin/sing-box
-  rm -r ${package_name_v3_beta}
-  rm -f ${package_name_v3_beta}.tar.gz
-  systemctl restart sing-box.service
-  echo "sing-box 已更新"
+  rm -f /usr/local/bin/sing-box > /dev/null 2>&1
+  wget -N --no-check-certificate ${download_url_v3_beta} > /dev/null 2>&1
+  tar zxvf ${package_name_v3_beta}.tar.gz > /dev/null 2>&1
+  mv ${package_name_v3_beta}/sing-box /usr/local/bin/sing-box > /dev/null 2>&1
+  chmod +x /usr/local/bin/sing-box > /dev/null 2>&1
+  rm -r ${package_name_v3_beta} > /dev/null 2>&1
+  rm -f ${package_name_v3_beta}.tar.gz > /dev/null 2>&1
+  systemctl restart sing-box.service > /dev/null 2>&1
+  echo "sing-box ${latest_version_beta} has been successfully updated."
 }
 tuic() {
 read -r -p "请输入证书域名: " cer_domain
