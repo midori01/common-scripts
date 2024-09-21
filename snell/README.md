@@ -11,17 +11,3 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/snell/install.sh") uninstall
 ```
-
-# Snell x Shadow TLS
-`Install:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/snell/stls.sh")
-```
-`Update:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/snell/stls.sh") update
-```
-`Uninstall:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/snell/stls.sh") uninstall
-```
