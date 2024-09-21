@@ -23,8 +23,7 @@ else
 fi
 
 uninstall() {
-  systemctl stop snell.service
-  systemctl disable snell.service
+  systemctl disable snell.service --now
   rm -f /etc/systemd/system/snell.service
   rm -f /etc/snell-server.conf
   rm -f /usr/local/bin/snell-server
@@ -40,6 +39,7 @@ update() {
   chmod +x /usr/local/bin/snell-server > /dev/null 2>&1
   rm snell-server-${snell_version}-linux-${snell_type}.zip > /dev/null 2>&1
   systemctl restart snell.service > /dev/null 2>&1
+  systemctl restart snell2.service > /dev/null 2>&1
   echo "Snell ${snell_version} has been successfully updated."
 }
 
@@ -116,12 +116,11 @@ obfs = ${snell_obfs}
 EOF
 
 systemctl daemon-reload
-systemctl start snell.service
-systemctl enable snell.service
+systemctl enable snell.service --now
 
 echo "Snell 安装成功"
 echo "客户端连接信息: "
 echo "端口: ${snell_port}"
 echo "密码: ${snell_password}"
 echo "混淆: ${snell_obfs}"
-echo "版本: ${default_snell_version}"
+echo "版本: v4"
