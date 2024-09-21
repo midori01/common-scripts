@@ -57,8 +57,8 @@ if [[ $1 == "update" ]]; then
   exit 0
 fi
 
-read -r -p "请输入 Snell 监听端口 (留空默认 6800): " snell_port
-snell_port=${snell_port:-6800}
+read -r -p "请输入 Snell 监听端口 (留空默认 8964): " snell_port
+snell_port=${snell_port:-8964}
 read -r -p "请输入 Snell 密码 (留空随机生成): " snell_password
 if [[ -z "$snell_password" ]]; then
   snell_password=$(openssl rand -base64 32)
