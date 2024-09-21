@@ -12,7 +12,7 @@ if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
 fi
-snell_version=v4.1.1
+default_snell_version=v4.1.1
 if [[ "$(uname -m)" == "x86_64" ]]; then
   snell_type="amd64"
 elif [[ "$(uname -m)" == "aarch64" ]]; then
@@ -21,6 +21,7 @@ else
   echo "$(uname -m) 架构不支持"
   exit 1
 fi
+
 uninstall() {
   systemctl stop snell.service
   systemctl disable snell.service
@@ -29,24 +30,33 @@ uninstall() {
   rm -f /usr/local/bin/snell-server
   echo "Snell 已卸载"
 }
+
 update() {
-  rm /usr/local/bin/snell-server
-  wget -N --no-check-certificate https://dl.nssurge.com/snell/snell-server-${snell_version}-linux-${snell_type}.zip
-  unzip snell-server-${snell_version}-linux-${snell_type}.zip
-  mv snell-server /usr/local/bin/snell-server
-  chmod +x /usr/local/bin/snell-server
-  rm snell-server-${snell_version}-linux-${snell_type}.zip
-  systemctl restart snell.service
-  echo "Snell 已更新"
+  local snell_version=${1:-$default_snell_version}
+  rm /usr/local/bin/snell-server > /dev/null 2>&1
+  wget -N --no-check-certificate https://dl.nssurge.com/snell/snell-server-${snell_version}-linux-${snell_type}.zip > /dev/null 2>&1
+  unzip snell-server-${snell_version}-linux-${snell_type}.zip > /dev/null 2>&1
+  mv snell-server /usr/local/bin/snell-server > /dev/null 2>&1
+  chmod +x /usr/local/bin/snell-server > /dev/null 2>&1
+  rm snell-server-${snell_version}-linux-${snell_type}.zip > /dev/null 2>&1
+  systemctl restart snell.service > /dev/null 2>&1
+  echo "Snell ${snell_version} has been successfully updated."
 }
+
 if [[ $1 == "uninstall" ]]; then
   uninstall
   exit 0
 fi
+
 if [[ $1 == "update" ]]; then
-  update
+  if [[ -n $2 ]]; then
+    update "$2"
+  else
+    update
+  fi
   exit 0
 fi
+
 read -r -p "请输入 Snell 监听端口 (留空默认 6800): " snell_port
 snell_port=${snell_port:-6800}
 read -r -p "请输入 Snell 密码 (留空随机生成): " snell_password
@@ -59,6 +69,7 @@ if [[ ${enable_http_obfs,,} == "y" ]]; then
 else
   snell_obfs="off"
 fi
+
 cat <<EOF
 请确认以下配置信息：
 端口：${snell_port}
@@ -70,11 +81,13 @@ case "$confirm" in
   [yY]) ;;
   *) echo "已取消安装"; exit 0;;
 esac
-wget -N --no-check-certificate https://dl.nssurge.com/snell/snell-server-${snell_version}-linux-${snell_type}.zip
-unzip snell-server-${snell_version}-linux-${snell_type}.zip
+
+wget -N --no-check-certificate https://dl.nssurge.com/snell/snell-server-${default_snell_version}-linux-${snell_type}.zip
+unzip snell-server-${default_snell_version}-linux-${snell_type}.zip
 mv snell-server /usr/local/bin/snell-server
 chmod +x /usr/local/bin/snell-server
-rm snell-server-${snell_version}-linux-${snell_type}.zip
+rm snell-server-${default_snell_version}-linux-${snell_type}.zip
+
 cat > /etc/systemd/system/snell.service <<EOF
 [Unit]
 Description=Snell Proxy Service
@@ -93,6 +106,7 @@ SyslogIdentifier=snell-server
 [Install]
 WantedBy=multi-user.target
 EOF
+
 cat > /etc/snell-server.conf <<EOF
 [snell-server]
 listen = ::0:${snell_port}
@@ -100,12 +114,14 @@ psk = ${snell_password}
 ipv6 = true
 obfs = ${snell_obfs}
 EOF
+
 systemctl daemon-reload
 systemctl start snell.service
 systemctl enable snell.service
+
 echo "Snell 安装成功"
 echo "客户端连接信息: "
-echo "端口: ${shadowtls_port}"
+echo "端口: ${snell_port}"
 echo "密码: ${snell_password}"
 echo "混淆: ${snell_obfs}"
-echo "版本: v4"
+echo "版本: ${default_snell_version}"
