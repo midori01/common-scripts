@@ -8,6 +8,10 @@ if ! command -v wget &> /dev/null; then
   echo "wget 未安装，请安装后再运行脚本"
   exit 1
 fi
+if ! command -v curl &> /dev/null; then
+  echo "curl 未安装，请安装后再运行脚本"
+  exit 1
+fi
 if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
