@@ -16,7 +16,7 @@ if ! command -v unzip &> /dev/null; then
   echo "unzip 未安装，请安装后再运行脚本"
   exit 1
 fi
-default_snell_version=$(curl -s https://manual.nssurge.com/others/snell.html | grep -oP 'snell-server-\K.*(?=-linux)' | head -1)
+default_snell_version=$(curl -s -H "Cache-Control: no-cache" https://manual.nssurge.com/others/snell.html | grep -oP 'snell-server-\Kv[0-9.]+(?=-linux)' | head -1)
 if [[ "$(uname -m)" == "x86_64" ]]; then
   snell_type="amd64"
 elif [[ "$(uname -m)" == "aarch64" ]]; then
