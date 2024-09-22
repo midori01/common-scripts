@@ -10,22 +10,29 @@ if ! command -v wget &> /dev/null; then
 fi
 if [[ "$(uname -m)" == "x86_64" ]]; then
   type="amd64"
+  if grep -qE 'avx2|bmi1|bmi2|fma|movbe' <(cat /proc/cpuinfo | grep flags | head -n 1); then
+    support_v3=true
+  else
+    support_v3=false
+  fi
 elif [[ "$(uname -m)" == "aarch64" ]]; then
   type="arm64"
+  support_v3=false
 else
   echo "$(uname -m) 架构不支持"
   exit 1
 fi
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
 latest_version_beta=$(curl -m 10 -sL "https://api.github.com/repos/SagerNet/sing-box/releases" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}' | head -n 1)
-package_name=sing-box-${latest_version}-linux-${type}
-package_name_beta=sing-box-${latest_version_beta}-linux-${type}
-package_name_v3=sing-box-${latest_version}-linux-amd64v3
-package_name_v3_beta=sing-box-${latest_version_beta}-linux-amd64v3
+if [[ "$type" == "amd64" && "$support_v3" == true ]]; then
+  package_name=sing-box-${latest_version}-linux-amd64v3
+  package_name_beta=sing-box-${latest_version_beta}-linux-amd64v3
+else
+  package_name=sing-box-${latest_version}-linux-${type}
+  package_name_beta=sing-box-${latest_version_beta}-linux-${type}
+fi
 download_url=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name}.tar.gz
 download_url_beta=https://github.com/SagerNet/sing-box/releases/download/v${latest_version_beta}/${package_name_beta}.tar.gz
-download_url_v3=https://github.com/SagerNet/sing-box/releases/download/v${latest_version}/${package_name_v3}.tar.gz
-download_url_v3_beta=https://github.com/SagerNet/sing-box/releases/download/v${latest_version_beta}/${package_name_v3_beta}.tar.gz
 getip() {
 systemctl stop warp-go >/dev/null 2>&1
 wg-quick down wgcf >/dev/null 2>&1
@@ -103,17 +110,6 @@ update() {
   systemctl restart sing-box.service > /dev/null 2>&1
   echo "sing-box ${latest_version} has been successfully updated."
 }
-update-v3() {
-  rm -f /usr/local/bin/sing-box > /dev/null 2>&1
-  wget -N --no-check-certificate ${download_url_v3} > /dev/null 2>&1
-  tar zxvf ${package_name_v3}.tar.gz > /dev/null 2>&1
-  mv ${package_name_v3}/sing-box /usr/local/bin/sing-box > /dev/null 2>&1
-  chmod +x /usr/local/bin/sing-box > /dev/null 2>&1
-  rm -r ${package_name_v3} > /dev/null 2>&1
-  rm -f ${package_name_v3}.tar.gz > /dev/null 2>&1
-  systemctl restart sing-box.service > /dev/null 2>&1
-  echo "sing-box ${latest_version} has been successfully updated."
-}
 update-beta() {
   rm -f /usr/local/bin/sing-box > /dev/null 2>&1
   wget -N --no-check-certificate ${download_url_beta} > /dev/null 2>&1
@@ -122,17 +118,6 @@ update-beta() {
   chmod +x /usr/local/bin/sing-box > /dev/null 2>&1
   rm -r ${package_name_beta} > /dev/null 2>&1
   rm -f ${package_name_beta}.tar.gz > /dev/null 2>&1
-  systemctl restart sing-box.service > /dev/null 2>&1
-  echo "sing-box ${latest_version_beta} has been successfully updated."
-}
-update-beta-v3() {
-  rm -f /usr/local/bin/sing-box > /dev/null 2>&1
-  wget -N --no-check-certificate ${download_url_v3_beta} > /dev/null 2>&1
-  tar zxvf ${package_name_v3_beta}.tar.gz > /dev/null 2>&1
-  mv ${package_name_v3_beta}/sing-box /usr/local/bin/sing-box > /dev/null 2>&1
-  chmod +x /usr/local/bin/sing-box > /dev/null 2>&1
-  rm -r ${package_name_v3_beta} > /dev/null 2>&1
-  rm -f ${package_name_v3_beta}.tar.gz > /dev/null 2>&1
   systemctl restart sing-box.service > /dev/null 2>&1
   echo "sing-box ${latest_version_beta} has been successfully updated."
 }
@@ -1516,16 +1501,8 @@ if [[ $1 == "update" ]]; then
   update
   exit 0
 fi
-if [[ $1 == "update-v3" ]]; then
-  update-v3
-  exit 0
-fi
 if [[ $1 == "update-beta" ]]; then
   update-beta
-  exit 0
-fi
-if [[ $1 == "update-beta-v3" ]]; then
-  update-beta-v3
   exit 0
 fi
 if [[ $1 == "tuic" ]]; then
