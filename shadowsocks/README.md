@@ -1,19 +1,16 @@
-# shadowsocks-rust
-`Download:`
+`Install`
 ```bash
-wget https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/ss-rust.sh && chmod +x ss-rust.sh
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh")
 ```
-`Usage:`
+`Update`
 ```bash
-./ss-rust.sh
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") update
 ```
-
-# Install Plugins
-`simple-obfs:`
+`Uninstall`
 ```bash
-./ss-rust.sh simple-obfs
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") uninstall
 ```
-`v2ray-plugin:`
+`simple-obfs`
 ```bash
-./ss-rust.sh v2ray-plugin
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") obfs
 ```
