@@ -28,10 +28,6 @@ check_dependencies() {
 get_latest_version() {
     local version
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [[ -z "$version" ]]; then
-        echo "获取版本号失败，请检查网络或 GitHub API 状态"
-        exit 1
-    fi
     echo "$version"
 }
 
@@ -51,7 +47,7 @@ download_ss_rust() {
     fi
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
     if [[ $? -ne 0 ]]; then
-        echo "下载 Shadowsocks Rust 失败，请检查网络或链接"
+        echo "Shadowsocks Rust 下载失败，请检查网络"
         return 1
     fi
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
@@ -147,7 +143,7 @@ uninstall_ss_rust() {
     systemctl disable --now ss-rust > /dev/null 2>&1
     rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service
     systemctl daemon-reload > /dev/null 2>&1
-    echo "Shadowsocks Rust 已卸载"
+    echo "Shadowsocks Rust 卸载完成"
 }
 
 simple_obfs() {
