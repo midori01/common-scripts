@@ -56,6 +56,8 @@ update_ss_rust() {
     rm -f /usr/local/bin/ss-rust
     download_ss_rust
     systemctl restart ss-rust > /dev/null 2>&1
+    local version
+    version=$(get_latest_version)
     echo "ss-rust ${version} has been successfully updated."
 }
 
