@@ -17,7 +17,7 @@ check_sys(){
 }
 
 check_dependencies(){
-    local dependencies=("curl" "wget" "xz-utils" "openssl")
+    local dependencies=("curl" "wget" "openssl")
     local missing_dependencies=()
     
     for dep in "${dependencies[@]}"; do
@@ -77,7 +77,7 @@ download_ss_rust(){
     tar -xvf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
     mv ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
-    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" # 删除下载的压缩包
+    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
 }
 
 write_config(){
