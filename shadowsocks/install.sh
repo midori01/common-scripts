@@ -101,7 +101,7 @@ EOF
 create_service(){
     cat > /etc/systemd/system/ss-rust.service <<-EOF
 [Unit]
-Description= Shadowsocks Rust
+Description=Shadowsocks Rust
 After=network-online.target
 Wants=network-online.target systemd-networkd-wait-online.service
 [Service]
@@ -130,7 +130,7 @@ update_ss_rust(){
     local version
     version=$(download_ss_rust)
     systemctl restart ss-rust > /dev/null 2>&1
-    echo "Shadowsocks Rust ${version} 已更新"
+    echo "shadowsocks-rust ${version} has been successfully updated."
 }
 
 simple_obfs() {
