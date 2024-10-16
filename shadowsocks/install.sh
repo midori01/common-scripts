@@ -20,14 +20,19 @@ check_dependencies() {
     done
     if [ ${#missing_dependencies[@]} -ne 0 ]; then
         echo "缺少依赖：${missing_dependencies[*]}"
-        echo "请运行以下命令安装依赖："
-        echo "apt install -y ${missing_dependencies[*]}"
-        exit 1
+        echo "正在安装依赖..."
+        apt install -y "${missing_dependencies[@]}" || { echo "依赖安装失败"; exit 1; }
     fi
 }
 
 get_latest_version() {
-    curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
+    local version
+    version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [[ -z "$version" ]]; then
+        echo "获取版本号失败，请检查网络或 GitHub API 状态"
+        exit 1
+    fi
+    echo "$version"
 }
 
 download_ss_rust() {
@@ -40,12 +45,8 @@ download_ss_rust() {
     esac
     local version
     version=$(get_latest_version)
-    if [[ -z "$version" ]]; then
-        echo "获取版本号失败，请检查网络或 GitHub API 状态"
-        exit 1
-    fi
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
-    [[ $? -ne 0 ]] && echo "下载失败，请检查网络连接。" && exit 1 
+    [[ $? -ne 0 ]] && { echo "下载失败，请检查网络连接。"; exit 1; }
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
     rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
@@ -53,12 +54,6 @@ download_ss_rust() {
 
 update_ss_rust() {
     rm -f /usr/local/bin/ss-rust
-    local version
-    version=$(get_latest_version)
-    if [[ -z "$version" ]]; then
-        echo "获取版本号失败，请检查网络或 GitHub API 状态"
-        exit 1
-    fi
     download_ss_rust
     systemctl restart ss-rust > /dev/null 2>&1
     echo "ss-rust ${version} has been successfully updated."
@@ -114,6 +109,9 @@ EOF
 }
 
 create_service() {
+    if [[ ! -f /usr/local/bin/ss-rust ]]; then
+        exit 1
+    fi
     cat > /etc/systemd/system/ss-rust.service <<-EOF
 [Unit]
 Description=Shadowsocks Rust
