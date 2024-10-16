@@ -41,29 +41,33 @@ download_ss_rust() {
     case "$arch" in
         "x86_64") arch="x86_64" ;;
         "aarch64") arch="aarch64" ;;
-        *) echo "不支持的架构: $arch" && exit 1 ;;
+        *) echo "不支持的架构: $arch" && return 1 ;;
     esac
     local version
     version=$(get_latest_version)
+    if [[ -z "$version" ]]; then
+        echo "获取版本号失败，请检查网络或 GitHub API 状态"
+        return 1
+    fi
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
-    [[ $? -ne 0 ]] && { echo "获取版本号失败，请检查网络或 GitHub API 状态"; exit 1; }
+    if [[ $? -ne 0 ]]; then
+        echo "下载 Shadowsocks Rust 失败，请检查网络或链接"
+        return 1
+    fi
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
     rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
+    echo "$version"
 }
 
 update_ss_rust() {
-    if [[ -f /etc/ss-rust.json ]]; then
-        cp /etc/ss-rust.json /etc/ss-rust.json.bak
-    fi
     rm -f /usr/local/bin/ss-rust
-    download_ss_rust
-    if [[ -f /etc/ss-rust.json.bak ]]; then
-        mv /etc/ss-rust.json.bak /etc/ss-rust.json
+    local version
+    if ! version=$(download_ss_rust); then
+        echo "ss-rust update failed."
+        return 1
     fi
     systemctl restart ss-rust > /dev/null 2>&1
-    local version
-    version=$(get_latest_version)
     echo "ss-rust ${version} has been successfully updated."
 }
 
