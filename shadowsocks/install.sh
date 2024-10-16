@@ -53,8 +53,14 @@ download_ss_rust() {
 }
 
 update_ss_rust() {
+    if [[ -f /etc/ss-rust.json ]]; then
+        cp /etc/ss-rust.json /etc/ss-rust.json.bak
+    fi
     rm -f /usr/local/bin/ss-rust
     download_ss_rust
+    if [[ -f /etc/ss-rust.json.bak ]]; then
+        mv /etc/ss-rust.json.bak /etc/ss-rust.json
+    fi
     systemctl restart ss-rust > /dev/null 2>&1
     local version
     version=$(get_latest_version)
