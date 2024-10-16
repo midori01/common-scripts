@@ -75,12 +75,15 @@ generate_password() {
 }
 
 set_port_method() {
-    read -p "请输入端口号 [默认: 8964]：" server_port
-    server_port=${server_port:-8964}
-    if ! [[ "$server_port" =~ ^[0-9]+$ ]] || [ "$server_port" -lt 1 ] || [ "$server_port" -gt 65535 ]; then
-        echo "端口号无效，默认为8964"
-        server_port=8964
-    fi
+    while true; do
+        read -p "请输入端口号 [默认: 8964]：" server_port
+        server_port=${server_port:-8964}
+        if [[ "$server_port" =~ ^[0-9]+$ ]] && [ "$server_port" -ge 1 ] && [ "$server_port" -le 65535 ]; then
+            break
+        else
+            echo "无效端口号，请输入一个有效的端口号 (1-65535)"
+        fi
+    done
     echo "请选择加密方式："
     options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "2022-blake3-chacha20-ietf-poly1305" "none")
     for i in "${!options[@]}"; do
