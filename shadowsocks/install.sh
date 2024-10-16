@@ -77,7 +77,7 @@ download_ss_rust(){
     tar -xvf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
     mv ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
-    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
+    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" "sslocal" "ssmanager" "ssservice "ssurl"
 }
 
 write_config(){
