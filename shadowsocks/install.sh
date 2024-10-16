@@ -7,12 +7,12 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 
 check_root(){
-    [[ $EUID != 0 ]] && echo -e "${Error} 请以 root 权限运行此脚本" && exit 1
+    [[ $EUID != 0 ]] && echo -e "${Error} 请以 root 权限运行脚本" && exit 1
 }
 
 check_sys(){
     if ! grep -qi "debian" /etc/issue && ! grep -qi "ubuntu" /etc/issue; then
-        echo -e "${Error} 系统不支持，仅支持 Debian 或 Ubuntu 系统" && exit 1
+        echo -e "${Error} 仅支持 Debian 或 Ubuntu 系统" && exit 1
     fi
 }
 
@@ -27,7 +27,7 @@ check_dependencies(){
     done
     
     if [ ${#missing_dependencies[@]} -ne 0 ]; then
-        echo -e "${Error} 缺少以下依赖：${missing_dependencies[*]}"
+        echo -e "${Error} 缺少依赖：${missing_dependencies[*]}"
         echo -e "请运行以下命令安装依赖："
         echo -e "apt install -y ${missing_dependencies[*]}"
         exit 1
@@ -67,7 +67,7 @@ download_ss_rust(){
     case "$arch" in
         "x86_64") arch="x86_64" ;;
         "aarch64") arch="aarch64" ;;
-        *) echo -e "${Error} 不支持的架构: $arch" && exit 1 ;;
+        *) echo -e "${Error} 不支持架构: $arch" && exit 1 ;;
     esac
 
     local version
@@ -75,7 +75,7 @@ download_ss_rust(){
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
 
     if [[ $? -ne 0 ]]; then
-        echo -e "${Error} 下载 Shadowsocks Rust 失败" && exit 1
+        echo -e "${Error} Shadowsocks Rust 下载失败" && exit 1
     fi
 
     tar -xvf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
@@ -95,6 +95,7 @@ write_config(){
     "fast_open": true,
     "no_delay": true,
     "reuse_port": true,
+    "nameserver": "1.1.1.1",
     "ipv6_first": false,
     "user": "root",
     "timeout": 3600
@@ -133,7 +134,7 @@ update_ss_rust(){
     rm -f /usr/local/bin/ss-rust
     download_ss_rust
     systemctl restart ss-rust
-    echo -e "${Info} Shadowsocks Rust 已更新至最新版本"
+    echo -e "${Info} Shadowsocks Rust 已更新"
 }
 
 simple_obfs() {
@@ -175,7 +176,7 @@ case "$1" in
         download_ss_rust
         write_config
         create_service
-        echo -e "${Info} Shadowsocks Rust 安装完成并启动"
+        echo -e "${Info} Shadowsocks Rust 安装完成"
         echo -e "${Info} 端口: ${server_port}"
         echo -e "${Info} 加密: ${method}"
         if [[ -n "${password}" ]]; then
