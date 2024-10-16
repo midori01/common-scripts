@@ -74,10 +74,14 @@ download_ss_rust(){
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
 
+    if [[ $? -ne 0 ]]; then
+        echo -e "${Error} 下载 Shadowsocks Rust 失败" && exit 1
+    fi
+
     tar -xvf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
     mv ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
-    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" "sslocal" "ssmanager" "ssservice "ssurl"
+    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" "sslocal" "ssmanager" "ssservice" "ssurl" 2>/dev/null || true
 }
 
 write_config(){
@@ -110,7 +114,6 @@ Type=simple
 User=root
 Restart=on-failure
 RestartSec=5s
-DynamicUser=true
 ExecStartPre=/bin/sh -c ulimit -n 102400
 ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust.json
 [Install]
@@ -121,9 +124,7 @@ EOF
 
 uninstall_ss_rust(){
     systemctl disable --now ss-rust
-    rm -f /usr/local/bin/ss-rust
-    rm -f /etc/ss-rust.json
-    rm -f /etc/systemd/system/ss-rust.service
+    rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service
     systemctl daemon-reload
     echo -e "${Info} Shadowsocks Rust 已卸载"
 }
@@ -137,9 +138,8 @@ update_ss_rust(){
 
 simple_obfs() {
     echo -e "${Info} 正在编译安装 simple-obfs"
-    local dependencies=("build-essential" "autoconf" "libtool" "libssl-dev" "libpcre3-dev" "libev-dev" "asciidoc" "xmlto" "automake")
     apt update
-    apt install --no-install-recommends -y "${dependencies[@]}"
+    apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake
     
     git clone https://github.com/shadowsocks/simple-obfs.git
     cd simple-obfs || return 1
