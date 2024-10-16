@@ -13,19 +13,53 @@ check_sys(){
 check_dependencies(){
     local dependencies=("curl" "wget" "openssl")
     local missing_dependencies=()
-    
     for dep in "${dependencies[@]}"; do
         if ! command -v "$dep" &> /dev/null; then
             missing_dependencies+=("$dep")
         fi
     done
-    
     if [ ${#missing_dependencies[@]} -ne 0 ]; then
         echo "缺少依赖：${missing_dependencies[*]}"
         echo "请运行以下命令安装依赖："
         echo "apt install -y ${missing_dependencies[*]}"
         exit 1
     fi
+}
+
+download_ss_rust(){
+    local arch
+    arch=$(uname -m)
+    case "$arch" in
+        "x86_64") arch="x86_64" ;;
+        "aarch64") arch="aarch64" ;;
+        *) exit 1 ;;
+    esac
+    local version
+    version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [[ -z "$version" ]]; then
+        echo "获取版本号失败，请检查网络或 GitHub API 状态"
+        exit 1
+    fi
+    wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
+    [[ $? -ne 0 ]] && exit 1 
+    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
+    chmod +x /usr/local/bin/ss-rust
+    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
+
+    echo "$version"
+}
+
+update_ss_rust(){
+    local version
+    version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [[ -z "$version" ]]; then
+        echo "获取版本号失败，请检查网络或 GitHub API 状态"
+        exit 1
+    fi
+    rm -f /usr/local/bin/ss-rust
+    download_ss_rust
+    systemctl restart ss-rust > /dev/null 2>&1
+    echo "ss-ust ${version} has been successfully updated."
 }
 
 generate_password(){
@@ -41,40 +75,14 @@ generate_password(){
 set_port_method(){
     read -p "请输入端口号 [默认: 8964]：" server_port
     server_port=${server_port:-8964}
-
     echo "请选择加密方式："
     options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "2022-blake3-chacha20-ietf-poly1305" "none")
-    
     for i in "${!options[@]}"; do
         echo "$((i + 1)). ${options[i]}"
     done
-    
     read -p "请输入数字选择加密方式 [默认: 7]：" method_num
     method_num=${method_num:-7}
-
     method=${options[$((method_num - 1))]:-"none"}
-}
-
-download_ss_rust(){
-    local arch
-    arch=$(uname -m)
-    case "$arch" in
-        "x86_64") arch="x86_64" ;;
-        "aarch64") arch="aarch64" ;;
-        *) exit 1 ;;
-    esac
-
-    local version
-    version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
-
-    [[ $? -ne 0 ]] && exit 1 
-
-    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
-    chmod +x /usr/local/bin/ss-rust
-    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
-
-    echo "$version"
 }
 
 write_config(){
@@ -123,28 +131,17 @@ uninstall_ss_rust(){
     echo "Shadowsocks Rust 已卸载"
 }
 
-update_ss_rust(){
-    rm -f /usr/local/bin/ss-rust
-    local version
-    version=$(download_ss_rust)
-    systemctl restart ss-rust > /dev/null 2>&1
-    echo "ss-rust ${version} has been successfully updated."
-}
-
 simple_obfs() {
     apt update > /dev/null 2>&1
     apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake > /dev/null 2>&1
-    
     git clone https://github.com/shadowsocks/simple-obfs.git > /dev/null 2>&1
     cd simple-obfs || return 1
-
     if git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1; then
         echo "simple-obfs 安装完成"
     else
         echo "simple-obfs 安装失败"
         return 1
     fi
-
     cd .. && rm -rf simple-obfs
 }
 
