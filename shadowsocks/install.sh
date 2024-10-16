@@ -61,16 +61,14 @@ download_ss_rust(){
     case "$arch" in
         "x86_64") arch="x86_64" ;;
         "aarch64") arch="aarch64" ;;
-        *) echo "不支持架构: $arch" && exit 1 ;;
+        *) exit 1 ;;
     esac
 
     local version
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
 
-    if [[ $? -ne 0 ]]; then
-        echo "Shadowsocks Rust 下载失败" && exit 1
-    fi
+    [[ $? -ne 0 ]] && exit 1 
 
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
@@ -130,7 +128,7 @@ update_ss_rust(){
     local version
     version=$(download_ss_rust)
     systemctl restart ss-rust > /dev/null 2>&1
-    echo "shadowsocks-rust ${version} has been successfully updated."
+    echo "ss-rust ${version} has been successfully updated."
 }
 
 simple_obfs() {
