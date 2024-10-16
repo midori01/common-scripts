@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 check_root(){
     [[ $EUID != 0 ]] && echo "请以 root 权限运行脚本" && exit 1
