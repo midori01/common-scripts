@@ -72,16 +72,15 @@ download_ss_rust(){
 
     local version
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
+    wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
 
     if [[ $? -ne 0 ]]; then
         echo -e "${Error} Shadowsocks Rust 下载失败" && exit 1
     fi
 
-    tar -xvf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
-    mv ssserver /usr/local/bin/ss-rust
+    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
-    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" "sslocal" "ssmanager" "ssservice" "ssurl" 2>/dev/null || true
+    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
 }
 
 write_config(){
@@ -120,32 +119,32 @@ ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust.json
 [Install]
 WantedBy=multi-user.target
 EOF
-    systemctl enable --now ss-rust && systemctl restart ss-rust
+    systemctl enable --now ss-rust > /dev/null 2>&1 && systemctl restart ss-rust > /dev/null 2>&1
 }
 
 uninstall_ss_rust(){
-    systemctl disable --now ss-rust
+    systemctl disable --now ss-rust > /dev/null 2>&1
     rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service
-    systemctl daemon-reload
+    systemctl daemon-reload > /dev/null 2>&1
     echo -e "${Info} Shadowsocks Rust 已卸载"
 }
 
 update_ss_rust(){
     rm -f /usr/local/bin/ss-rust
     download_ss_rust
-    systemctl restart ss-rust
-    echo -e "${Info} Shadowsocks Rust 已更新"
+    systemctl restart ss-rust > /dev/null 2>&1
+    echo -e "${Info} Shadowsocks Rust ${version} 已更新"
 }
 
 simple_obfs() {
     echo -e "${Info} 正在编译安装 simple-obfs"
-    apt update
-    apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake
+    apt update > /dev/null 2>&1
+    apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake > /dev/null 2>&1
     
-    git clone https://github.com/shadowsocks/simple-obfs.git
+    git clone https://github.com/shadowsocks/simple-obfs.git > /dev/null 2>&1
     cd simple-obfs || return 1
 
-    if git submodule update --init --recursive && ./autogen.sh && ./configure && make && make install; then
+    if git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1; then
         echo -e "${Info} simple-obfs 安装完成"
         obfs-server -h
     else
