@@ -119,7 +119,7 @@ ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust.json
 [Install]
 WantedBy=multi-user.target
 EOF
-    systemctl enable --now ss-rust
+    systemctl enable --now ss-rust && systemctl restart ss-rust
 }
 
 uninstall_ss_rust(){
