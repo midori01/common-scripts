@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 
-Green_font_prefix="\033[32m"
-Red_font_prefix="\033[31m"
-Font_color_suffix="\033[0m"
-Info="${Green_font_prefix}[信息]${Font_color_suffix}"
-Error="${Red_font_prefix}[错误]${Font_color_suffix}"
-
 check_root(){
-    [[ $EUID != 0 ]] && echo -e "${Error} 请以 root 权限运行脚本" && exit 1
+    [[ $EUID != 0 ]] && echo "请以 root 权限运行脚本" && exit 1
 }
 
 check_sys(){
     if ! grep -qi "debian" /etc/issue && ! grep -qi "ubuntu" /etc/issue; then
-        echo -e "${Error} 仅支持 Debian 或 Ubuntu 系统" && exit 1
+        echo "仅支持 Debian 或 Ubuntu 系统" && exit 1
     fi
 }
 
@@ -27,9 +21,9 @@ check_dependencies(){
     done
     
     if [ ${#missing_dependencies[@]} -ne 0 ]; then
-        echo -e "${Error} 缺少依赖：${missing_dependencies[*]}"
-        echo -e "请运行以下命令安装依赖："
-        echo -e "apt install -y ${missing_dependencies[*]}"
+        echo "缺少依赖：${missing_dependencies[*]}"
+        echo "请运行以下命令安装依赖："
+        echo "apt install -y ${missing_dependencies[*]}"
         exit 1
     fi
 }
@@ -48,11 +42,11 @@ set_port_method(){
     read -p "请输入端口号 [默认: 8964]：" server_port
     server_port=${server_port:-8964}
 
-    echo -e "${Info} 请选择加密方式："
+    echo "请选择加密方式："
     options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "2022-blake3-chacha20-ietf-poly1305" "none")
     
     for i in "${!options[@]}"; do
-        echo -e "$((i + 1)). ${options[i]}"
+        echo "$((i + 1)). ${options[i]}"
     done
     
     read -p "请输入数字选择加密方式 [默认: 7]：" method_num
@@ -67,7 +61,7 @@ download_ss_rust(){
     case "$arch" in
         "x86_64") arch="x86_64" ;;
         "aarch64") arch="aarch64" ;;
-        *) echo -e "${Error} 不支持架构: $arch" && exit 1 ;;
+        *) echo "不支持架构: $arch" && exit 1 ;;
     esac
 
     local version
@@ -75,7 +69,7 @@ download_ss_rust(){
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
 
     if [[ $? -ne 0 ]]; then
-        echo -e "${Error} Shadowsocks Rust 下载失败" && exit 1
+        echo "Shadowsocks Rust 下载失败" && exit 1
     fi
 
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
@@ -128,7 +122,7 @@ uninstall_ss_rust(){
     systemctl disable --now ss-rust > /dev/null 2>&1
     rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service
     systemctl daemon-reload > /dev/null 2>&1
-    echo -e "${Info} Shadowsocks Rust 已卸载"
+    echo "Shadowsocks Rust 已卸载"
 }
 
 update_ss_rust(){
@@ -136,7 +130,7 @@ update_ss_rust(){
     local version
     version=$(download_ss_rust)
     systemctl restart ss-rust > /dev/null 2>&1
-    echo -e "${Info} Shadowsocks Rust ${version} 已更新"
+    echo "Shadowsocks Rust ${version} 已更新"
 }
 
 simple_obfs() {
@@ -147,9 +141,9 @@ simple_obfs() {
     cd simple-obfs || return 1
 
     if git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1; then
-        echo -e "${Info} simple-obfs 安装完成"
+        echo "simple-obfs 安装完成"
     else
-        echo -e "${Error} simple-obfs 安装失败"
+        echo "simple-obfs 安装失败"
         return 1
     fi
 
@@ -176,11 +170,11 @@ case "$1" in
         download_ss_rust
         write_config
         create_service
-        echo -e "${Info} Shadowsocks Rust 安装完成"
-        echo -e "${Info} 端口: ${server_port}"
-        echo -e "${Info} 加密: ${method}"
+        echo "Shadowsocks Rust 安装完成"
+        echo "端口: ${server_port}"
+        echo "加密: ${method}"
         if [[ -n "${password}" ]]; then
-            echo -e "${Info} 密码: ${password}"
+            echo "密码: ${password}"
         fi
         ;;
 esac
