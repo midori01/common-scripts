@@ -46,7 +46,7 @@ download_ss_rust() {
     local version
     version=$(get_latest_version)
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
-    [[ $? -ne 0 ]] && { echo "下载失败，请检查网络连接。"; exit 1; }
+    [[ $? -ne 0 ]] && { echo "获取版本号失败，请检查网络或 GitHub API 状态"; exit 1; }
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
     rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
