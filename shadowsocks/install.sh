@@ -81,6 +81,8 @@ download_ss_rust(){
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
     rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
+
+    echo "$version"
 }
 
 write_config(){
@@ -131,13 +133,13 @@ uninstall_ss_rust(){
 
 update_ss_rust(){
     rm -f /usr/local/bin/ss-rust
-    download_ss_rust
+    local version
+    version=$(download_ss_rust)
     systemctl restart ss-rust > /dev/null 2>&1
     echo -e "${Info} Shadowsocks Rust ${version} 已更新"
 }
 
 simple_obfs() {
-    echo -e "${Info} 正在编译安装 simple-obfs"
     apt update > /dev/null 2>&1
     apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake > /dev/null 2>&1
     
@@ -146,7 +148,6 @@ simple_obfs() {
 
     if git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1; then
         echo -e "${Info} simple-obfs 安装完成"
-        obfs-server -h
     else
         echo -e "${Error} simple-obfs 安装失败"
         return 1
