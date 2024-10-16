@@ -1,16 +1,16 @@
 #!/bin/bash
 
-check_root(){
+check_root() {
     [[ $EUID != 0 ]] && echo "请以 root 权限运行脚本" && exit 1
 }
 
-check_sys(){
+check_sys() {
     if ! grep -qi "debian" /etc/issue && ! grep -qi "ubuntu" /etc/issue; then
         echo "仅支持 Debian 或 Ubuntu 系统" && exit 1
     fi
 }
 
-check_dependencies(){
+check_dependencies() {
     local dependencies=("curl" "wget" "openssl")
     local missing_dependencies=()
     for dep in "${dependencies[@]}"; do
@@ -26,43 +26,45 @@ check_dependencies(){
     fi
 }
 
-download_ss_rust(){
+get_latest_version() {
+    curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
+}
+
+download_ss_rust() {
     local arch
     arch=$(uname -m)
     case "$arch" in
         "x86_64") arch="x86_64" ;;
         "aarch64") arch="aarch64" ;;
-        *) exit 1 ;;
+        *) echo "不支持的架构: $arch" && exit 1 ;;
     esac
     local version
-    version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    version=$(get_latest_version)
     if [[ -z "$version" ]]; then
         echo "获取版本号失败，请检查网络或 GitHub API 状态"
         exit 1
     fi
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
-    [[ $? -ne 0 ]] && exit 1 
+    [[ $? -ne 0 ]] && echo "下载失败，请检查网络连接。" && exit 1 
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ && mv /tmp/ssserver /usr/local/bin/ss-rust
     chmod +x /usr/local/bin/ss-rust
     rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" 2>/dev/null || true
-
-    echo "$version"
 }
 
-update_ss_rust(){
+update_ss_rust() {
+    rm -f /usr/local/bin/ss-rust
     local version
-    version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    version=$(get_latest_version)
     if [[ -z "$version" ]]; then
         echo "获取版本号失败，请检查网络或 GitHub API 状态"
         exit 1
     fi
-    rm -f /usr/local/bin/ss-rust
     download_ss_rust
     systemctl restart ss-rust > /dev/null 2>&1
-    echo "ss-ust ${version} has been successfully updated."
+    echo "ss-rust ${version} has been successfully updated."
 }
 
-generate_password(){
+generate_password() {
     if [[ "${method}" == "none" ]]; then
         password=""
     elif [[ "${method}" == "2022-blake3-aes-128-gcm" ]]; then
@@ -72,9 +74,13 @@ generate_password(){
     fi
 }
 
-set_port_method(){
+set_port_method() {
     read -p "请输入端口号 [默认: 8964]：" server_port
     server_port=${server_port:-8964}
+    if ! [[ "$server_port" =~ ^[0-9]+$ ]] || [ "$server_port" -lt 1 ] || [ "$server_port" -gt 65535 ]; then
+        echo "端口号无效，默认为8964"
+        server_port=8964
+    fi
     echo "请选择加密方式："
     options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "2022-blake3-chacha20-ietf-poly1305" "none")
     for i in "${!options[@]}"; do
@@ -85,7 +91,7 @@ set_port_method(){
     method=${options[$((method_num - 1))]:-"none"}
 }
 
-write_config(){
+write_config() {
     cat > /etc/ss-rust.json <<-EOF
 {
     "server": "::",
@@ -104,7 +110,7 @@ write_config(){
 EOF
 }
 
-create_service(){
+create_service() {
     cat > /etc/systemd/system/ss-rust.service <<-EOF
 [Unit]
 Description=Shadowsocks Rust
@@ -124,7 +130,7 @@ EOF
     systemctl enable --now ss-rust > /dev/null 2>&1 && systemctl restart ss-rust > /dev/null 2>&1
 }
 
-uninstall_ss_rust(){
+uninstall_ss_rust() {
     systemctl disable --now ss-rust > /dev/null 2>&1
     rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service
     systemctl daemon-reload > /dev/null 2>&1
