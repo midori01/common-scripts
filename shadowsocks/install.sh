@@ -10,6 +10,7 @@ check_sys() {
 
 check_dependencies() {
     local dependencies=("curl" "wget" "openssl")
+    local missing_deps=()
     for dep in "${dependencies[@]}"; do
         command -v "$dep" &> /dev/null || missing_deps+=("$dep")
     done
@@ -22,10 +23,11 @@ download_ss_rust() {
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     [[ -z "$version" ]] && echo "获取版本号失败" && return 1
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q || { echo "下载失败"; return 1; }
-    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ \
+    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp \
         && mv /tmp/ssserver /usr/local/bin/ss-rust \
         && chmod +x /usr/local/bin/ss-rust \
-        && rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
+        && rm -f "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" \
+        && rm -f /tmp/ss* || { echo "文件操作失败"; return 1; }
     echo "$version"
 }
 
@@ -39,27 +41,16 @@ set_port_method() {
             echo "无效端口号，请输入一个有效的端口号 (1-65535)"
         fi
     done
-    echo "请选择加密方式："
+    PS3="请选择加密方式 [默认: none]："
     options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "2022-blake3-chacha20-ietf-poly1305" "none")
-    for i in "${!options[@]}"; do
-        echo "$((i + 1)). ${options[i]}"
-    done
-    while true; do
-        read -p "请输入数字选择加密方式 [默认: 7 (none)]：" method_num
-        if [[ -z "$method_num" ]]; then
-            method="none"
-            break
-        elif [[ "$method_num" =~ ^[1-7]$ ]]; then
-            method=${options[$((method_num - 1))]:-"none"}
-            break
-        else
-            echo "无效选择，请输入 1-7 的数字"
-        fi
+    select method in "${options[@]}"; do
+        method=${method:-"none"}
+        break
     done
 }
 
 generate_password() {
-    [[ "$method" == "none" ]] && password="" || password=$(openssl rand -base64 $( [[ "$method" =~ "aes-128" ]] && echo 16 || echo 32 ))
+    password=$( [[ "$method" == "none" ]] && echo "" || openssl rand -base64 $( [[ "$method" =~ "aes-128" ]] && echo 16 || echo 32 ))
 }
 
 setup_service() {
@@ -79,7 +70,6 @@ setup_service() {
     "timeout": 3600
 }
 EOF
-
     cat > /etc/systemd/system/ss-rust.service <<-EOF
 [Unit]
 Description=Shadowsocks Rust
@@ -96,7 +86,6 @@ ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust.json
 [Install]
 WantedBy=multi-user.target
 EOF
-
     systemctl enable --now ss-rust > /dev/null 2>&1
     systemctl restart ss-rust > /dev/null 2>&1
 }
@@ -107,8 +96,7 @@ check_dependencies
 
 case "$1" in
     update)
-        version=$(download_ss_rust)
-        if [[ $? -eq 0 ]]; then
+        if version=$(download_ss_rust); then
             systemctl restart ss-rust > /dev/null 2>&1
             echo "Shadowsocks Rust ${version} 更新完成"
         else
