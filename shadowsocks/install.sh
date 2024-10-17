@@ -126,6 +126,7 @@ case "$1" in
         apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake > /dev/null 2>&1
         git clone https://github.com/shadowsocks/simple-obfs.git > /dev/null 2>&1
         cd simple-obfs || exit 1
+        echo "正在初始化子模块并编译安装 simple-obfs，请耐心等待..."
         if git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1; then
             echo "simple-obfs 安装完成"
         else
