@@ -21,13 +21,29 @@ download_ss_rust() {
     arch=$(uname -m)
     arch=${arch//aarch64/arm64}
     arch=${arch//x86_64/x86_64}
+    echo "检测到的系统架构: $arch"
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    [[ -z "$version" ]] && echo "获取版本号失败" && return 1
-    wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q || { echo "下载失败"; return 1; }
-    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/ \
-        && mv /tmp/ssserver /usr/local/bin/ss-rust \
-        && chmod +x /usr/local/bin/ss-rust \
-        && rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
+    if [[ -z "$version" ]]; then
+        echo "获取版本号失败，请检查网络连接或 API 是否可访问"
+        return 1
+    fi
+    echo "检测到的 Shadowsocks Rust 版本: $version"
+    local download_url="https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
+    echo "准备下载 Shadowsocks Rust: $download_url"
+    wget "$download_url" -q
+    if [[ $? -ne 0 ]]; then
+        echo "下载失败，请检查网络或下载链接是否正确: $download_url"
+        return 1
+    fi
+    echo "下载成功，正在解压..."
+    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp/
+    if [[ $? -ne 0 ]]; then
+        echo "解压失败，请检查下载的文件是否完整"
+        return 1
+    fi
+    mv /tmp/ssserver /usr/local/bin/ss-rust
+    chmod +x /usr/local/bin/ss-rust
+    rm "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz"
     echo "$version"
 }
 
@@ -111,7 +127,7 @@ case "$1" in
         version=$(download_ss_rust)
         if [[ $? -eq 0 ]]; then
             systemctl restart ss-rust > /dev/null 2>&1
-            echo "Shadowsocks Rust ${version} 更新完成"
+            echo "Shadowsocks Rust ${version} 更新完成 "
         else
             echo "Shadowsocks Rust 更新失败"
         fi
