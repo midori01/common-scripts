@@ -19,8 +19,6 @@ check_dependencies() {
         fi
     done
     if [ ${#missing_dependencies[@]} -ne 0 ]; then
-        echo "缺少依赖：${missing_dependencies[*]}"
-        echo "正在安装依赖..."
         apt install -y "${missing_dependencies[@]}" || { echo "依赖安装失败"; exit 1; }
     fi
 }
@@ -28,6 +26,10 @@ check_dependencies() {
 get_latest_version() {
     local version
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [[ -z "$version" ]]; then
+        echo "无法获取最新版本，请检查网络连接或 GitHub API 状态"
+        exit 1
+    fi
     echo "$version"
 }
 
@@ -35,14 +37,14 @@ download_ss_rust() {
     local arch
     arch=$(uname -m)
     case "$arch" in
-        "x86_64") arch="x86_64" ;;
-        "aarch64") arch="aarch64" ;;
+        "x86_64"|"amd64") arch="x86_64" ;;
+        "aarch64"|"arm64") arch="aarch64" ;;
         *) echo "不支持的架构: $arch" && return 1 ;;
     esac
     local version
     version=$(get_latest_version)
     if [[ -z "$version" ]]; then
-        echo "获取版本号失败，请检查网络或 GitHub API 状态"
+        echo "无法获取最新版本，请检查网络或 GitHub API 状态"
         return 1
     fi
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q
@@ -68,13 +70,13 @@ update_ss_rust() {
 }
 
 generate_password() {
-    if [[ "${method}" == "none" ]]; then
-        password=""
-    elif [[ "${method}" == "2022-blake3-aes-128-gcm" ]]; then
-        password=$(openssl rand -base64 16)
-    else
-        password=$(openssl rand -base64 32)
-    fi
+    local length=32
+    case "${method}" in
+        "none") password="" ;;
+        "2022-blake3-aes-128-gcm" | "aes-128-gcm") length=16 ;;
+        "2022-blake3-aes-256-gcm" | "aes-256-gcm" | "2022-blake3-chacha20-ietf-poly1305" | "chacha20-ietf-poly1305") length=32 ;;
+    esac
+    password=$(openssl rand -base64 "$length")
 }
 
 set_port_method() {
@@ -92,9 +94,15 @@ set_port_method() {
     for i in "${!options[@]}"; do
         echo "$((i + 1)). ${options[i]}"
     done
-    read -p "请输入数字选择加密方式 [默认: 7]：" method_num
-    method_num=${method_num:-7}
-    method=${options[$((method_num - 1))]:-"none"}
+    while true; do
+        read -p "请输入数字选择加密方式 [默认: 7]：" method_num
+        if [[ "$method_num" =~ ^[1-7]$ ]]; then
+            method=${options[$((method_num - 1))]:-"none"}
+            break
+        else
+            echo "无效选择，请输入 1-7 的数字"
+        fi
+    done
 }
 
 write_config() {
@@ -153,11 +161,13 @@ simple_obfs() {
     cd simple-obfs || return 1
     if git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1; then
         echo "simple-obfs 安装完成"
+        cd .. && rm -rf simple-obfs
+        return 0
     else
         echo "simple-obfs 安装失败"
+        cd .. && rm -rf simple-obfs
         return 1
     fi
-    cd .. && rm -rf simple-obfs
 }
 
 check_root
