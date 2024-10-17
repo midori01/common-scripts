@@ -98,6 +98,7 @@ WantedBy=multi-user.target
 EOF
 
     systemctl enable --now ss-rust > /dev/null 2>&1
+    systemctl restart ss-rust > /dev/null 2>&1
 }
 
 check_root
