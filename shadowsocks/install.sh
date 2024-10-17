@@ -127,7 +127,7 @@ case "$1" in
         version=$(download_ss_rust)
         if [[ $? -eq 0 ]]; then
             systemctl restart ss-rust > /dev/null 2>&1
-            echo "Shadowsocks Rust ${version} 更新完成 "
+            echo "Shadowsocks Rust ${version} 更新完成"
         else
             echo "Shadowsocks Rust 更新失败"
         fi
