@@ -3,15 +3,12 @@
 check_system() {
     [[ $EUID != 0 ]] && { echo "请以 root 权限运行脚本"; exit 1; }
     grep -qiE "debian|ubuntu" /etc/issue || { echo "仅支持 Debian 或 Ubuntu 系统"; exit 1; }
-    local dependencies=("curl" "wget" "openssl") missing_deps=(); for dep in "${dependencies[@]}"; do command -v "$dep" &> /dev/null || missing_deps+=("$dep"); done; [[ ${#missing_deps[@]} -ne 0 ]] && apt install -y "${missing_deps[@]}"
+    missing_deps=($(for dep in curl wget openssl; do command -v "$dep" &> /dev/null || echo "$dep"; done)); [[ ${#missing_deps[@]} -ne 0 ]] && apt install -y "${missing_deps[@]}"
 }
 download_ss() {
-    local arch version
-    arch=$(uname -m)
-    version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') || { echo "获取版本号失败"; return 1; }
-    [[ -z "${version}" ]] && echo "获取版本号失败" && return 1
-    wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q || { echo "下载失败"; return 1; }
-    tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp && mv /tmp/ssserver /usr/local/bin/ss-rust && chmod +x /usr/local/bin/ss-rust && rm -f "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" && rm -f /tmp/ss* || { echo "文件操作失败"; return 1; }
+    local arch=$(uname -m) version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') || return 1
+    [[ -z "${version}" ]] && { echo "获取版本号失败"; return 1; }
+    wget -qO- "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" | tar -xJ -C /tmp && mv /tmp/ssserver /usr/local/bin/ss-rust && chmod +x /usr/local/bin/ss-rust && rm -f /tmp/ss* || { echo "下载或解压失败"; return 1; }
     echo "${version}"
 }
 set_config() {
@@ -56,21 +53,8 @@ EOF
 }
 check_system
 case "$1" in
-    update)
-        version=$(download_ss) && systemctl restart ss-rust > /dev/null 2>&1 && echo "Shadowsocks Rust ${version} 更新完成" || echo "Shadowsocks Rust 更新失败"
-        ;;
-    uninstall)
-        systemctl disable --now ss-rust > /dev/null 2>&1 && rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service && systemctl daemon-reload > /dev/null 2>&1 && echo "Shadowsocks Rust 卸载完成"
-        ;;
-    obfs)
-        apt update > /dev/null 2>&1 && apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake git > /dev/null 2>&1 && git clone https://github.com/shadowsocks/simple-obfs.git > /dev/null 2>&1 && cd simple-obfs || exit 1
-        echo "正在初始化子模块并编译安装 simple-obfs，请耐心等待..." && git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1 && echo "simple-obfs 安装完成" || echo "simple-obfs 安装失败"
-        cd .. && rm -rf simple-obfs
-        ;;
-    *)
-        set_config
-        download_ss
-        set_files
-        echo "Shadowsocks Rust 安装完成" && echo -e "端口: ${server_port}\n加密: ${method}\n密码: ${password}"
-        ;;
+    update) version=$(download_ss) && systemctl restart ss-rust > /dev/null 2>&1 && echo "Shadowsocks Rust ${version} 更新完成" || echo "Shadowsocks Rust 更新失败" ;;
+    uninstall) systemctl disable --now ss-rust > /dev/null 2>&1 && rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service && systemctl daemon-reload > /dev/null 2>&1 && echo "Shadowsocks Rust 卸载完成" ;;
+    obfs) apt update > /dev/null 2>&1 && apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake git > /dev/null 2>&1 && git clone https://github.com/shadowsocks/simple-obfs.git > /dev/null 2>&1 && cd simple-obfs && echo "正在初始化子模块并编译安装 simple-obfs，请耐心等待..." && git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1 && echo "simple-obfs 安装完成" || echo "simple-obfs 安装失败" && cd .. && rm -rf simple-obfs ;;
+    *) set_config && download_ss && set_files && echo "Shadowsocks Rust 安装完成" && echo -e "端口: ${server_port}\n加密: ${method}\n密码: ${password}" ;;
 esac
