@@ -1,15 +1,11 @@
 #!/bin/bash
 
-check_root() {
-    [[ $EUID != 0 ]] && echo "请以 root 权限运行脚本" && exit 1
-}
-check_sys() {
+check_system() {
+    [[ $EUID != 0 ]] && { echo "请以 root 权限运行脚本"; exit 1; }
     grep -qiE "debian|ubuntu" /etc/issue || { echo "仅支持 Debian 或 Ubuntu 系统"; exit 1; }
-}
-check_dependencies() {
     local dependencies=("curl" "wget" "openssl") missing_deps=(); for dep in "${dependencies[@]}"; do command -v "$dep" &> /dev/null || missing_deps+=("$dep"); done; [[ ${#missing_deps[@]} -ne 0 ]] && apt install -y "${missing_deps[@]}"
 }
-download_ss_rust() {
+download_ss() {
     local arch version
     arch=$(uname -m)
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') || { echo "获取版本号失败"; return 1; }
@@ -18,14 +14,12 @@ download_ss_rust() {
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp && mv /tmp/ssserver /usr/local/bin/ss-rust && chmod +x /usr/local/bin/ss-rust && rm -f "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" && rm -f /tmp/ss* || { echo "文件操作失败"; return 1; }
     echo "${version}"
 }
-set_port_method() {
+set_config() {
     while :; do read -p "请输入端口号 [默认: 8964]：" server_port; server_port=${server_port:-8964}; [[ "$server_port" =~ ^[0-9]+$ && "$server_port" -ge 1 && "$server_port" -le 65535 ]] && break || echo "无效端口号，请输入一个有效的端口号 (1-65535)"; done
     PS3="请选择加密方式 [默认: none]："; options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "none"); select method in "${options[@]}"; do method=${method:-"none"}; break; done
-}
-generate_password() {
     password=$( [[ "$method" == "none" ]] && echo "" || openssl rand -base64 $( [[ "$method" =~ "aes-128" ]] && echo 16 || echo 32 ))
 }
-setup_service() {
+set_files() {
     cat > /etc/ss-rust.json <<-EOF
 {
     "server": "::",
@@ -59,13 +53,10 @@ ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust.json
 WantedBy=multi-user.target
 EOF
     systemctl enable --now ss-rust > /dev/null 2>&1 && systemctl restart ss-rust > /dev/null 2>&1
-}
-check_root
-check_sys
-check_dependencies
+check_system
 case "$1" in
     update)
-        version=$(download_ss_rust) && systemctl restart ss-rust > /dev/null 2>&1 && echo "Shadowsocks Rust ${version} 更新完成" || echo "Shadowsocks Rust 更新失败"
+        version=$(download_ss) && systemctl restart ss-rust > /dev/null 2>&1 && echo "Shadowsocks Rust ${version} 更新完成" || echo "Shadowsocks Rust 更新失败"
         ;;
     uninstall)
         systemctl disable --now ss-rust > /dev/null 2>&1 && rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service && systemctl daemon-reload > /dev/null 2>&1 && echo "Shadowsocks Rust 卸载完成"
@@ -76,10 +67,9 @@ case "$1" in
         cd .. && rm -rf simple-obfs
         ;;
     *)
-        set_port_method
-        generate_password
-        download_ss_rust
-        setup_service
+        set_config
+        download_ss
+        set_files
         echo "Shadowsocks Rust 安装完成" && echo -e "端口: ${server_port}\n加密: ${method}\n密码: ${password}"
         ;;
 esac
