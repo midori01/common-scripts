@@ -13,10 +13,10 @@ download_ss_rust() {
     local arch version
     arch=$(uname -m)
     version=$(curl -s https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') || { echo "获取版本号失败"; return 1; }
-    [[ -z "$version" ]] && echo "获取版本号失败" && return 1
+    [[ -z "${version}" ]] && echo "获取版本号失败" && return 1
     wget "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -q || { echo "下载失败"; return 1; }
     tar -xf "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" -C /tmp && mv /tmp/ssserver /usr/local/bin/ss-rust && chmod +x /usr/local/bin/ss-rust && rm -f "shadowsocks-${version}.${arch}-unknown-linux-gnu.tar.xz" && rm -f /tmp/ss* || { echo "文件操作失败"; return 1; }
-    echo "$version"
+    echo "${version}"
 }
 set_port_method() {
     while :; do read -p "请输入端口号 [默认: 8964]：" server_port; server_port=${server_port:-8964}; [[ "$server_port" =~ ^[0-9]+$ && "$server_port" -ge 1 && "$server_port" -le 65535 ]] && break || echo "无效端口号，请输入一个有效的端口号 (1-65535)"; done
