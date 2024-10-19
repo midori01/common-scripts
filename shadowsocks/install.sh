@@ -37,15 +37,15 @@ EOF
 [Unit]
 Description=Shadowsocks Rust
 After=network-online.target
-Wants=network-online.target systemd-networkd-wait-online.service
+
 [Service]
-LimitNOFILE=102400
 Type=simple
 User=root
+LimitNOFILE=102400
 Restart=on-failure
 RestartSec=5s
-ExecStartPre=/bin/sh -c ulimit -n 102400
 ExecStart=/usr/local/bin/ss-rust -c /etc/ss-rust.json
+
 [Install]
 WantedBy=multi-user.target
 EOF
