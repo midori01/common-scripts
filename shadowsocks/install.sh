@@ -35,14 +35,14 @@ set_port_method() {
     while :; do
         read -p "请输入端口号 [默认: 8964]：" server_port
         server_port=${server_port:-8964}
-        [[ "$server_port" =~ ^[0-9]+$ ]] && ((server_port >= 1 && server_port <= 65535)) && break || echo "无效端口号，请输入一个有效的端口号 (1-65535)"
-    done
+        [[ "$server_port" =~ ^[0-9]+$ && "$server_port" -ge 1 && "$server_port" -le 65535 ]] && break || echo "无效端口号，请输入一个有效的端口号 (1-65535)"
+    done 
     PS3="请选择加密方式 [默认: none]："
     options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "none")
     select method in "${options[@]}"; do
-        method=${method:-"none"}
         break
     done
+    method=${method:-"none"}
 }
 
 generate_password() {
