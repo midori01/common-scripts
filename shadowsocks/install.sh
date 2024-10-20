@@ -23,7 +23,7 @@ EOF
 modify_json() { [[ -f /etc/ss-rust.json ]] && jq '. + {plugin: "obfs-server", plugin_opts: "obfs=http", server: "0.0.0.0"}' /etc/ss-rust.json > /etc/ss-rust.json.tmp && mv /etc/ss-rust.json.tmp /etc/ss-rust.json && systemctl restart ss-rust && echo "配置文件已修改，Shadowsocks Rust 重启完成" || echo "配置文件不存在，请先安装 Shadowsocks Rust"; }
 check_system
 case "$1" in
-    update) version=$(download_ss) && systemctl restart ss-rust && echo "Shadowsocks Rust ${version} 更新完成" || echo "更新失败" ;;
+    update) version=$(download_ss) && systemctl restart ss-rust && echo "Shadowsocks Rust ${version} 更新完成" || echo "Shadowsocks Rust 更新失败" ;;
     uninstall) systemctl disable --now ss-rust && rm -f /usr/local/bin/ss-rust /etc/ss-rust.json /etc/systemd/system/ss-rust.service && systemctl daemon-reload && echo "Shadowsocks Rust 卸载完成" ;;
     obfs) apt update > /dev/null 2>&1 && apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake git > /dev/null 2>&1 && git clone https://github.com/shadowsocks/simple-obfs.git > /dev/null 2>&1 && cd simple-obfs && echo "正在初始化子模块并编译安装 simple-obfs，请耐心等待..." && git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1 && echo "simple-obfs 安装完成" && modify_json || echo "simple-obfs 安装失败" && cd .. && rm -rf simple-obfs ;;
     *) download_ss && set_config && create_json && echo "安装完成，端口: ${server_port}, 加密: ${method}, 密码: ${password}" ;;
