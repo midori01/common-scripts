@@ -15,9 +15,7 @@ create_json() { echo -e "[Unit]\nDescription=Shadowsocks Rust\nAfter=network-onl
   "no_delay": true,
   "reuse_port": true,
   "nameserver": "1.1.1.1",
-  "ipv6_first": false,
-  "user": "root",
-  "timeout": 3600
+  "ipv6_first": false
 }
 EOF
 }
