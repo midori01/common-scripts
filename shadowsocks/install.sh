@@ -18,7 +18,8 @@ create_json() { echo -e "[Unit]\nDescription=Shadowsocks Rust\nAfter=network-onl
   "user": "root",
   "timeout": 3600
 }
-EOF; systemctl enable --now ss-rust && systemctl restart ss-rust; }
+EOF
+    systemctl enable --now ss-rust && systemctl restart ss-rust; }
 modify_json() { jq '. + {plugin: "obfs-server", plugin_opts: "obfs=http", server: "0.0.0.0"}' /etc/ss-rust.json > /etc/ss-rust.json.tmp && mv /etc/ss-rust.json.tmp /etc/ss-rust.json && systemctl restart ss-rust && echo "配置文件已修改，Shadowsocks Rust 重启完成"; }
 check_system
 case "$1" in
