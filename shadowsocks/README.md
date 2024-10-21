@@ -10,6 +10,14 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") uninstall
 ```
+`Restart`
+```bash
+systemctl restart ss-rust
+```
+`Check Status`
+```bash
+systemctl status ss-rust
+```
 
 <br>
 
