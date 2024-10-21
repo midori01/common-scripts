@@ -72,7 +72,7 @@ EOF
   systemctl daemon-reload
   systemctl start sing-box.service
   systemctl enable sing-box.service
-  echo "sing-box 安装成功"
+  echo "sing-box 安装完成"
 fi
 }
 uninstall() {
@@ -81,14 +81,14 @@ uninstall() {
   rm -f /etc/systemd/system/sing-box.service
   rm -f /etc/sing-box.json
   rm -f /usr/local/bin/sing-box
-  echo "sing-box 已卸载"
+  echo "sing-box 卸载完成"
 }
 uninstall-keep() {
   systemctl stop sing-box.service
   systemctl disable sing-box.service
   rm -f /etc/systemd/system/sing-box.service
   rm -f /usr/local/bin/sing-box
-  echo "sing-box 已卸载"
+  echo "sing-box 卸载完成"
   echo "配置文件保留 /etc/sing-box.json"
 }
 update() {
@@ -100,7 +100,7 @@ update() {
   rm -r ${package_name} > /dev/null 2>&1
   rm -f ${package_name}.tar.gz > /dev/null 2>&1
   systemctl restart sing-box.service > /dev/null 2>&1
-  echo "sing-box ${latest_version} has been successfully updated."
+  echo "sing-box ${latest_version} 更新完成"
 }
 update-beta() {
   rm -f /usr/local/bin/sing-box > /dev/null 2>&1
@@ -111,7 +111,7 @@ update-beta() {
   rm -r ${package_name_beta} > /dev/null 2>&1
   rm -f ${package_name_beta}.tar.gz > /dev/null 2>&1
   systemctl restart sing-box.service > /dev/null 2>&1
-  echo "sing-box ${latest_version_beta} has been successfully updated."
+  echo "sing-box ${latest_version_beta} 更新完成"
 }
 tuic() {
 read -r -p "请输入证书域名: " cer_domain
