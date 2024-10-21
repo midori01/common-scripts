@@ -31,7 +31,7 @@ uninstall() {
   rm -f /etc/systemd/system/snell.service
   rm -f /etc/snell-server.conf
   rm -f /usr/local/bin/snell-server
-  echo "Snell Server 卸载完成"
+  echo "snell-server 卸载完成"
 }
 
 update() {
@@ -44,7 +44,7 @@ update() {
   rm snell-server-${snell_version}-linux-${snell_type}.zip > /dev/null 2>&1
   systemctl restart snell.service > /dev/null 2>&1
   systemctl restart snell2.service > /dev/null 2>&1
-  echo "Snell Server ${snell_version} 更新完成"
+  echo "snell-server ${snell_version} 更新完成"
 }
 
 if [[ $1 == "uninstall" ]]; then
@@ -61,9 +61,9 @@ if [[ $1 == "update" ]]; then
   exit 0
 fi
 
-read -r -p "请输入 Snell Server 监听端口 (留空默认 8964): " snell_port
+read -r -p "请输入监听端口 (留空默认 8964): " snell_port
 snell_port=${snell_port:-8964}
-read -r -p "请输入 Snell Server 密码 (留空随机生成): " snell_password
+read -r -p "请输入密码 (留空随机生成): " snell_password
 if [[ -z "$snell_password" ]]; then
   snell_password=$(openssl rand -base64 32)
 fi
@@ -94,7 +94,7 @@ rm snell-server-${default_snell_version}-linux-${snell_type}.zip
 
 cat > /etc/systemd/system/snell.service <<EOF
 [Unit]
-Description=Snell Proxy Service
+Description=snell-server
 After=network.target
 
 [Service]
@@ -120,7 +120,7 @@ EOF
 systemctl daemon-reload
 systemctl enable snell.service --now
 
-echo "Snell Server 安装完成"
+echo "snell-server 安装完成"
 echo "客户端连接信息: "
 echo "端口: ${snell_port}"
 echo "密码: ${snell_password}"
