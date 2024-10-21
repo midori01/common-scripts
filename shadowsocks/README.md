@@ -14,9 +14,13 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 ```bash
 systemctl restart ss-rust
 ```
-`Check Status`
+`Status`
 ```bash
 systemctl status ss-rust
+```
+`Configuration file path`
+```bash
+/etc/ss-rust.json
 ```
 
 <br>
