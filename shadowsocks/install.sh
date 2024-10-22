@@ -21,7 +21,7 @@ EOF
 }
 check_system
 case "$1" in
-    update) [[ "$2" == "full-extra" ]] && repo_version="midor01"; version=$(download_ss) && systemctl restart ss-rust && echo "shadowsocks-rust ${version} 更新完成" || echo "shadowsocks-rust 更新失败";;
+    update) [[ "$2" == "full-extra" ]] && repo_version="midori01"; version=$(download_ss) && systemctl restart ss-rust && echo "shadowsocks-rust ${version} 更新完成" || echo "shadowsocks-rust 更新失败";;
     uninstall) systemctl disable --now ss-rust > /dev/null 2>&1 && rm -f /usr/local/bin/ssserver /etc/ss-rust.json /etc/systemd/system/ss-rust.service && systemctl daemon-reload && echo "shadowsocks-rust 卸载完成" ;;
     obfs) apt update > /dev/null 2>&1 && apt install --no-install-recommends -y build-essential autoconf libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto automake git > /dev/null 2>&1 && git clone https://github.com/shadowsocks/simple-obfs.git > /dev/null 2>&1 && cd simple-obfs && echo "正在初始化子模块并编译安装 simple-obfs，请耐心等待..." && git submodule update --init --recursive > /dev/null 2>&1 && ./autogen.sh > /dev/null 2>&1 && ./configure > /dev/null 2>&1 && make > /dev/null 2>&1 && make install > /dev/null 2>&1 && echo "simple-obfs 安装完成" && modify_json || echo "simple-obfs 安装失败" && cd .. && rm -rf simple-obfs ;;
     *) set_variable && download_ss && create_json && systemctl enable --now ss-rust > /dev/null 2>&1 && systemctl restart ss-rust && echo -e "shadowsocks-rust 安装完成\n端口: ${server_port}\n加密: ${method}\n密码: ${password}" ;;
