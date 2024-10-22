@@ -1,7 +1,7 @@
 #!/bin/bash
 
 repo_version="shadowsocks"
-
+# repo_version="midori01"
 check_system() { [[ $EUID != 0 ]] && { echo "请以 root 权限运行脚本"; exit 1; }; grep -qiE "debian|ubuntu" /etc/issue || { echo "仅支持 Debian 或 Ubuntu 系统"; exit 1; }; deps=(curl wget openssl jq); for dep in "${deps[@]}"; do command -v "$dep" &> /dev/null || missing_deps+=("$dep"); done; [[ ${#missing_deps[@]} -ne 0 ]] && apt install -y "${missing_deps[@]}"; }
 set_variable() { read -p "请输入端口号 [默认: 8964]：" server_port; server_port=${server_port:-8964}; while ! [[ $server_port =~ ^[0-9]+$ && $server_port -ge 1 && $server_port -le 65535 ]]; do read -p "无效端口号，请输入 (1-65535)：" server_port; done; PS3="请选择加密方式 [默认: none]："; options=("aes-128-gcm" "aes-256-gcm" "chacha20-ietf-poly1305" "rc4-md5" "2022-blake3-aes-128-gcm" "2022-blake3-aes-256-gcm" "2022-blake3-chacha20-poly1305" "none"); select method in "${options[@]}"; do method=${method:-"none"}; break; done; password=$( [[ "$method" == "none" ]] && echo "" || openssl rand -base64 $( [[ "$method" =~ "aes-128" ]] && echo 16 || echo 32 )); }
 download_ss() { arch=$(uname -m); version=$(curl -s https://api.github.com/repos/${repo_version}/shadowsocks-rust/releases/latest | jq -r '.tag_name'); wget -qO- "https://github.com/${repo_version}/shadowsocks-rust/releases/download/${version}/shadowsocks-${version}.${arch}-unknown-linux-musl.tar.xz" | tar -xJ -C /tmp && mv /tmp/ssserver /usr/local/bin/ssserver && chmod +x /usr/local/bin/ssserver && rm -f /tmp/ss* && echo "${version}" || { echo "下载或解压失败"; return 1; }; }
