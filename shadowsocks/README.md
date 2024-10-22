@@ -1,3 +1,4 @@
+# Usually
 `Install`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh")
@@ -25,6 +26,7 @@ systemctl status ss-rust
 
 <br>
 
+# Advanced
 `Install simple-obfs plugin`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") obfs
