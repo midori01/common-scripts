@@ -25,13 +25,16 @@ systemctl status ss-rust
 
 <br>
 
-`Install simple-obfs plugin`  
-> _Don’t use it if you don’t understand._
+`Install simple-obfs plugin`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") obfs
 ```
-`Upgrade to full-extra version`  
-> _Built by Midori with the full-extra option._
+> _Don’t use it if you don’t understand._
+
+<br>
+
+`Upgrade to full-extra version`
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") update full-extra
 ```
+> _Built by Midori with the full-extra option._
