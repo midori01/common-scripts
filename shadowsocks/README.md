@@ -30,3 +30,8 @@ systemctl status ss-rust
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") obfs
 ```
+`Upgrade to full-extra version`  
+> _Built by Midori with the full-extra option._
+```bash
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/shadowsocks/install.sh") update full-extra
+```
