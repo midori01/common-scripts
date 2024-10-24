@@ -1223,7 +1223,11 @@ cat > /etc/sing-box.json <<EOF
             "listen": "::",
             "listen_port": ${ss_port},
             "method": "2022-blake3-aes-128-gcm",
-            "password": "${ss_pass}"
+            "password": "${ss_pass}",
+            "multiplex": {
+                "enabled": true,
+                "padding": true
+            }
         }
     ],
     "outbounds": [
@@ -1240,6 +1244,7 @@ echo "地址: ${public_ip}"
 echo "端口: ${ss_port}"
 echo "密码: ${ss_pass}"
 echo "加密: 2022-blake3-aes-128-gcm"
+echo "填充: 开启"
 }
 ss-none() {
 read -r -p "请输入节点端口 (留空默认 8964): " ss_port
