@@ -22,7 +22,7 @@ EOF
 check_system
 case "$1" in
     update) [[ "$2" == "full-extra" ]] && repo_version="midori01"; version=$(download_ss) && systemctl restart ss-rust && echo "shadowsocks-rust ${version} 更新完成" || echo "shadowsocks-rust 更新失败";;
-    uninstall) systemctl disable --now ss-rust > /dev/null 2>&1 && rm -f /usr/local/bin/ssserver /etc/ss-rust.json /etc/systemd/system/ss-rust.service && systemctl daemon-reload && echo "shadowsocks-rust 卸载完成" ;;
+    uninstall) systemctl disable --now ss-rust > /dev/null 2>&1 && rm -f /usr/local/bin/ssserver /etc/ss-rust.json /etc/systemd/system/ss-rust.service /usr/local/bin/obfs-server /usr/local/bin/obfs-local && systemctl daemon-reload && echo "shadowsocks-rust 卸载完成" ;;
     obfs) wget -qO /usr/local/bin/obfs-server "https://github.com/midori01/simple-obfs/releases/download/v0.0.5-midori-build/obfs-server-${arch}" && chmod +x /usr/local/bin/obfs-server && echo "obfs-server 安装完成" && modify_json || echo "obfs-server 安装失败" ;;
     *) set_variable && download_ss && create_json && systemctl enable --now ss-rust > /dev/null 2>&1 && systemctl restart ss-rust && echo -e "shadowsocks-rust 安装完成\n端口: ${server_port}\n加密: ${method}\n密码: ${password}" ;;
 esac
