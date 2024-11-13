@@ -3,7 +3,7 @@
 ```bash
 bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/firewall.sh")
 ```
-`Remove System Monitor:`
+`Remove Monitor (Ubuntu):`
 ```bash
 snap remove oracle-cloud-agent
 ```
@@ -14,12 +14,4 @@ bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/mai
 `Check User Email:`
 ```bash
 curl http://169.254.169.254/opc/v1/instance/definedTags
-```
-`Keep Oracle Alive (CPU):`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/keepalive.sh")
-```
-`Remove Keep Oracle Alive:`
-```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/oracle/keepalive.sh") remove
 ```
