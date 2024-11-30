@@ -1,7 +1,7 @@
 # Fping-Exporter
 `Install:`
 ```bash
-bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/fpinh-exporter/install.sh")
+bash <(curl -sSLf "https://raw.githubusercontent.com/midori01/common-scripts/main/fping-exporter/install.sh")
 ```
 `Update:`
 ```bash
