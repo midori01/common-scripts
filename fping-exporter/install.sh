@@ -15,7 +15,7 @@ else
   echo "$(uname -m) 架构不支持"
   exit 1
 fi
-latest_version=$(curl -m 10 -sL "https://api.github.com/repos/midori01/fping-exporter/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
+latest_version=$(curl -m 10 -sL "https://api.github.com/repos/midori01/fping-exporter/releases/latest" | awk -F'"' '/tag_name/{print $4}')
 install() {
 command -v fping >/dev/null 2>&1 || { if command -v dnf >/dev/null 2>&1 || command -v yum >/dev/null 2>&1; then yum install -y fping || dnf install -y fping; else apt update -qq && apt install -y fping; fi; }
 wget https://github.com/midori01/fping-exporter/releases/download/${latest_version}/fping-exporter-linux-${type}
