@@ -61,8 +61,8 @@ if [[ $1 == "update" ]]; then
   exit 0
 fi
 install
-fping_exporter_port=`ss -ntlp | grep -o 9605`
-if [ $fping_exporter_port == "9605" ];then
+fping_exporter_status=$(systemctl is-active fping-exporter)
+if [[ "$fping_exporter_status" == "active" ]]; then
     ${COLOR}fping-exporter 安装成功${END}
 else
     ${COLOR1}fping-exporter 安装失败${END}
