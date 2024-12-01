@@ -30,7 +30,7 @@ Description=This is prometheus node exporter
 
 [Service]
 Type=simple
-ExecStart=/etc/node_exporter/node_exporter
+ExecStart=/etc/node_exporter/node_exporter --web.listen-address=":9100"
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
