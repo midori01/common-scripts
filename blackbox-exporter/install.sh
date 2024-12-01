@@ -21,8 +21,8 @@ wget https://github.com/prometheus/blackbox_exporter/releases/download/v${latest
 tar zxvf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 mkdir /etc/blackbox_exporter
 mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /etc/blackbox_exporter/blackbox_exporter
-mv blackbox_exporter-${latest_version}.linux-${type}/blackbox.yml /etc/blackbox_exporter/blackbox.yml
 chmod +x /etc/blackbox_exporter/blackbox_exporter
+wget -O /etc/blackbox_exporter/blackbox.yml https://raw.githubusercontent.com/midori01/common-scripts/main/blackbox-exporter/blackbox.yml
 rm -r blackbox_exporter-${latest_version}.linux-${type}
 rm -f blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 cat > /etc/systemd/system/blackbox-exporter.service <<EOF
@@ -56,6 +56,7 @@ wget https://github.com/prometheus/blackbox_exporter/releases/download/v${latest
 tar zxvf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /etc/blackbox_exporter/blackbox_exporter
 chmod +x /etc/blackbox_exporter/blackbox_exporter
+wget -O /etc/blackbox_exporter/blackbox.yml https://raw.githubusercontent.com/midori01/common-scripts/main/blackbox-exporter/blackbox.yml
 rm -r blackbox_exporter-${latest_version}.linux-${type}
 rm -f blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 systemctl restart blackbox-exporter.service
