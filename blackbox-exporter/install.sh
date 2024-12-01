@@ -31,7 +31,7 @@ Description=This is prometheus blackbox exporter
 
 [Service]
 Type=simple
-ExecStart=/etc/blackbox_exporter/blackbox_exporter --config.file="/etc/blackbox_exporter/blackbox.yml"
+ExecStart=/etc/blackbox_exporter/blackbox_exporter --config.file="/etc/blackbox_exporter/blackbox.yml" --web.listen-address=":9115"
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
