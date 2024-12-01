@@ -27,7 +27,7 @@ Description=This is Prometheus Fping-Exporter
 
 [Service]
 Type=simple
-ExecStart=/etc/fping-exporter -p 15 -c 15
+ExecStart=/etc/fping-exporter -p 15 -c 15 -l :9605
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
