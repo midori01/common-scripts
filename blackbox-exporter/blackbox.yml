@@ -1,0 +1,16 @@
+modules:
+  icmp:
+    prober: icmp
+
+  http:
+    prober: http
+
+  tcp:
+    prober: tcp
+
+  dns:
+    prober: dns
+    dns:
+      preferred_ip_protocol: "ip4"
+      query_name: "www.apple.com"
+      query_type: "A"
