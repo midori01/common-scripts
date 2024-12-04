@@ -19,7 +19,7 @@ latest_version=$(curl -m 10 -sL "https://api.github.com/repos/prometheus/blackbo
 install() {
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v${latest_version}/blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
-mkdir /etc/blackbox_exporter
+mkdir -p /etc/blackbox_exporter
 mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /etc/blackbox_exporter/blackbox_exporter
 chmod +x /etc/blackbox_exporter/blackbox_exporter
 wget -O /etc/blackbox_exporter/blackbox.yml https://raw.githubusercontent.com/midori01/common-scripts/main/blackbox-exporter/blackbox.yml
