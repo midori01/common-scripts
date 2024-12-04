@@ -19,7 +19,7 @@ latest_version=$(curl -m 10 -sL "https://api.github.com/repos/prometheus/node_ex
 install() {
 wget https://github.com/prometheus/node_exporter/releases/download/v${latest_version}/node_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf node_exporter-${latest_version}.linux-${type}.tar.gz
-mkdir /etc/node_exporter
+mkdir -p /etc/node_exporter
 mv node_exporter-${latest_version}.linux-${type}/node_exporter /etc/node_exporter/node_exporter
 chmod +x /etc/node_exporter/node_exporter
 rm -r node_exporter-${latest_version}.linux-${type}
