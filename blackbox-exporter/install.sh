@@ -21,7 +21,7 @@ wget https://github.com/prometheus/blackbox_exporter/releases/download/v${latest
 tar zxvf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 mkdir -p /etc/blackbox_exporter
 mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /usr/local/bin/blackbox_exporter
-chmod +x /usr/loacl/bin/blackbox_exporter
+chmod +x /usr/local/bin/blackbox_exporter
 wget -O /etc/blackbox_exporter/blackbox.yml https://raw.githubusercontent.com/midori01/common-scripts/main/blackbox-exporter/blackbox.yml
 rm -rf blackbox_exporter-${latest_version}.linux-${type}
 rm -rf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
