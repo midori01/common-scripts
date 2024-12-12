@@ -17,6 +17,10 @@ else
 fi
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/prometheus/node_exporter/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
 install() {
+if ss -tuln | grep -q ":9100"; then
+  echo "端口 9100 已被占用"
+  exit 1
+fi
 wget https://github.com/prometheus/node_exporter/releases/download/v${latest_version}/node_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf node_exporter-${latest_version}.linux-${type}.tar.gz
 mv node_exporter-${latest_version}.linux-${type}/node_exporter /usr/local/bin/node_exporter
