@@ -20,18 +20,18 @@ install() {
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v${latest_version}/blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 mkdir -p /etc/blackbox_exporter
-mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /etc/blackbox_exporter/blackbox_exporter
-chmod +x /etc/blackbox_exporter/blackbox_exporter
+mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /usr/local/bin/blackbox_exporter
+chmod +x /usr/loacl/bin/blackbox_exporter
 wget -O /etc/blackbox_exporter/blackbox.yml https://raw.githubusercontent.com/midori01/common-scripts/main/blackbox-exporter/blackbox.yml
-rm -r blackbox_exporter-${latest_version}.linux-${type}
-rm -f blackbox_exporter-${latest_version}.linux-${type}.tar.gz
+rm -rf blackbox_exporter-${latest_version}.linux-${type}
+rm -rf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 cat > /etc/systemd/system/blackbox-exporter.service <<EOF
 [Unit]
 Description=This is prometheus blackbox exporter
 
 [Service]
 Type=simple
-ExecStart=/etc/blackbox_exporter/blackbox_exporter --config.file="/etc/blackbox_exporter/blackbox.yml" --web.listen-address=":9115"
+ExecStart=/usr/local/bin/blackbox_exporter --config.file="/etc/blackbox_exporter/blackbox.yml" --web.listen-address=":9115"
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
@@ -46,19 +46,23 @@ systemctl enable blackbox-exporter.service
 uninstall() {
 systemctl stop blackbox-exporter.service
 systemctl disable blackbox-exporter.service
-rm -f /etc/systemd/system/blackbox-exporter.service
-rm -r /etc/blackbox_exporter
+rm -rf /etc/systemd/system/blackbox-exporter.service
+rm -rf /etc/blackbox_exporter
+rm -rf /usr/local/bin/blackbox_exporter
 echo "blackbox-exporter 卸载成功"
 }
 update() {
-rm -f /etc/blackbox_exporter/blackbox_exporter
+rm -rf /usr/local/bin/blackbox_exporter
+rm -rf /etc/blackbox_exporter/blackbox_exporter
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v${latest_version}/blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
-mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /etc/blackbox_exporter/blackbox_exporter
-chmod +x /etc/blackbox_exporter/blackbox_exporter
+mv blackbox_exporter-${latest_version}.linux-${type}/blackbox_exporter /usr/local/bin/blackbox_exporter
+chmod +x /usr/local/bin/blackbox_exporter
 wget -O /etc/blackbox_exporter/blackbox.yml https://raw.githubusercontent.com/midori01/common-scripts/main/blackbox-exporter/blackbox.yml
-rm -r blackbox_exporter-${latest_version}.linux-${type}
-rm -f blackbox_exporter-${latest_version}.linux-${type}.tar.gz
+rm -rf blackbox_exporter-${latest_version}.linux-${type}
+rm -rf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
+sed -i 's/ExecStart\=\/etc\/blackbox_exporter\/blackbox_exporter/ExecStart\=\/usr\/local\/bin\/blackbox_exporter/g' /etc/systemd/system/blackbox-exporter.service
+systemctl daemon-reload
 systemctl restart blackbox-exporter.service
 echo "blackbox-exporter 更新成功"
 }
