@@ -19,15 +19,15 @@ latest_version=$(curl -m 10 -sL "https://api.github.com/repos/midori01/fping-exp
 install() {
 command -v fping >/dev/null 2>&1 || { if command -v dnf >/dev/null 2>&1 || command -v yum >/dev/null 2>&1; then yum install -y fping || dnf install -y fping; else apt update -qq && apt install -y fping; fi; }
 wget https://github.com/midori01/fping-exporter/releases/download/${latest_version}/fping-exporter-linux-${type}
-mv fping-exporter-linux-${type} /etc/fping-exporter
-chmod +x /etc/fping-exporter
+mv fping-exporter-linux-${type} /usr/local/bin/fping-exporter
+chmod +x /use/local/bin/fping-exporter
 cat > /etc/systemd/system/fping-exporter.service <<EOF
 [Unit]
 Description=This is Prometheus Fping-Exporter
 
 [Service]
 Type=simple
-ExecStart=/etc/fping-exporter -p 15 -c 15 -l :9605
+ExecStart=/usr/local/bin/fping-exporter -p 15 -c 15 -l :9605
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
@@ -39,16 +39,21 @@ systemctl daemon-reload
 systemctl enable fping-exporter.service --now
 }
 uninstall() {
+apt purge fping -y
 systemctl disable fping-exporter.service --now
-rm -f /etc/systemd/system/fping-exporter.service
-rm -r /etc/fping-exporter
+rm -rf /etc/systemd/system/fping-exporter.service
+rm -rf /etc/fping-exporter
+rm -rf /usr/local/bin/fping-exporter
 echo "fping-exporter 卸载成功"
 }
 update() {
-rm -f /etc/fping-exporter
+rm -rf /usr/local/bin/fping-exporter
+rm -rf /etc/fping-exporter
 wget https://github.com/midori01/fping-exporter/releases/download/${latest_version}/fping-exporter-linux-${type}
-mv fping-exporter-linux-${type} /etc/fping-exporter
-chmod +x /etc/fping-exporter
+mv fping-exporter-linux-${type} /usr/local/bin/fping-exporter
+chmod +x /usr/local/bin/fping-exporter
+sed -i 's/ExecStart\=\/etc\/fping-exporter/ExecStart\=\/usr\/local\/bin\/fping-exporter/g' /etc/systemd/system/fping-exporter.service
+systemctl daemon-reload
 systemctl restart fping-exporter.service
 echo "fping-exporter 更新成功"
 }
