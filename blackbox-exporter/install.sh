@@ -17,6 +17,10 @@ else
 fi
 latest_version=$(curl -m 10 -sL "https://api.github.com/repos/prometheus/blackbox_exporter/releases/latest" | awk -F'"' '/tag_name/{gsub(/v/, "", $4); print $4}')
 install() {
+if ss -tuln | grep -q ":9115"; then
+  echo "端口 9115 已被占用"
+  exit 1
+fi
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v${latest_version}/blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf blackbox_exporter-${latest_version}.linux-${type}.tar.gz
 mkdir -p /etc/blackbox_exporter
