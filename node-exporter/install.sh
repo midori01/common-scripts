@@ -19,18 +19,17 @@ latest_version=$(curl -m 10 -sL "https://api.github.com/repos/prometheus/node_ex
 install() {
 wget https://github.com/prometheus/node_exporter/releases/download/v${latest_version}/node_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf node_exporter-${latest_version}.linux-${type}.tar.gz
-mkdir -p /etc/node_exporter
-mv node_exporter-${latest_version}.linux-${type}/node_exporter /etc/node_exporter/node_exporter
-chmod +x /etc/node_exporter/node_exporter
-rm -r node_exporter-${latest_version}.linux-${type}
-rm -f node_exporter-${latest_version}.linux-${type}.tar.gz
+mv node_exporter-${latest_version}.linux-${type}/node_exporter /usr/local/bin/node_exporter
+chmod +x /usr/local/bin/node_exporter
+rm -rf node_exporter-${latest_version}.linux-${type}
+rm -rf node_exporter-${latest_version}.linux-${type}.tar.gz
 cat > /etc/systemd/system/node-exporter.service <<EOF
 [Unit]
 Description=This is prometheus node exporter
 
 [Service]
 Type=simple
-ExecStart=/etc/node_exporter/node_exporter --web.listen-address=":9100"
+ExecStart=/usr/local/bin/node_exporter --web.listen-address=":9100"
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
@@ -45,18 +44,22 @@ systemctl enable node-exporter.service
 uninstall() {
 systemctl stop node-exporter.service
 systemctl disable node-exporter.service
-rm -f /etc/systemd/system/node-exporter.service
-rm -r /etc/node_exporter
+rm -rf /etc/systemd/system/node-exporter.service
+rm -rf /usr/local/bin/node_exporter
+rm -rf /etc/node_exporter
 echo "node-exporter 卸载成功"
 }
 update() {
-rm -f /etc/node_exporter/node_exporter
+rm -rf /usr/local/bin/node_exporter
+rm -rf /etc/node_exporter/node_exporter
 wget https://github.com/prometheus/node_exporter/releases/download/v${latest_version}/node_exporter-${latest_version}.linux-${type}.tar.gz
 tar zxvf node_exporter-${latest_version}.linux-${type}.tar.gz
-mv node_exporter-${latest_version}.linux-${type}/node_exporter /etc/node_exporter/node_exporter
-chmod +x /etc/node_exporter/node_exporter
-rm -r node_exporter-${latest_version}.linux-${type}
-rm -f node_exporter-${latest_version}.linux-${type}.tar.gz
+mv node_exporter-${latest_version}.linux-${type}/node_exporter /usr/local/bin/node_exporter
+chmod +x /usr/local/bin/node_exporter
+rm -rf node_exporter-${latest_version}.linux-${type}
+rm -rf node_exporter-${latest_version}.linux-${type}.tar.gz
+sed -i 's/ExecStart\=\/etc\/node_exporter\/node_exporter/ExecStart\=\/usr\/local\/bin\/node_exporter/g' /etc/systemd/system/node-exporter.service
+systemctl daemon-reload
 systemctl restart node-exporter.service
 echo "node-exporter 更新成功"
 }
