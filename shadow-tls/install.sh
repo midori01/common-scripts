@@ -77,6 +77,7 @@ ExecStart=/usr/local/bin/shadow-tls config --config /etc/shadow-tls.json
 StandardOutput=null
 StandardError=null
 SyslogIdentifier=shadow-tls
+Environment=MONOIO_FORCE_LEGACY_DRIVER=1
 
 [Install]
 WantedBy=multi-user.target
