@@ -110,10 +110,10 @@ cat > /etc/wireguard/wg0.conf <<EOF
 [Interface]
 Address = 10.89.64.1/32, fd10::1/128
 PrivateKey = ${i_privatekey}
-PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o ${netdevice} -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ${netdevice} -j MASQUERADE
-PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o ${netdevice} -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ${netdevice} -j MASQUERADE
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o ${netdevice} -j MASQUERADE; ip6tables -A FORWARD -i %i -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ${netdevice} -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o ${netdevice} -j MASQUERADE; ip6tables -D FORWARD -i %i -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ${netdevice} -j MASQUERADE
 ListenPort = ${wg_port}
-MTU = 1280
+MTU = 1420
 
 [Peer]
 PublicKey = ${p_publickey}
@@ -134,7 +134,7 @@ private-key = ${p_privatekey}
 self-ip = 10.89.64.2
 self-ip-v6 = fd10::2
 dns-server = 1.1.1.1, 2606:4700:4700::1111
-mtu = 1280
+mtu = 1420
 peer = (public-key = ${i_publickey}, allowed-ips = "0.0.0.0/0, ::0/0", endpoint = ${endpoint}:${wg_port}, preshared-key=${presharedkey}, keepalive = 25)
 EOF
 echo "WireGuard 安装成功"
@@ -146,5 +146,5 @@ echo "Public Key: ${i_publickey}"
 echo "Pre-shared Key: ${presharedkey}"
 echo "Endpoint: ${endpoint}:${wg_port}"
 echo "DNS: 1.1.1.1, 2606:4700:4700::1111"
-echo "MTU: 1280"
+echo "MTU: 1420"
 echo "Keepalive: 25"
